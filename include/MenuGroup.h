@@ -15,6 +15,7 @@ class MenuGroup
 
   void addMenu(Menu * menu);
   //Menu * getPopMenu();
+  Menu * collide(float pos_x, float pos_y, float cameraoffset_x, float cameraoffset_y, float zoom);
   bool isActive();
   void setAllNotActive();
   void removeMenu(Menu * menu);  

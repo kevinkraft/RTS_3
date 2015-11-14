@@ -13,6 +13,7 @@
 
 SDL_Texture * loadTexture(std::string file, SDL_Renderer *renderer, bool colorkey=true);
 
+void renderTexture(SDL_Texture *texture, SDL_Renderer *renderer, SDL_Rect dst);
 void renderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, int w, int h);
 void renderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y);
 

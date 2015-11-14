@@ -48,16 +48,16 @@ const double UNIT_INTERACTION_RANGE = 0.3;
 const double UNIT_ATTACK_DAMAGE = .07;
 //const float UNIT_CLICK_COLLIDE_X = 0.5; //in game coords
 //const float UNIT_CLICK_COLLIDE_Y = 1.; //in game coords
-const float UNIT_CLICK_COLLIDE_X = 40; //in screen coords
-const float UNIT_CLICK_COLLIDE_Y = 50; //in screen coords
+const float UNIT_CLICK_COLLIDE_X = 20; //in screen coords
+const float UNIT_CLICK_COLLIDE_Y = 25; //in screen coords
 //Due to the sprite images being the same size as the map tile images we need to apply a correction
-const float UNIT_CLICK_COLLIDE_OFFSET_X = 10;
-const float UNIT_CLICK_COLLIDE_OFFSET_Y = 105;
+const float UNIT_CLICK_COLLIDE_OFFSET_X = 0.;//10;
+const float UNIT_CLICK_COLLIDE_OFFSET_Y = 50.;//105;
 
 //-------------------------------------------------------------------------------------
 // Map Constants
 //-------------------------------------------------------------------------------------
-const int MAP_SIZE = 15;
+const int MAP_SIZE = 100;
 /*const std::vector<std::vector<int>> GAME_MAP = {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 						{1, 1, 1, 2, 2, 2, 2, 2, 2, 1},
 						{1, 1, 1, 2, 2, 2, 2, 2, 2, 1},

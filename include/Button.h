@@ -27,6 +27,7 @@ class Button
 			
   virtual ~Button();
 
+  bool collide(float pos_x, float pos_y, float cameraoffset_x, float cameraoffset_y, float zoom, Menu * menu);
   void makeTitleMessage();
   ReturnContainer outcome();
   void render(int cameraoffset_x, int cameraoffset_y, float zoom, Menu * menu);

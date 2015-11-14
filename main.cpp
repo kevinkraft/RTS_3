@@ -176,20 +176,20 @@ int main(int argc, char **argv)
   Sprite *vill = new Sprite("res/images/units/villager.png", villx, villy, renderer, window);*/
 
   //make an entity and move it
-  Unit * unit_you = new Unit(2.5, 2.5, "You");
+  Unit * unit_you = new Unit(0., 0., "You");
   EntityAction * selected_entity = unit_you;
-  //Unit * unit1 = new Unit(4.5, 4.5, "Unit1");
-  //Movement * move = new Movement(10., 8.);
-  //unit_you->appendAction(move);
-  //Movement * move = new Movement(0., 0.);
-  //unit1->appendAction(move);
-  //Attack * attack = new Attack(unit1);
+  Unit * unit1 = new Unit(4.5, 4.5, "Unit1");
+  Movement * move1 = new Movement(10., 8.);
+  //unit_you->appendAction(move1);
+  Movement * move2 = new Movement(0., 0.);
+  unit1->appendAction(move2);
+  Attack * attack = new Attack(unit1);
   //unit_you->appendAction(attack);
 
   //make a group to hold units
   EntityGroup * Units = new EntityGroup(renderer, window);
   Units->addEntity(unit_you);
-  //Units->addEntity(unit1);
+  Units->addEntity(unit1);
 
   //set the image filename of the group
   Units->setImage("res/images/units/villager.png");
@@ -329,25 +329,36 @@ int main(int argc, char **argv)
 		}
 	      else if (event.key.keysym.sym == SDLK_t)
 		{
-		  //temporary testing
+		  std::cout << "Main: Temporary button: There is nothing here" << std::endl;
+		  /*  //temporary testing
 		  //std::cout << "Main: INFO: In temporary testing " << std::endl;
 		  if (pop_menu != nullptr)
 		    {
 		      //TEMP
-		      pop_menu->getButton(1)->setPressed(true);
-			//TEMP
+		      pop_menu->getButton(0)->setPressed(true);
+		      //TEMP
 		      pop_menu->outcome();
 		    }
 		  pop_menu->setActive(false);
-		  pop_menu->clear();
+		  pop_menu->clear();*/
 		}
 	    }
 	  else if (event.type == SDL_MOUSEBUTTONDOWN)
 	    {
 	      if (event.button.button == SDL_BUTTON_LEFT)
 		{
-		  //THIS WILL BE A PROBLEM FOR CLICKING ON THE MENUS AS CLICKING IS BELOW THIS
-		  //remove menu if its on
+		  //check if mouse collides with a button
+		  Menu * menu_called = Menus->collide(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom);
+		  if ( menu_called != nullptr )
+		    {
+		      menu_called->outcome();
+		      menu_called->setActive(false);
+		      menu_called->clear();
+		      
+		    }
+		    
+		  //NOT WAHT WE WANT. LATER IF THE MENU IS CLICKED WE MAY NOT WANT IT TO CLOSE AFTER
+		  //remove menu if not clicked and on
 		  if (Menus->isActive())
 		    {
 		      Menus->setAllNotActive();
@@ -372,8 +383,6 @@ int main(int argc, char **argv)
 		  if (pop_menu != nullptr)
 		    {
 
-		      //float pos_x = getIsoX(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
-		      //float pos_y = getIsoY(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);		      
 		      float pos_x = event.button.x;
 		      float pos_y = event.button.y;
 		      Entity * target_entity = Units->collide(pos_x, pos_y, cameraoffset_x, cameraoffset_y, zoom);
@@ -385,23 +394,26 @@ int main(int argc, char **argv)
 			{
 			  std::cout << "Clicked Nothing" << std::endl;
 			}
-		   
-
+		      
 		      //THIS IS NOT TEMPORARY DO NOT DELETE
 		      //std::cout << "Main: INFO: Pop menu mButtons length: " << pop_menu->getSizeButtons() <<std::endl;
-		      /*if ( !pop_menu->isActive() )
-			{
-			  
+		      if ( !pop_menu->isActive() )
+			{  
 			  //temporary test of "clicking on" another entity
 			  pop_menu->setPositions(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom);
-			  //makeActionMenu(pop_menu, selected_entity);
-			  Unit * target_entity = unit1;
-			  makeActionMenu(pop_menu, selected_entity, target_entity);
+			  if (target_entity != nullptr )
+			    {
+			      makeActionMenu(pop_menu, selected_entity, target_entity);
+			    }
+			  else
+			    {
+			      makeActionMenu(pop_menu, selected_entity);
+			    }
 			}
 		      else
 			{
 			  pop_menu->clear();
-			  }*/
+			}
 		    }
 		}
 	    }

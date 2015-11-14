@@ -34,7 +34,7 @@ std::vector<FunctionCallerID> Entity::actionsOnMe()
 bool Entity::collide(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom)
 {
   std::cout << UNIT_CLICK_COLLIDE_X << std::endl;
-  return mSprite->collide(x, y, UNIT_CLICK_COLLIDE_X, UNIT_CLICK_COLLIDE_Y, cameraoffset_x, cameraoffset_y, zoom);
+  return mSprite->collide(x, y, UNIT_CLICK_COLLIDE_X*zoom, UNIT_CLICK_COLLIDE_Y*zoom, cameraoffset_x, cameraoffset_y, zoom);
 }
 
 void Entity::setImage(std::string image)

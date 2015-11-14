@@ -31,6 +31,18 @@ void MenuGroup::addMenu(Menu* menu)
   return nullptr;
   }*/
 
+Menu * MenuGroup::collide(float x, float y, float cameraoffset_x, float cameraoffset_y, float zoom)
+{
+  for(std::vector<Menu*>::iterator it = menus.begin(); it != menus.end(); ++it)
+    {
+      if ( (*it)->collide(x, y, cameraoffset_x, cameraoffset_y, zoom) == true )
+	{
+	  return (*it);
+	}
+    }
+  return nullptr;
+}
+
 bool MenuGroup::isActive()
 {
   //check if any menus are active

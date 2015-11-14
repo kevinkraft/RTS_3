@@ -3,6 +3,9 @@
 #include "SDL2/SDL.h"
 #include "SDL2_image/SDL_image.h"
 
+//Add:
+// * another function which accepts a rectangle rather than making one
+
 
 SDL_Texture *loadTexture(std::string file, SDL_Renderer *renderer, bool colorkey)
 {
@@ -26,6 +29,11 @@ SDL_Texture *loadTexture(std::string file, SDL_Renderer *renderer, bool colorkey
   return texture;
 }
 
+void renderTexture(SDL_Texture *texture, SDL_Renderer *renderer, SDL_Rect dst)
+{
+  SDL_RenderCopy(renderer, texture, nullptr, &dst);
+}
+
 void renderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, int w, int h)
 {
   SDL_Rect dst;
@@ -42,3 +50,20 @@ void renderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y)
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);
   renderTexture(texture, renderer, x, y, w, h);
 }
+
+/*void renderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, int w, int h)
+{
+  SDL_Rect dst;
+  dst.x = x;
+  dst.y = y;
+  dst.w = w;
+  dst.h = h;
+  SDL_RenderCopy(renderer, texture, nullptr, &dst);
+}
+
+void renderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y)
+{
+  int w, h;
+  SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+  renderTexture(texture, renderer, x, y, w, h);
+}*/

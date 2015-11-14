@@ -19,6 +19,8 @@ Sprite::Sprite(std::string filename, float x, float y, SDL_Renderer *renderer, S
   setPosY(y);
 
   setScale(scale);
+  //SDL_Rect * mRect = new SDL_Rect() 
+
 }
 
 Sprite::Sprite(float x, float y, float scale)
@@ -43,18 +45,12 @@ bool Sprite::collide(float x, float y, float xtol, float ytol, int cameraoffset_
   std::cout << "Sprite::collide: INFO: Checking collison" << std::endl;
   float sposx = getPixelX(mPos_x, mPos_y, cameraoffset_x, cameraoffset_y, zoom, mScale);
   float sposy = getPixelY(mPos_x, mPos_y, cameraoffset_x, cameraoffset_y, zoom, mScale); 
-  sposx += UNIT_CLICK_COLLIDE_OFFSET_X;
-  sposy += UNIT_CLICK_COLLIDE_OFFSET_Y;
+  sposx += UNIT_CLICK_COLLIDE_OFFSET_X*zoom;
+  sposy += UNIT_CLICK_COLLIDE_OFFSET_Y*zoom;
   //float sposx = mPos_x;
   //float sposy = mPos_y;
   //float stolx = getPixelX(xtol, ytol, cameraoffset_x, cameraoffset_y, zoom);
   //float stoly = getPixelY(xtol, ytol, cameraoffset_x, cameraoffset_y, zoom); 
-  std::cout << "sposx: " << sposx << std::endl;
-  std::cout << "sposy: " << sposy << std::endl;
-  std::cout << "xtol: " << xtol << std::endl;
-  std::cout << "ytol: " << ytol << std::endl;
-  std::cout << "x: " << x << std::endl;
-  std::cout << "y: " << y << std::endl;
   if ( 
       (x - sposx < xtol) && (y - sposy < ytol) &&
       (x - sposx > 0) && (y - sposy > 0)

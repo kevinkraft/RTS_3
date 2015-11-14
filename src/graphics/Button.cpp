@@ -54,6 +54,30 @@ Button::~Button()
   std::cout << "Deleting Button" << std::endl;
 }
 
+bool Button::collide(float x_screen, float y_screen, float cameraoffset_x, float cameraoffset_y, float zoom, Menu * menu)
+{
+  //need to figure out the screen pos of the button corner and its width and heigh in pixels
+  float posx = menu->getPosX();
+  float posy = menu->getPosY(); 
+  float width = menu->getWidth() * mRelWidth;
+  float height = menu->getHeight() * mRelHeight;
+  float rposx = getPixelX(posx, posy, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE) + mRel_x;
+  float rposy = getPixelY(posx, posy, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE) + mRel_y;  
+  if ( 
+      (x_screen < rposx + width) && (rposx <= x_screen ) && 
+      (y_screen < rposy + height) && (rposy <= y_screen )
+       )
+    {
+      setPressed(true);
+      return true;
+    }
+  else
+    {
+      setPressed(false);
+      return false;
+    }
+}
+
 void Button::makeTitleMessage()
 {
   Message * message = new Message(mTitleString, mTextMaker);
@@ -86,8 +110,8 @@ void Button::render(int cameraoffset_x, int cameraoffset_y, float zoom, Menu * m
   float posy = menu->getPosY(); 
   float width = menu->getWidth() * mRelWidth;
   float height = menu->getHeight() * mRelHeight;
-  float rectposx = getPixelX(posx, posy, cameraoffset_x, cameraoffset_y, zoom) + mRel_x;
-  float rectposy = getPixelY(posx, posy, cameraoffset_x, cameraoffset_y, zoom) + mRel_y;
+  float rectposx = getPixelX(posx, posy, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE) + mRel_x;
+  float rectposy = getPixelY(posx, posy, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE) + mRel_y;
   renderTexture(mTexture, mRenderer, rectposx, rectposy, width, height);
   //render the title message
   if (mTitle != nullptr)
@@ -97,10 +121,11 @@ void Button::render(int cameraoffset_x, int cameraoffset_y, float zoom, Menu * m
       mTitle->setHeight(height * title_scale);
       mTitle->setWidth(width * title_scale);
       float tborder = (1.-0.8)/2.;
-      float tposx = getIsoX(rectposx + tborder * width, rectposy + tborder * height, cameraoffset_x, cameraoffset_y, zoom);
-      float tposy = getIsoY(rectposx+ tborder * width, rectposy + tborder * height, cameraoffset_x, cameraoffset_y, zoom);
-      mTitle->setPosX( tposx );
-      mTitle->setPosY( tposy );
+      //float tposx = getIsoX(rectposx + tborder * width, rectposy + tborder * height, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
+      //float tposy = getIsoY(rectposx+ tborder * width, rectposy + tborder * height, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
+      //float tposx = posx + mRel_x
+      mTitle->setPosX( rectposx + tborder * width);
+      mTitle->setPosY( rectposy + tborder * height);
       mTitle->render(cameraoffset_x, cameraoffset_y, zoom);
     }
 }

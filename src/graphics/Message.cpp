@@ -10,7 +10,7 @@
 //Note:
 // * This class is always contained within something else. A button
 //   or a menu for example
-// * coordinates are game coordinates
+// * coordinates are screen coords
 
 Message::Message(float x, float y, float w, float h, std::string message, TextMaker * maker)
 {
@@ -67,9 +67,9 @@ void Message::render(int cameraoffset_x, int cameraoffset_y, float zoom)
 {
   if (mActive)
     {
-      float rectposx = getPixelX(mPosX, mPosY, cameraoffset_x, cameraoffset_y, zoom);
-      float rectposy = getPixelY(mPosX, mPosY, cameraoffset_x, cameraoffset_y, zoom);
-      renderTexture(mTexture, mTextMaker->mRenderer, rectposx, rectposy, mWidth, mHeight);
+      //float rectposx = getPixelX(mPosX, mPosY, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
+      //float rectposy = getPixelY(mPosX, mPosY, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
+      renderTexture(mTexture, mTextMaker->mRenderer, mPosX, mPosY, mWidth, mHeight);
     }
 }
 

@@ -34,6 +34,7 @@ class Menu
 
   void addButton(Button * button);
   void clear();
+  bool collide(float pos_x, float pos_y, float cameraoffset_x, float cameraoffset_y, float zoom);
   void loadImage(std::string filename);
   virtual void outcome();
   void render(int cameraoffset_x, int cameraoffset_y, float zoom);

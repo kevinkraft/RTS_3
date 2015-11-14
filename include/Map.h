@@ -44,12 +44,12 @@ class Map{
 
 float getDistBetween(float x1, float y1, float x2, float y2);
 
-float getIsoX(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom=1.0, float scale=1.);
-float getIsoY(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom=1.0, float scale=1.);  
-float getIsoCoordinateX(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom=1.0, float scale=1.);
-float getIsoCoordinateY(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom=1.0, float scale=1.);
+float getIsoX(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom=1.0, float scale=TILE_SIZE);
+float getIsoY(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom=1.0, float scale=TILE_SIZE);  
+float getIsoCoordinateX(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom=1.0, float scale=TILE_SIZE);
+float getIsoCoordinateY(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom=1.0, float scale=TILE_SIZE);
 
-float getPixelX(float x, float y, int cameraoffset_x=0, int cameraoffset_y=0, float zoom=1.0, float scale=1.);
-float getPixelY(float x, float y, int cameraoffset_x=0, int cameraoffset_y=0, float zoom=1.0, float scale=1.);
+float getPixelX(float x, float y, int cameraoffset_x=0, int cameraoffset_y=0, float zoom=1.0, float scale=TILE_SIZE);
+float getPixelY(float x, float y, int cameraoffset_x=0, int cameraoffset_y=0, float zoom=1.0, float scale=TILE_SIZE);
 
 #endif

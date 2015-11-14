@@ -3,3 +3,4 @@
 *.cpp~
 *~
 Makefile.bak
+.DS_STORE
