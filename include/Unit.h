@@ -15,7 +15,7 @@ class Unit: public EntityAction
   
   Unit(float pos_x, float pos_y, std::string name = "NAME");
   virtual ~Unit();
-
+  
   virtual std::vector<FunctionCallerID> actionsByMe();
   virtual std::vector<FunctionCallerID> actionsByMyself();
   virtual std::vector<FunctionCallerID> actionsOnMe();

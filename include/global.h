@@ -34,7 +34,7 @@ const SDL_Colour DEFAULT_TEXT_COLOUR = BLACK;
 // Menu Constants
 //-------------------------------------------------------------------------------------
 const float POP_MENU_ITEM_WIDTH = 110.;
-const float POP_MENU_ITEM_HEIGHT = 28.;
+const float POP_MENU_ITEM_HEIGHT = 35.;
 
 
 //-------------------------------------------------------------------------------------
@@ -55,9 +55,14 @@ const float UNIT_CLICK_COLLIDE_OFFSET_X = 0.;//10;
 const float UNIT_CLICK_COLLIDE_OFFSET_Y = 50.;//105;
 
 //-------------------------------------------------------------------------------------
+// Resource Constants
+//-------------------------------------------------------------------------------------
+const float DEFAULT_RESOURCE_AMOUNT = 1000;
+
+//-------------------------------------------------------------------------------------
 // Map Constants
 //-------------------------------------------------------------------------------------
-const int MAP_SIZE = 100;
+const int MAP_SIZE = 15;
 /*const std::vector<std::vector<int>> GAME_MAP = {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 						{1, 1, 1, 2, 2, 2, 2, 2, 2, 1},
 						{1, 1, 1, 2, 2, 2, 2, 2, 2, 1},

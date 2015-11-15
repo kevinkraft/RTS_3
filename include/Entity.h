@@ -27,7 +27,7 @@ class Entity
   virtual std::vector<FunctionCallerID> actionsOnMe();
   bool collide(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom);
   void render(int cameraoffset_x, int cameraoffset_y, float zoom, int height = 0);
-  void setImage(std::string image);
+  virtual void setImage(std::string image);
   virtual bool update();
 
   virtual void doAction()

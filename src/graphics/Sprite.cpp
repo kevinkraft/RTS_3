@@ -66,6 +66,10 @@ void Sprite::loadImage()
   std::cout << "Loading unit texture" << std::endl;
   //mTexture = loadTexture(mFilename, mRenderer, mWindow);
   mTexture = loadTexture(mFilename, mRenderer, true);
+  if (mTexture == nullptr)
+    {
+      std::cout << "Sprite::loadImage: ERROR: Image file not found" << std::endl;
+    }
   std::cout << "INFO: Leaving Sprite::loadImage" << std::endl;
 }
 

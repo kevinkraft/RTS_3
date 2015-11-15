@@ -1,3 +1,8 @@
+//unit class
+//
+//Note:
+// * The sprite renderer is set in EntityGroup
+
 #include "Unit.h"
 #include "global.h"
 #include "EntityAction.h"

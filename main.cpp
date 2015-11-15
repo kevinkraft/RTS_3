@@ -3,49 +3,17 @@
 //Kevin Maguire
 //18/08/15
 //
-//Version 0.2
+//Version 0.4
 //
 
 //Add:
-// * make actionMenu and actionButton classes to contain all that messy action stuff in menu and button
-//   * separate button menu and action, the actions should have nothing to do with buttons
-// * do the other actionsBy/On functions so that its not just move available in the pop menu
-// * Rewrite texture.cpp so that it doent use TILE_SIZE, this messes with the other sprites
-// * Text on buttons
-//   * need to pass TextHander to the classes that need text (button, menu) somehow
-//     * maybe use a global class
-//     * or define it as a property of menu and button
-//   * need to set the position of the message on the button at render time
-
-//Problem:
-// * When you add a second button to the pop menu it doesnt print a second button
-//   it just prints a longer first button
-//   * this may just be a consequence of the testing that I'm currently doing
-//   * Its probably cause by the rel width/length given to the buttons
-//     * its set to 1 so if there is more than one button the buttons are still
-//       the same size as the menu
-//     * I thought my fix would work but it didnt
-//     * Oh it probably did work, but the menu thinks there only one button because
-//       the rel height is done in makeActionMenu which only knows about one buton
-//     * its a symptom of how I am currently testing the code
-// * The dependence on TILE_SIZE in the coord mapping functions is wrong(fixed)
-//   * only the tiles should depend on tile size
-//   * need to have a scale in that function which is only TILE_SIZE if a tile is being printed
-//   * I replaced TILE_SIZE with scale=1. now it just works
-//     * zoom out(I think its zoom out thats broken not zoom in) is not working properly, it shifts the screen down
-//     * it was both, fixed by added the TILE_SIZE as a scale option
-//     * ANYTHING TO DO WITH THE ACTUAL MAP NEEDS TILE_SIZE, MAYBE EVEYTHING TO DO WITH MOUSE TOO
-// * The sprite clicking box isnt on the sprite
-//   * its done with an x and y tolerance so the box is isometric as the map is, while
-//     the sprite standes upright at 45 degrees to the grid lines
-//     * this should really be pixel coords
-//       * maybe give the sprite pixel coords also, issues with not knowning the screen config
-//   * The problem is that the image of the villager is larger than it seems
-//     * this is not what I want to be doing, just go back to the way it was an apply an offset to make it work
-//     * I need to re do texture and sprite so that the sprite has a rectangle and the image is blinted into the rectange
-//       * make a new texture function that just updates a preexisting rectangle
-//     * then I can simply do collision with that rect.(no)
-
+// * Resources
+//   * item number and resource number will be the same thing
+//     * of course there will be additional item numbers for other things
+//   * need to also implement inventory fully
+// * stockpile
+//   * so beginnings of building class
+// * collect resource action
 
 //-------------------------------------------------------------------------------------      
 
@@ -74,6 +42,7 @@
 #include "Action.h"
 #include "TextMaker.h"
 #include "Message.h"
+#include "Resource.h"
 
 //-------------------------------------------------------------------------------------      
 
@@ -170,20 +139,15 @@ int main(int argc, char **argv)
   SpriteGroup *spritegroup_main = new SpriteGroup(renderer, true);
   Sprite *sprite_selection = new Sprite("res/images/iso/selection.png", 2, 2, renderer, window, TILE_SIZE);
 
-  /*//move a sprite (not an entity)
-  float villx = 2.5;
-  float villy = 2.5;
-  Sprite *vill = new Sprite("res/images/units/villager.png", villx, villy, renderer, window);*/
-
   //make an entity and move it
   Unit * unit_you = new Unit(0., 0., "You");
   EntityAction * selected_entity = unit_you;
   Unit * unit1 = new Unit(4.5, 4.5, "Unit1");
-  Movement * move1 = new Movement(10., 8.);
+  //Movement * move1 = new Movement(10., 8.);
   //unit_you->appendAction(move1);
   Movement * move2 = new Movement(0., 0.);
   unit1->appendAction(move2);
-  Attack * attack = new Attack(unit1);
+  //Attack * attack = new Attack(unit1);
   //unit_you->appendAction(attack);
 
   //make a group to hold units
@@ -208,10 +172,18 @@ int main(int argc, char **argv)
   PopMenu * pop_menu = new PopMenu(renderer, window, TextHandler);
   pop_menu->loadImage("res/images/menu/menu.png");
 
-
   //make a menu group
   MenuGroup * Menus = new MenuGroup();
   Menus->addMenu(pop_menu);
+
+  //make a group to hold resources
+  EntityGroup * Resources = new EntityGroup(renderer, window);
+  placeResources(Resources, 1, MAP_SIZE/2);
+
+  //make a resource
+  //Resource * res_food = new Resource(0., 0., 1, 100.);
+  //Resources->addEntity(res_food);
+  //res_food->setImage();
 
   //Start timers:
   fpsTimer.start();
@@ -230,6 +202,7 @@ int main(int argc, char **argv)
       // Update Entity states
       //-------------------------------------------------------------------------------------      
       Units->update();
+      Resources->update();
 
       //-------------------------------------------------------------------------------------      
       // Entity operations
@@ -474,7 +447,7 @@ int main(int argc, char **argv)
 	}
 
       //-------------------------------------------------------------------------------------      
-      // Rendering:
+      // Rendering: The Order Here Matters
       //-------------------------------------------------------------------------------------
       SDL_RenderClear(renderer);
 
@@ -489,6 +462,9 @@ int main(int argc, char **argv)
       //std::cout << "INFO: Before rendering EntityGroup" << std::endl;
       Units->render(cameraoffset_x, cameraoffset_y, zoom);
       //std::cout << "INFO: After rendering EntityGroup" << std::endl;
+
+      //render resources
+      Resources->render(cameraoffset_x, cameraoffset_y, zoom);
 
       //render menu
       pop_menu->render(cameraoffset_x, cameraoffset_y, zoom);
@@ -548,6 +524,7 @@ int main(int argc, char **argv)
   delete spritegroup_main;
   delete TextHandler;
   delete Units;
+  delete Resources;
   
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);

@@ -75,6 +75,18 @@ void EntityGroup::setImage(std::string filename)
   std::cout << "INFO: Leaving EntityGroup::setImage" << std::endl;
 }
 
+//this wont work
+/*void EntityGroup::setImage()
+{
+  //this function is necessary as some entities decide the filename internally. See Resource.
+  std::cout << "INFO: In EntityGroup::setImage no argument" << std::endl;
+  for(std::vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
+    {
+      (*it)->setImage();
+    }  
+  std::cout << "INFO: Leaving EntityGroup::setImage no argument" << std::endl;
+  }*/
+
 void EntityGroup::setRenderer(SDL_Renderer *renderer)
 {
   for(std::vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
