@@ -8,12 +8,30 @@
 
 //Add:
 // * Resources
-//   * item number and resource number will be the same thing
-//     * of course there will be additional item numbers for other things
-//   * need to also implement inventory fully
+//   * item number and resource number will be the same thing(done)
+//     * of course there will be additional item numbers for other things(ok)
+//   * need to also implement inventory fully (done)
 // * stockpile
 //   * so beginnings of building class
+//     * add a unit inventory to building
+//     * be careful, the default range and att damage of an EntityAction is set to the unit values, need to fix
 // * collect resource action
+//   * need to do exchange action first
+//     * this will require an exchange interface to decide what to exchange
+//     * will have an list of pairs of item type int and amount to exchange
+//     * the action will involve a rate at which things are exchanged 
+// * Add a menu function that display things about an entity
+//   * like its hp, name, pos and inventory
+//   * why is menu done in game coords? Need to change this(fixed)
+//     * to fix this I need to fix button, pop menu, all the collides(fixed)
+//   * for now just make info menu a function of menu(done)
+//   * need a submenu that I can put info and extra buttons on
+//     * does this need to be another class? (yes, done)
+//       * it will be like a button with relative coords (done)
+//       * will have a separate rendering function and rel coords (done)
+//       * when rendered it needs to set its actual coords properly in case they are needed (done)
+//         * this means we can have sub sub menus, as long as the parents are rendered first (done)
+//   * can make functions that split a menu into a user defined number of panels in a user defined pattern
 
 //-------------------------------------------------------------------------------------      
 
@@ -43,6 +61,8 @@
 #include "TextMaker.h"
 #include "Message.h"
 #include "Resource.h"
+#include "Building.h"
+//#include "InfoMenu.h"
 
 //-------------------------------------------------------------------------------------      
 
@@ -136,10 +156,10 @@ int main(int argc, char **argv)
   
   Map map(renderer, window);
   
-  SpriteGroup *spritegroup_main = new SpriteGroup(renderer, true);
   Sprite *sprite_selection = new Sprite("res/images/iso/selection.png", 2, 2, renderer, window, TILE_SIZE);
 
   //make an entity and move it
+  std::cout << "Main: INFO: Starting To Make Objects" << std::endl;
   Unit * unit_you = new Unit(0., 0., "You");
   EntityAction * selected_entity = unit_you;
   Unit * unit1 = new Unit(4.5, 4.5, "Unit1");
@@ -156,6 +176,7 @@ int main(int argc, char **argv)
   Units->addEntity(unit1);
 
   //set the image filename of the group
+  std::cout << "Main: INFO: Setting the Units image file" << std::endl;
   Units->setImage("res/images/units/villager.png");
 
   //make a text maker
@@ -170,7 +191,7 @@ int main(int argc, char **argv)
   
   //make a pop_menu
   PopMenu * pop_menu = new PopMenu(renderer, window, TextHandler);
-  pop_menu->loadImage("res/images/menu/menu.png");
+  //pop_menu->loadImage("res/images/menu/menu.png");
 
   //make a menu group
   MenuGroup * Menus = new MenuGroup();
@@ -184,6 +205,26 @@ int main(int argc, char **argv)
   //Resource * res_food = new Resource(0., 0., 1, 100.);
   //Resources->addEntity(res_food);
   //res_food->setImage();
+
+  //make a food item and give it to the unit
+  Item* food1 = new Item(1., 5.);
+  Item* wood1 = new Item(2., 1.);
+  unit_you->addItem(food1);
+  unit_you->addItem(wood1);
+  unit_you->printInventory();
+  Item* food2 = new Item(1., 5.);
+  unit1->addItem(food2);
+
+  //make buildings
+  //make a group to hold units
+  EntityGroup * Buildings = new EntityGroup(renderer, window);
+  Building * hut = new Building(3., 3., 0);
+  Buildings->addEntity(hut);
+  
+  //make a menu
+  //InfoMenu * info_menu = new InfoMenu(0., 0., SCREEN_WIDTH, SCREEN_HEIGHT, renderer, window, TextHandler);
+  Menu * info_menu = makeInfoMenu(renderer, window, TextHandler);
+  Menus->addMenu(info_menu);
 
   //Start timers:
   fpsTimer.start();
@@ -203,11 +244,13 @@ int main(int argc, char **argv)
       //-------------------------------------------------------------------------------------      
       Units->update();
       Resources->update();
+      Buildings->update();
 
       //-------------------------------------------------------------------------------------      
       // Entity operations
       //-------------------------------------------------------------------------------------      
       Units->doActions();
+      Buildings->doActions();
       
       //-------------------------------------------------------------------------------------      
       // Screen
@@ -321,22 +364,25 @@ int main(int argc, char **argv)
 	      if (event.button.button == SDL_BUTTON_LEFT)
 		{
 		  //check if mouse collides with a button
-		  Menu * menu_called = Menus->collide(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom);
+		  Menu * menu_called = Menus->collide(event.button.x, event.button.y);
 		  if ( menu_called != nullptr )
 		    {
-		      menu_called->outcome();
-		      menu_called->setActive(false);
-		      menu_called->clear();
-		      
+		      //true if menu is to be cleard
+		      if ( menu_called->outcome() == true)
+			{
+			  menu_called->setActive(false);
+			  menu_called->clear();
+			}
 		    }
-		    
-		  //NOT WAHT WE WANT. LATER IF THE MENU IS CLICKED WE MAY NOT WANT IT TO CLOSE AFTER
-		  //remove menu if not clicked and on
-		  if (Menus->isActive())
+		  else
 		    {
-		      Menus->setAllNotActive();
+		      //remove menu if not clicked and on
+		      if (Menus->isActive())
+			{
+			  Menus->setAllNotActive();
+			}
 		    }
-
+		  
 		  //takes screen pos and gives tile coords
 		  float pos_x = getIsoX(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
 		  float pos_y = getIsoY(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
@@ -358,7 +404,19 @@ int main(int argc, char **argv)
 
 		      float pos_x = event.button.x;
 		      float pos_y = event.button.y;
-		      Entity * target_entity = Units->collide(pos_x, pos_y, cameraoffset_x, cameraoffset_y, zoom);
+		      Entity * target_entity;
+		      //check for click on unit
+		      target_entity = Units->collide(pos_x, pos_y, cameraoffset_x, cameraoffset_y, zoom);
+		      if (target_entity == nullptr)
+			{
+			  //check for click on building
+			  target_entity = Buildings->collide(pos_x, pos_y, cameraoffset_x, cameraoffset_y, zoom);
+			  if (target_entity == nullptr)
+			    {
+			      //check for click on Resource
+			      target_entity = Resources->collide(pos_x, pos_y, cameraoffset_x, cameraoffset_y, zoom);
+			    }
+			}
 		      if (target_entity != nullptr )
 			{
 			  std::cout << "You clicked in the region" << std::endl;
@@ -368,11 +426,9 @@ int main(int argc, char **argv)
 			  std::cout << "Clicked Nothing" << std::endl;
 			}
 		      
-		      //THIS IS NOT TEMPORARY DO NOT DELETE
-		      //std::cout << "Main: INFO: Pop menu mButtons length: " << pop_menu->getSizeButtons() <<std::endl;
+		      //make the pop menu for the available actions
 		      if ( !pop_menu->isActive() )
 			{  
-			  //temporary test of "clicking on" another entity
 			  pop_menu->setPositions(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom);
 			  if (target_entity != nullptr )
 			    {
@@ -401,7 +457,7 @@ int main(int argc, char **argv)
 	    }
 	  else if (event.type == SDL_MOUSEWHEEL)
 	    {
-	      if (event.wheel.y > 0)
+	      if (event.wheel.y > 0 && scroll_active)
 		{
 		  if (zoom < 2.0)
 		    {
@@ -422,7 +478,7 @@ int main(int argc, char **argv)
 		      cameraoffset_y = (pixel_y + (TILE_SIZE*zoom)*0.75) - screen_height*0.5;
 		    }
 		}
-	      else if (event.wheel.y < 0)
+	      else if (event.wheel.y < 0 && scroll_active)
 		{
 		  if (zoom > 0.26)
 		    {
@@ -457,8 +513,6 @@ int main(int argc, char **argv)
       
       //vill->render(cameraoffset_x, cameraoffset_y, zoom);
       
-      spritegroup_main->render(cameraoffset_x, cameraoffset_y, zoom);
-
       //std::cout << "INFO: Before rendering EntityGroup" << std::endl;
       Units->render(cameraoffset_x, cameraoffset_y, zoom);
       //std::cout << "INFO: After rendering EntityGroup" << std::endl;
@@ -466,8 +520,11 @@ int main(int argc, char **argv)
       //render resources
       Resources->render(cameraoffset_x, cameraoffset_y, zoom);
 
+      //render resources
+      Buildings->render(cameraoffset_x, cameraoffset_y, zoom);
+
       //render menu
-      pop_menu->render(cameraoffset_x, cameraoffset_y, zoom);
+      Menus->render(cameraoffset_x, cameraoffset_y, zoom);
 
       //render Temp text
       //message->render(cameraoffset_x, cameraoffset_y, zoom);
@@ -521,10 +578,11 @@ int main(int argc, char **argv)
   //Cleanup:
   //-------------------------------------------------------------------------------------      
   delete sprite_selection;
-  delete spritegroup_main;
   delete TextHandler;
   delete Units;
   delete Resources;
+  delete Buildings;
+  delete Menus;
   
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);

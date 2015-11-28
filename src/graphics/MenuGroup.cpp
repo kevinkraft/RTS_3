@@ -31,11 +31,11 @@ void MenuGroup::addMenu(Menu* menu)
   return nullptr;
   }*/
 
-Menu * MenuGroup::collide(float x, float y, float cameraoffset_x, float cameraoffset_y, float zoom)
+Menu * MenuGroup::collide(float x, float y)
 {
   for(std::vector<Menu*>::iterator it = menus.begin(); it != menus.end(); ++it)
     {
-      if ( (*it)->collide(x, y, cameraoffset_x, cameraoffset_y, zoom) == true )
+      if ( (*it)->collide(x, y) == true )
 	{
 	  return (*it);
 	}

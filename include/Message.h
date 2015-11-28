@@ -31,7 +31,7 @@ class Message
   
   void loadMessage(std::string);
   void loadMessage(std::string, SDL_Color colour);
-  void render(int cameraoffset_x, int cameraoffset_y, float zoom);
+  void render();
 
   SDL_Color getColour()
   {
@@ -114,5 +114,10 @@ class Message
   TextMaker * mTextMaker;
 
 };
+
+std::string makeString(float val);
+std::string makeString(int val);
+void printTerminal(std::string message);
+
 
 #endif

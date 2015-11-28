@@ -3,23 +3,36 @@
 
 #include <iostream>
 #include <vector>
-//#include <algorithm>
 
 #include "Item.h"
 
 class ItemGroup
 {
  public:
-  ItemGroup();
+  ItemGroup(float cap=0.);
   virtual ~ItemGroup();
   
-  void addItem(Item * item);
+  bool addItem(Item * item);
+  float getSize();
+  void print();
   void removeItem(Item * item);  
-  //void render(int cameraoffset_x, int cameraoffset_y, float zoom=1.0);
+
   
+  
+  float getCapacity()
+  {
+    return mCapacity;
+  }
+  void setCapacity(float cap)
+  {
+    mCapacity = cap;
+  }
+
   std::vector<Item*> mItems;
   
  private:
+  
+  float mCapacity; //-1 is no cap
   
 };
 

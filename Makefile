@@ -13,26 +13,34 @@ OBJFILES := $(addprefix src/,$(notdir $(CPPSRC:.cpp=.o))) $(addprefix src/entity
 all: $(EXE)
 
 $(EXE): main.o
-	$(CXX) $(LDFLAGS) main.o $(OBJFILES) -o $(EXE)
+	$(CXX) $(LDFLAGS) main.o $(OBJFILES) -g -o $(EXE)
 
 main.o: $(OBJFILES) main.cpp
 	$(CXX) $(CXXFLAGS) -c main.cpp	
 
 clean:
-	rm *.o && rm $(EXE)
+	rm *.o && rm */*.o && rm */*/*.o
 
 depend: 
 	makedepend -- $(CXXFLAGS) -- $(CPPFILES)
 # DO NOT DELETE
 
 src/Item.o: include/Item.h include/Sprite.h include/global.h
-src/Item.o: include/texture.h include/logging.h
+src/Item.o: include/texture.h include/logging.h include/Message.h
+src/Item.o: include/TextMaker.h
 src/ItemGroup.o: include/ItemGroup.h include/Item.h include/Sprite.h
 src/ItemGroup.o: include/global.h include/texture.h include/logging.h
+src/ItemGroup.o: include/Message.h include/TextMaker.h
 src/Map.o: include/Map.h include/Sprite.h include/global.h include/texture.h
 src/Map.o: include/logging.h
 src/Timer.o: include/Timer.h
 src/logging.o: include/logging.h
+src/entity/Building.o: include/Building.h include/FunctionCaller.h
+src/entity/Building.o: include/EntityAction.h include/EntityHP.h
+src/entity/Building.o: include/Entity.h include/Sprite.h include/global.h
+src/entity/Building.o: include/texture.h include/logging.h include/Action.h
+src/entity/Building.o: include/ActionGroup.h include/ItemGroup.h
+src/entity/Building.o: include/Item.h
 src/entity/Entity.o: include/Sprite.h include/global.h include/texture.h
 src/entity/Entity.o: include/logging.h include/Entity.h include/Action.h
 src/entity/Entity.o: include/FunctionCaller.h
@@ -50,6 +58,10 @@ src/entity/EntityHP.o: include/EntityHP.h include/Entity.h include/Sprite.h
 src/entity/EntityHP.o: include/global.h include/texture.h include/logging.h
 src/entity/EntityHP.o: include/Action.h include/FunctionCaller.h
 src/entity/EntityHP.o: include/Attack.h
+src/entity/Resource.o: include/Resource.h include/Entity.h include/Sprite.h
+src/entity/Resource.o: include/global.h include/texture.h include/logging.h
+src/entity/Resource.o: include/Action.h include/FunctionCaller.h
+src/entity/Resource.o: include/EntityGroup.h include/SpriteGroup.h
 src/entity/Unit.o: include/Unit.h include/EntityAction.h include/EntityHP.h
 src/entity/Unit.o: include/Entity.h include/Sprite.h include/global.h
 src/entity/Unit.o: include/texture.h include/logging.h include/Action.h
@@ -62,6 +74,7 @@ src/action/Action.o: include/texture.h include/logging.h
 src/action/Action.o: include/ActionGroup.h include/ItemGroup.h include/Item.h
 src/action/Action.o: include/PopMenu.h include/Button.h include/Message.h
 src/action/Action.o: include/TextMaker.h include/Map.h include/Menu.h
+src/action/Action.o: include/SubMenu.h
 src/action/ActionGroup.o: include/ActionGroup.h include/Action.h
 src/action/ActionGroup.o: include/FunctionCaller.h
 src/action/Attack.o: include/Action.h include/FunctionCaller.h
@@ -77,17 +90,18 @@ src/action/Movement.o: include/EntityHP.h include/Entity.h include/Sprite.h
 src/action/Movement.o: include/global.h include/texture.h include/logging.h
 src/action/Movement.o: include/ActionGroup.h include/ItemGroup.h
 src/action/Movement.o: include/Item.h include/Unit.h
-src/graphics/Button.o: include/Button.h include/Message.h include/TextMaker.h
-src/graphics/Button.o: include/global.h include/FunctionCaller.h
-src/graphics/Button.o: include/Action.h include/texture.h include/logging.h
-src/graphics/Button.o: include/Menu.h include/Map.h include/Sprite.h
-src/graphics/Menu.o: include/Menu.h include/Button.h include/Message.h
-src/graphics/Menu.o: include/TextMaker.h include/global.h
-src/graphics/Menu.o: include/FunctionCaller.h include/texture.h
-src/graphics/Menu.o: include/logging.h include/Map.h include/Sprite.h
-src/graphics/MenuGroup.o: include/MenuGroup.h include/Menu.h include/Button.h
-src/graphics/MenuGroup.o: include/Message.h include/TextMaker.h
-src/graphics/MenuGroup.o: include/global.h include/FunctionCaller.h
+src/graphics/Button.o: include/Action.h include/FunctionCaller.h
+src/graphics/Button.o: include/texture.h include/logging.h include/Map.h
+src/graphics/Button.o: include/Sprite.h include/global.h include/Message.h
+src/graphics/Button.o: include/TextMaker.h include/Button.h
+src/graphics/Menu.o: include/texture.h include/logging.h include/Map.h
+src/graphics/Menu.o: include/Sprite.h include/global.h include/Menu.h
+src/graphics/Menu.o: include/TextMaker.h include/FunctionCaller.h
+src/graphics/Menu.o: include/Button.h include/Message.h include/SubMenu.h
+src/graphics/MenuGroup.o: include/MenuGroup.h include/Menu.h
+src/graphics/MenuGroup.o: include/TextMaker.h include/global.h
+src/graphics/MenuGroup.o: include/FunctionCaller.h include/Button.h
+src/graphics/MenuGroup.o: include/Message.h include/SubMenu.h
 src/graphics/MenuGroup.o: include/PopMenu.h include/Map.h include/Sprite.h
 src/graphics/MenuGroup.o: include/texture.h include/logging.h
 src/graphics/MenuGroup.o: include/EntityAction.h include/EntityHP.h
@@ -104,12 +118,13 @@ src/graphics/PopMenu.o: include/Sprite.h include/texture.h include/logging.h
 src/graphics/PopMenu.o: include/EntityAction.h include/EntityHP.h
 src/graphics/PopMenu.o: include/Entity.h include/Action.h
 src/graphics/PopMenu.o: include/ActionGroup.h include/ItemGroup.h
-src/graphics/PopMenu.o: include/Item.h include/Menu.h
+src/graphics/PopMenu.o: include/Item.h include/Menu.h include/SubMenu.h
 src/graphics/Sprite.o: include/Sprite.h include/global.h include/texture.h
 src/graphics/Sprite.o: include/logging.h include/Map.h
 src/graphics/SpriteGroup.o: include/SpriteGroup.h include/global.h
 src/graphics/SpriteGroup.o: include/Sprite.h include/texture.h
 src/graphics/SpriteGroup.o: include/logging.h
+src/graphics/SubMenu.o: include/SubMenu.h
 src/graphics/TextMaker.o: include/TextMaker.h include/global.h
 src/graphics/TextMaker.o: include/logging.h
 src/graphics/texture.o: include/texture.h include/logging.h

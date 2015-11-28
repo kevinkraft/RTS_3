@@ -33,9 +33,22 @@ class PopMenu: public Menu
   PopMenu(SDL_Renderer *renderer, SDL_Window *window, TextMaker * textMaker);
   virtual ~PopMenu();
 
-  void outcome();
+  bool outcome();
   void scaleHeight();
-  
+  using Menu::setPositions;
+  void setPositions(float x, float y, float cameraoffset_x, float cameraoffset_y, float zoom);
+  //needs its own render so it stays in the same place on the map
+  using Menu::render;
+  void render(int cameraoffset_x, int cameraoffset_y, float zoom);
+
+  float getGamePosX()
+  {
+    return mGamePosX;
+  }  
+  float getGamePosY()
+  {
+    return mGamePosY;
+  }    
   float getItemHeight()
   {
     return mItemHeight;
@@ -48,6 +61,14 @@ class PopMenu: public Menu
   {
     return mSelectedEntity;
   }  
+  void setGamePosX(float x)
+  {
+    mGamePosX = x;
+  }
+  void setGamePosY(float y)
+  {
+    mGamePosY = y;
+  }
   void setItemHeight(float h)
   {
     mItemHeight = h;
@@ -65,6 +86,9 @@ class PopMenu: public Menu
 
   float mItemHeight = POP_MENU_ITEM_HEIGHT;
   float mItemWidth = POP_MENU_ITEM_WIDTH;
+
+  float mGamePosX;
+  float mGamePosY;
 
   EntityAction * mSelectedEntity;
   

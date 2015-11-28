@@ -43,6 +43,7 @@ class Map{
 };
 
 float getDistBetween(float x1, float y1, float x2, float y2);
+bool pointInSquare(float x, float y, float sq_x, float sq_y, float sq_w, float sq_h);
 
 float getIsoX(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom=1.0, float scale=TILE_SIZE);
 float getIsoY(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom=1.0, float scale=TILE_SIZE);  

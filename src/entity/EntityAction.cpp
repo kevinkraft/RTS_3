@@ -8,22 +8,34 @@
 
 //class Attack;
 
-EntityAction::EntityAction(ActionGroup actionList, ItemGroup inventory) :
+/*EntityAction::EntityAction(ActionGroup actionList, ItemGroup inventory) :
   EntityHP()
 {
-  mActions = actionList;
-  mInventory = inventory;
-}
+  std::cout << "EntityAction: INFO: In second constructor" << std::endl;
+  //mActions = actionList;
+  //mInventory = inventory;
+  std::cout << "EntityAction: INFO: leaving second constructor" << std::endl;
+  }*/
 
-EntityAction::EntityAction()
+EntityAction::EntityAction(float inv_cap) :
+  EntityHP()
 {
-  ActionGroup actionList = ActionGroup();
-  ItemGroup inventory = ItemGroup();
-  EntityAction(actionList, inventory);
+  std::cout << "EntityAction: INFO: Infirst constructor" << std::endl;
+  //ActionGroup actionList = ActionGroup();
+  //ItemGroup inventory = ItemGroup(inv_cap);
+  //EntityAction(actionList, inventory);
+  mActions = ActionGroup();
+  mInventory = ItemGroup(inv_cap);
 }
 
 EntityAction::~EntityAction()
 {}
+
+bool EntityAction::addItem(Item* item)
+{
+  std::cout << "EntityAction::addItem: INFO: Adding an Item to the ItemGroup" << std::endl;
+  return mInventory.addItem(item);
+}
 
 std::vector<FunctionCallerID> EntityAction::actionsByMe()
 {
@@ -49,7 +61,9 @@ std::vector<FunctionCallerID> EntityAction::actionsOnMe()
 void EntityAction::appendAction(Action * act)
 {
   act->setActer(this);
+  std::cout << "EntityAction::appendAction: INFO: After Setting acter, about to add action to the actions list" << std::endl;
   mActions.appendAction(act);  
+  std::cout << "EntityAction::appendAction: INFO: Added action to the actions list" << std::endl;
 }
 
 void EntityAction::clearAddAction(Action * act)
@@ -69,6 +83,11 @@ void EntityAction::doAction()
 	  mActions.removeAction(mActions.getAction(0));
 	}
     }  
+}
+
+void EntityAction::printInventory()
+{
+  mInventory.print();
 }
 
 void EntityAction::prependAction(Action * act)

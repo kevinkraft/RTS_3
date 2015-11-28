@@ -85,6 +85,7 @@ void Movement::setActer(Unit * acter)
 {
   std::cout << "In Movement, setting acter." << std::endl;
   mActer = acter;
+  std::cout << "In Movement, after setting acter." << std::endl;
 }
 
 void Movement::setActer(EntityAction * acter)

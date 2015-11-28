@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "texture.h"
 #include "SDL2/SDL.h"
 #include "SDL2_image/SDL_image.h"
@@ -63,13 +65,37 @@ void Message::loadMessage(std::string message, SDL_Color colour)
   loadMessage(message);
 }
 
-void Message::render(int cameraoffset_x, int cameraoffset_y, float zoom)
+void Message::render()
 {
   if (mActive)
     {
-      //float rectposx = getPixelX(mPosX, mPosY, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
-      //float rectposy = getPixelY(mPosX, mPosY, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
       renderTexture(mTexture, mTextMaker->mRenderer, mPosX, mPosY, mWidth, mHeight);
     }
 }
 
+
+//-------------------------------------------------------------------------------------
+// Other Functions
+//-------------------------------------------------------------------------------------
+
+std::string makeString(float val)
+{
+  std::stringstream sstrval;
+  sstrval << val;
+  std::string strval = sstrval.str();
+  return strval;
+}
+
+std::string makeString(int val)
+{
+  std::stringstream sstrval;
+  sstrval << val;
+  std::string strval = sstrval.str();
+  return strval;
+}
+
+
+void printTerminal(std::string message)
+{
+  std::cout << message << std::endl;
+}

@@ -23,13 +23,18 @@ Sprite::Sprite(std::string filename, float x, float y, SDL_Renderer *renderer, S
 
 }
 
-Sprite::Sprite(float x, float y, float scale)
+Sprite::Sprite(float x, float y, float click_w, float click_h, float click_offset_x, float click_offset_y, float scale)
 {
+  //click w and h define the width and height of click collide rect, offset are pos corrections
   mFilename = "res/images/iso/map/0.png";
   setPosX(x);
   setPosY(y);
   mRenderer = nullptr;
   mWindow = nullptr;  
+  setClickHeight(click_h);
+  setClickWidth(click_w);
+  setClickOffsetX(click_offset_x);
+  setClickOffsetY(click_offset_y);
   setScale(scale);
 }
 
@@ -38,19 +43,17 @@ Sprite::~Sprite()
   std::cout << "Deleting sprite" << std::endl;
 }
 
-bool Sprite::collide(float x, float y, float xtol, float ytol, int cameraoffset_x, int cameraoffset_y, float zoom)
+bool Sprite::collide(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom)
 {
   //check collision where xtol/ytol is the up/left tolerance
   //all coords in game coords
   std::cout << "Sprite::collide: INFO: Checking collison" << std::endl;
   float sposx = getPixelX(mPos_x, mPos_y, cameraoffset_x, cameraoffset_y, zoom, mScale);
   float sposy = getPixelY(mPos_x, mPos_y, cameraoffset_x, cameraoffset_y, zoom, mScale); 
-  sposx += UNIT_CLICK_COLLIDE_OFFSET_X*zoom;
-  sposy += UNIT_CLICK_COLLIDE_OFFSET_Y*zoom;
-  //float sposx = mPos_x;
-  //float sposy = mPos_y;
-  //float stolx = getPixelX(xtol, ytol, cameraoffset_x, cameraoffset_y, zoom);
-  //float stoly = getPixelY(xtol, ytol, cameraoffset_x, cameraoffset_y, zoom); 
+  sposx += mClickOffset_x * zoom;
+  sposy += mClickOffset_y * zoom;
+  float xtol = mClickWidth * zoom;
+  float ytol = mClickHeight * zoom;
   if ( 
       (x - sposx < xtol) && (y - sposy < ytol) &&
       (x - sposx > 0) && (y - sposy > 0)

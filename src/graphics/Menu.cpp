@@ -1,13 +1,17 @@
-#include "Menu.h"
 #include "texture.h"
 #include "SDL2/SDL.h"
 #include "SDL2_image/SDL_image.h"
 #include "Map.h"
-#include "Button.h"
+
+#include "Menu.h"
+
+#include "SubMenu.h"
 
 //Note:
 // * x and y are game coordinates
 // * mRect is obsolete but may be needed for sub menus
+// * You only need a new Menu child class if the outcomes of button pressed return
+//   things that need further processing, like the actions in PopMenu
 
 //Add:
 // * When you add submenus and tabs lots of things will need to be added here
@@ -29,12 +33,22 @@ Menu::Menu(float x, float y, float w, float h, SDL_Renderer *renderer, SDL_Windo
   setWidth(w);
   setHeight(h);
 
+  this->loadImage("res/images/menu/menu.png");
+
   setActive(false);
 }
 
 Menu::~Menu()
 {
   std::cout << "Deleting Menu" << std::endl;
+  for(std::vector<SubMenu*>::iterator it = mSubMenus.begin(); it != mSubMenus.end(); ++it)
+    {
+      delete (*it);
+    }
+  for(std::vector<Message*>::iterator it = mMessages.begin(); it != mMessages.end(); ++it)
+    {
+      delete (*it);
+    }
   for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
     {
       delete (*it);
@@ -46,9 +60,29 @@ void Menu::addButton(Button * button)
   mButtons.push_back(button);
 }
 
+void Menu::addMessage(Message * message)
+{
+  mMessages.push_back(message);
+}
+
+void Menu::addSubMenu(SubMenu * submenu)
+{
+  mSubMenus.push_back(submenu);
+}
+
 void Menu::clear()
 {
   setActive(false);
+  for(std::vector<SubMenu*>::iterator it = mSubMenus.begin(); it != mSubMenus.end(); ++it)
+    {
+      delete (*it);
+    }
+  mSubMenus.clear();
+  for(std::vector<Message*>::iterator it = mMessages.begin(); it != mMessages.end(); ++it)
+    {
+      delete (*it);
+    }
+  mMessages.clear();
   for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
     {
       delete (*it);
@@ -56,16 +90,19 @@ void Menu::clear()
   mButtons.clear();
 }
 
-bool Menu::collide(float x, float y, float cameraoffset_x, float cameraoffset_y, float zoom)
+bool Menu::collide(float x, float y)
 {
+  //checks if a button is pressed or if the menu is clicked in
+  //x and y in screen pos
   for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
     {
-      if ( (*it)->collide(x, y, cameraoffset_x, cameraoffset_y, zoom, this) == true)
+      if ( (*it)->collide(x, y, this) == true)
 	{
 	  return true;
 	}
     }
-  return false;
+  //check if menu is clicked in
+  return pointInSquare(x, y, mPos_x, mPos_y, mWidth, mHeight);
 }
 
 void Menu::loadImage(std::string filename)
@@ -73,40 +110,120 @@ void Menu::loadImage(std::string filename)
   mTexture = loadTexture(filename, mRenderer, true);
 }
 
-void Menu::outcome()
+void Menu::makeCloseButton()
 {
-  std::cout << "Menu::outcome: ERROR: This Menu has no outcomes." << std::endl;
+  //add a close button to the list of buttons on the menu
+  float close_scale = 13./14.;
+  FunctionCaller closeFunc = &closeMenu;
+  ArgContainer ac;
+  ac.setMenu(this);
+  Button * closeInfoMenu = new Button( close_scale * getWidth() , 0., 1-close_scale, 1-close_scale, "X", closeFunc, ac, this );
+  addButton(closeInfoMenu);
+}
+
+bool Menu::outcome()
+{
+  //returns true if we are done with the menu, fals otherwise
+  if (mButtons.size() != 0)
+    {
+      ReturnContainer funcReturn;
+      for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
+	{
+	  if ( (*it)->isPressed() )
+	    {
+	      //these default functions dont need anything done on the returns
+	      funcReturn = (*it)->outcome();
+	      break;
+	    }
+	}
+    }
+  return false;
 }
 
 void Menu::render(int cameraoffset_x, int cameraoffset_y, float zoom)
 {
   if (mActive)
     {
-      float rectposx = getPixelX(mPos_x, mPos_y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
-      float rectposy = getPixelY(mPos_x, mPos_y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
-      //std::cout << rectposx << " map " << rectposy << std::endl; 
+      float rectposx = mPos_x;
+      float rectposy = mPos_y;
       renderTexture(mTexture, mRenderer, rectposx, rectposy, mWidth, mHeight);
-      //render buttons
-      for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
-	{
-	  (*it)->render(cameraoffset_x, cameraoffset_y, zoom, this);
-	}
+      renderSubItems();
     }
 }
 
-void Menu::setPositions(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom)
+void Menu::renderSubItems()
 {
-  //x and y are screen pixel positions so they need to be converted
-  std::cout << "Menu::setPositions: INFO: pop menu x is: " << this->getPosX() << std::endl;
-  std::cout << "Menu::setPositions: INFO: pop menu y is: " << this->getPosY() << std::endl;
-  std::cout << "Menu::setPositions: INFO: given x is: " << x << std::endl;
-  std::cout << "Menu::setPositions: INFO: given y is: " << y << std::endl;
-  std::cout << "Menu::setPositions: INFO: given cameraoffset_x is: " << cameraoffset_x << std::endl;
-  std::cout << "Menu::setPositions: INFO: given cameraoffset_y is: " << cameraoffset_y << std::endl;
-  std::cout << "Menu::setPositions: INFO: given zoom is: " << zoom << std::endl;
-  std::cout << "getIsoX(x, y, cameraoffset_x, cameraoffset_y, zoom): " << getIsoX(x, y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE) << std::endl;
-  setPosX(getIsoX(x, y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE));
-  setPosY(getIsoY(x, y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE));
-  std::cout << "Menu::setPositions: INFO: pop menu x is: " << this->getPosX() << std::endl;
-  std::cout << "Menu::setPositions: INFO: pop menu y is: " << this->getPosY() << std::endl;
+  for(std::vector<SubMenu*>::iterator it = mSubMenus.begin(); it != mSubMenus.end(); ++it)
+    {
+      (*it)->render();
+    }
+  for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
+    {
+      (*it)->render(this);
+    }
+  for(std::vector<Message*>::iterator it = mMessages.begin(); it != mMessages.end(); ++it)
+    {
+      (*it)->render();
+    }
+}
+
+void Menu::setActive(bool b)
+  {
+    mActive = b;
+    if ( getSizeSubMenus() != 0 )
+      {
+	for(std::vector<SubMenu*>::iterator it = mSubMenus.begin(); it != mSubMenus.end(); ++it)
+	  {
+	    (*it)->setActive(b);
+	  }
+      }
+    if ( getSizeMessages() != 0 )
+      {
+	for(std::vector<Message*>::iterator it = mMessages.begin(); it != mMessages.end(); ++it)
+	  {
+	    (*it)->setActive(b);
+	  }
+      }
+  }
+
+void Menu::setPositions(float x, float y)
+{
+  //x and y are screen coords
+  setPosX(x);
+  setPosY(y);
+}
+
+//-------------------------------------------------------------------------------------
+// Other functions
+//-------------------------------------------------------------------------------------
+
+ReturnContainer closeMenu(ArgContainer ac)
+{
+  std::cout << "Menu: closeMenu: INFO: In This Function" << std::endl;
+  ac.mMenu->setActive(false);
+  ReturnContainer rt;
+  return rt;
+}
+
+Menu * makeInfoMenu(SDL_Renderer *renderer, SDL_Window *window, TextMaker * textHandler)
+{
+  //make the info menu
+  Menu * info_menu = new Menu( 0., 0., SCREEN_WIDTH, SCREEN_HEIGHT, renderer, window, textHandler);
+  //add a close button
+  info_menu->makeCloseButton();
+  //make a title
+  Message * title = new Message(0., 0., 100., 100., "HELLO", textHandler);
+  info_menu->addMessage(title);
+  //make a stats menu
+  std::cout << "Menu: makeInfoMenu: INFO: About To Make the Stat submenu" << std::endl;
+  SubMenu * submenu_stats = new SubMenu(30., 125., 0.3, 0.75, info_menu);
+  submenu_stats->setActive(true);
+  info_menu->addSubMenu(submenu_stats);
+  //make an inventory menu
+  SubMenu * submenu_inv = new SubMenu(340., 125., 0.65, 0.75, info_menu);
+  info_menu->addSubMenu(submenu_inv);
+  submenu_inv->setActive(true);
+  info_menu->setActive(true);
+  std::cout << "Menu: makeInfoMenu: INFO: Returning the Info Menu to main" << std::endl;
+  return info_menu;
 }

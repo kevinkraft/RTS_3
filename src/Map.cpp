@@ -148,6 +148,20 @@ float getDistBetween(float x1, float y1, float x2, float y2)
   return sqrt( pow( x2 - x1 ,2) + pow( y2 - y1 ,2) );
 }
 
+bool pointInSquare(float x, float y, float sq_x, float sq_y, float sq_w, float sq_h)
+{
+  //returns true if x and y are in the square
+  if ( 
+      ( x > sq_x ) && ( x <= sq_x + sq_w) &&
+      ( y > sq_y ) && ( y <= sq_y + sq_h) 
+       )
+    return true;
+  else
+    {
+      return false;
+    }
+}
+
 float getIsoX(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom, float scale){
   //std::cout << "Map getIsoX: INFO: scale is: " << scale << std::endl;
   float pos_x = (x + cameraoffset_x + 2.0*(y+cameraoffset_y)) / (scale*zoom) - 1.5;

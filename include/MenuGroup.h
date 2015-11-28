@@ -15,11 +15,11 @@ class MenuGroup
 
   void addMenu(Menu * menu);
   //Menu * getPopMenu();
-  Menu * collide(float pos_x, float pos_y, float cameraoffset_x, float cameraoffset_y, float zoom);
+  Menu * collide(float pos_x, float pos_y);
   bool isActive();
   void setAllNotActive();
   void removeMenu(Menu * menu);  
-  void render(int cameraoffset_x, int cameraoffset_y, float zoom=1.0);
+  void render(int cameraoffset_x, int cameraoffset_y, float zoom);
   
   std::vector<Menu*> menus;
     

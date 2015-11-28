@@ -6,7 +6,7 @@
 Resource::Resource(float pos_x, float pos_y, int type, float amount) :
   Entity()
 {
-  setSprite(new Sprite(pos_x, pos_y));
+  setSprite( new Sprite(pos_x, pos_y, RES_CLICK_WIDTH, RES_CLICK_HEIGHT, RES_CLICK_OFFSET_X, RES_CLICK_OFFSET_Y) );
   setPosX(pos_x);
   setPosY(pos_y);
   setDead(false);
@@ -30,7 +30,7 @@ std::vector<FunctionCallerID> Resource::actionsOnMe()
   return list;
 }
 
-void Resource::setImage()
+void Resource::setupType()
 {
   //set an image for the resource based on the type
   std::string filename;
@@ -39,6 +39,7 @@ void Resource::setImage()
     {
     case 1 :
       filename = "res/images/resources/1.png";
+      setName("Food");
       break;
     default :
       std::cout << "Resource::setImage: ERROR: Resource Type Not Renognised" << std::endl;
@@ -62,6 +63,5 @@ void placeResources(EntityGroup * Resources, int type, int amount)
     {
       Resource * res = new Resource(frand(gen), frand(gen), type, DEFAULT_RESOURCE_AMOUNT);
       Resources->addEntity(res);
-      res->setImage();
     }
 }

@@ -15,6 +15,7 @@ ActionGroup::~ActionGroup()
 
 void ActionGroup::appendAction(Action* act)
 {
+  std::cout << "ActionGroup::appendAction INFO: About to add action to the action list" << std::endl;
   mActions.push_back(act);
 }
 
@@ -32,7 +33,7 @@ Action * ActionGroup::getAction(int element)
     }
   else
     {
-      return mActions[element];
+      return mActions.at(element);
     }
 }
 

@@ -17,16 +17,34 @@ class Sprite
  public:
   
   Sprite(std::string filename, float x, float y, SDL_Renderer *renderer, SDL_Window *window, float scale=TILE_SIZE);
-  Sprite(float x, float y, float scale=TILE_SIZE);
+  Sprite(float x, float y, float click_w=UNIT_CLICK_WIDTH, float click_h=UNIT_CLICK_HEIGHT,
+	 float click_offset_x=UNIT_CLICK_OFFSET_X, float click_offset_y=UNIT_CLICK_OFFSET_Y,
+	 float scale=TILE_SIZE);
   virtual ~Sprite();
 
-  bool collide(float x, float y, float xtol, float ytol, int cameraoffset_x, int cameraoffset_y, float zoom);
+  bool collide(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom);
   //float getPixelX(int cameraoffset_x, int cameraoffset_y, float zoom=1.0);
   //float getPixelY(int cameraoffset_x, int cameraoffset_y, float zoom=1.0);
   float getZOrder();
   void loadImage();
   void render(int cameraoffset_x, int cameraoffset_y, float zoom=1.0, int height=0.);
   
+  float getClickHeight()
+    {
+      return mClickHeight;
+    }  
+  float getClickWidth()
+    {
+      return mClickWidth;
+    }  
+  float getClickOffsetX()
+    {
+      return mClickOffset_x;
+    }  
+  float getClickOffsetY()
+    {
+      return mClickOffset_y;
+    }  
   std::string getFilename()
     {
       return mFilename;
@@ -42,6 +60,22 @@ class Sprite
   float getScale()
   {
     return mScale;
+  }
+  void setClickHeight(float h)
+  {
+    mClickHeight = h;
+  }
+  void setClickWidth(float w)
+  {
+    mClickWidth = w;
+  }
+  void setClickOffsetX(float x)
+  {
+    mClickOffset_x = x;
+  }
+  void setClickOffsetY(float y)
+  {
+    mClickOffset_y = y;
   }
   void setFilename(std::string filename)
   {
@@ -70,6 +104,10 @@ class Sprite
   float mPos_y;
   std::string mFilename;
 
+  float mClickWidth;
+  float mClickHeight;
+  float mClickOffset_x;
+  float mClickOffset_y;
 
 
   float mScale;

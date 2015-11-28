@@ -28,6 +28,7 @@ class Entity
   bool collide(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom);
   void render(int cameraoffset_x, int cameraoffset_y, float zoom, int height = 0);
   virtual void setImage(std::string image);
+  virtual void setupType();
   virtual bool update();
 
   virtual void doAction()

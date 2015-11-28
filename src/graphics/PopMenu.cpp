@@ -27,7 +27,7 @@ PopMenu::PopMenu(SDL_Renderer *renderer, SDL_Window *window, TextMaker * textMak
 PopMenu::~PopMenu()
 {}
 
-void PopMenu::outcome()
+bool PopMenu::outcome()
 {
   if (mButtons.size() != 0)
     {
@@ -45,22 +45,54 @@ void PopMenu::outcome()
 	  if (mSelectedEntity == nullptr)
 	    {
 	      std::cout << "PopMenu::outcome: INFO: mSelectedEntity is a nullptr" << std::endl;
+	      return true;
 	    }
 	  std::cout << "PopMenu::outcome: INFO: After checking for null pointer" << std::endl;
 	  mSelectedEntity->clearAddAction(funcReturn.mAction);
+	  return true;
 	}
-      else if (funcReturn.mOutcome != nullptr)
+      else if ( funcReturn.mOutcome != 0) //this could be done better
 	{
 	  std::cout << "PopMenu::outcome: WARN: Integer outcome is not the correct return type." << std::endl;
+	  return true;
 	}
     }
   else
     {
       std::cout << "Menu::outcome: WARN: This Menu has no outcomes." << std::endl;
+      return true;
     }
+  return true;
 }
 
 void PopMenu::scaleHeight()
 {
   setHeight(mItemHeight * getSizeButtons());
 }
+
+void PopMenu::setPositions(float x, float y, float cameraoffset_x, float cameraoffset_y, float zoom)
+{
+  setPosX(x);
+  setPosY(y);
+  setGamePosX( getIsoX(x, y, cameraoffset_x, cameraoffset_y, zoom) );
+  setGamePosY( getIsoY(x, y, cameraoffset_x, cameraoffset_y, zoom) );
+}
+
+void PopMenu::render(int cameraoffset_x, int cameraoffset_y, float zoom)
+{
+  if ( isActive() )
+    {
+      float rectposx = getPixelX(mGamePosX, mGamePosY, cameraoffset_x, cameraoffset_y, zoom);
+      float rectposy = getPixelY(mGamePosX, mGamePosY, cameraoffset_x, cameraoffset_y, zoom);
+      renderTexture( mTexture, mRenderer, rectposx, rectposy, getWidth(), getHeight() );
+      //update the screen pos coords to match the game coords
+      setPosX( rectposx );
+      setPosY( rectposy );
+      //render buttons
+      for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
+	{
+	  (*it)->render(this);
+	}
+    }
+}
+

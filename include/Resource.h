@@ -15,12 +15,16 @@ class Resource: public Entity
   virtual ~Resource();
 
   virtual std::vector<FunctionCallerID> actionsOnMe();
-  using Entity::setImage;
-  void setImage();
+  //using Entity::setImage;
+  void setupType();
 
   float getAmount()
   {
     return mAmount;
+  }
+  std::string getName()
+  {
+    return mName;
   }
   int getType()
   {
@@ -29,6 +33,10 @@ class Resource: public Entity
   void setAmount(float amount)
   {
     mAmount = amount;
+  }
+  void setName(std::string name)
+  {
+    mName = name;
   }
   void setType(int type)
   {
@@ -39,6 +47,7 @@ class Resource: public Entity
 
   int mType;
   float mAmount;
+  std::string mName;
   
 };
 

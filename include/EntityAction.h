@@ -9,6 +9,7 @@
 #include "Action.h"
 #include "ActionGroup.h"
 #include "ItemGroup.h"
+#include "Item.h"
 #include "global.h"
 #include "FunctionCaller.h"
 
@@ -16,10 +17,11 @@ class EntityAction: public EntityHP
 {
  public:
   
-  EntityAction(ActionGroup actionList, ItemGroup inventory);
-  EntityAction();
+  //EntityAction(ActionGroup actionList, ItemGroup inventory);
+  EntityAction(float inv_cap);
   virtual ~EntityAction();
 
+  bool addItem(Item* item);
   virtual std::vector<FunctionCallerID> actionsByMe();
   virtual std::vector<FunctionCallerID> actionsByMyself();
   virtual std::vector<FunctionCallerID> actionsOnMe();
@@ -27,6 +29,7 @@ class EntityAction: public EntityHP
   void clearAddAction(Action * act);
   void doAction();
   void prependAction(Action * act);
+  void printInventory();
   bool update();
 
   //are there issues with this function?

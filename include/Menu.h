@@ -5,7 +5,7 @@
 //
 
 //Note:
-// * x and y are game positions
+// * x and y are screen positions
 
 //-------------------------------------------------------------------------------------
 
@@ -18,39 +18,49 @@
 #include "SDL2/SDL.h"
 #include "SDL2_image/SDL_image.h"
 
-#include "Button.h"
 #include "TextMaker.h"
+
+//#include "FunctionCaller.h"
+
+#include "Button.h"
+//#include "SubMenu.h"
 
 //-------------------------------------------------------------------------------------
 
-class Button;
+class SubMenu;
+//class Button;
 
 class Menu
 {
  public:
   
-  Menu(float x, float y, float width, float height, SDL_Renderer *renderer, SDL_Window *window, TextMaker * textMaker);
+  Menu(float screen_x, float screen_y, float width, float height, SDL_Renderer *renderer, SDL_Window *window, TextMaker * textMaker);
   virtual ~Menu();
 
   void addButton(Button * button);
+  void addMessage(Message * message);
+  void addSubMenu(SubMenu * submenu);
   void clear();
-  bool collide(float pos_x, float pos_y, float cameraoffset_x, float cameraoffset_y, float zoom);
+  bool collide(float pos_x, float pos_y);
   void loadImage(std::string filename);
-  virtual void outcome();
-  void render(int cameraoffset_x, int cameraoffset_y, float zoom);
-  void setPositions(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom);
+  void makeCloseButton();
+  virtual bool outcome();
+  virtual void render(int cameraoffset_x, int cameraoffset_y, float zoom);
+  void renderSubItems();
+  void setActive(bool b);
+  virtual void setPositions(float x, float y);
   
   Button * getButton(int e)
   {
     return mButtons[e];
   }  
-  int getSizeButtons()
-  {
-    return mButtons.size();
-  }  
   float getHeight()
   {
     return mHeight;
+  }  
+  Message * getMessage(int e)
+  {
+    return mMessages[e];
   }  
   float getPosX() const
   {
@@ -60,6 +70,22 @@ class Menu
   {
     return mPos_y;
   }
+  int getSizeButtons()
+  {
+    return mButtons.size();
+  }  
+  int getSizeMessages()
+  {
+    return mMessages.size();
+  }  
+  int getSizeSubMenus()
+  {
+    return mSubMenus.size();
+  }  
+  SubMenu * getSubMenu(int e)
+  {
+    return mSubMenus[e];
+  }  
   TextMaker * getTextMaker()
   {
     return mTextMaker;
@@ -71,10 +97,6 @@ class Menu
   bool isActive()
   {
     return mActive;
-  }
-  void setActive(bool b)
-  {
-    mActive = b;
   }
   void setHeight(float h)
   {
@@ -102,10 +124,13 @@ class Menu
 
  protected:
   std::vector<Button*> mButtons;
+  std::vector<SubMenu*> mSubMenus;
+  std::vector<Message*> mMessages;
   
  private:
   float mPos_x;
   float mPos_y;
+
   float mWidth;
   float mHeight;
 
@@ -113,4 +138,9 @@ class Menu
   bool mActive;
 };
 
+ReturnContainer closeMenu(ArgContainer);
+Menu * makeInfoMenu(SDL_Renderer *renderer, SDL_Window *window, TextMaker * textHandler);
+
+
 #endif
+

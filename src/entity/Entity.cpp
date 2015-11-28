@@ -33,8 +33,7 @@ std::vector<FunctionCallerID> Entity::actionsOnMe()
 
 bool Entity::collide(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom)
 {
-  std::cout << UNIT_CLICK_COLLIDE_X << std::endl;
-  return mSprite->collide(x, y, UNIT_CLICK_COLLIDE_X*zoom, UNIT_CLICK_COLLIDE_Y*zoom, cameraoffset_x, cameraoffset_y, zoom);
+  return mSprite->collide(x, y, cameraoffset_x, cameraoffset_y, zoom);
 }
 
 void Entity::setImage(std::string image)
@@ -44,6 +43,12 @@ void Entity::setImage(std::string image)
   std::cout << "INFO: After setting the filename of the sprite entitye" << std::endl;
   mSprite->loadImage();
   std::cout << "INFO: Leaving Entity::setImage" << std::endl;
+}
+
+void Entity::setupType()
+{
+  //this is just a virtual function to be overwritten by some entites
+  std::cout << "Entity::setType: INFO: In This Function" << std::endl;
 }
 
 void Entity::render(int cameraoffset_x, int cameraoffset_y, float zoom, int height)

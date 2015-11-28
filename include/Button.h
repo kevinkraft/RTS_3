@@ -9,6 +9,7 @@
 #include "SDL2_image/SDL_image.h"
 
 #include "Message.h"
+
 #include "FunctionCaller.h"
 
 class Menu;
@@ -20,17 +21,17 @@ class Button
 {
  public:
   
-  Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, int * outcome,
-	 SDL_Renderer *renderer, SDL_Window *window);
+  Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, int outcome,
+	 SDL_Renderer *renderer, SDL_Window *window, TextMaker * TextHandler);
   Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, FunctionCaller caller, ArgContainer args,
 	 Menu * menu);
 			
   virtual ~Button();
 
-  bool collide(float pos_x, float pos_y, float cameraoffset_x, float cameraoffset_y, float zoom, Menu * menu);
+  bool collide(float pos_x, float pos_y, Menu * menu);
   void makeTitleMessage();
   ReturnContainer outcome();
-  void render(int cameraoffset_x, int cameraoffset_y, float zoom, Menu * menu);
+  void render(Menu * menu);
 
   ArgContainer getArgContainer()
   {
@@ -40,7 +41,7 @@ class Button
   {
     return mFunctionCaller;
   }
-  int * getOutcome()
+  int getOutcome()
   {
     return mOutcome;
   }
@@ -88,7 +89,7 @@ class Button
   {
     mHighlight = b;
   }
-  void setOutcome(int * outcome)
+  void setOutcome(int outcome)
   {
     mOutcome = outcome;
   }
@@ -131,7 +132,7 @@ class Button
   std::string mTitleString;
   bool mPressed;
 
-  int * mOutcome;
+  int mOutcome;
   FunctionCaller mFunctionCaller;
   ArgContainer mArgContainer;
 

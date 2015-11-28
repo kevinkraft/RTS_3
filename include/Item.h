@@ -9,9 +9,22 @@
 class Item
 {
  public:
-  Item(float pos_x, float pos_y, int type, int amount);
+  Item(int type, int amount, float pos_x=0., float pos_y=0.);
   virtual ~Item();
+
+  float getSize();
+  void print();
+  void setType(int type);
+  
     
+  float getAmount()
+  {
+    return mAmount;
+  }
+  std::string getName()
+  {
+    return mName;
+  }
   float getPosX() const
   {
     return mPos_x;
@@ -28,6 +41,10 @@ class Item
   {
     return mType;
   }
+  float getUnitSize()
+  {
+    return mUnitSize;
+  }
   bool isHeld()
   {
     return mHeld;
@@ -35,6 +52,10 @@ class Item
   void setAmount(float amount)
   {
     mAmount = amount;
+  }
+  void setName(std::string name)
+  {
+    mName = name;
   }
   void setPosX(float posx)
   {
@@ -44,9 +65,9 @@ class Item
   {
     mPos_y = posy;
   }
-  void setType(int type)
+  void setUnitSize(float usize)
   {
-    mType = type;
+    mUnitSize = usize;
   }
   
  private:
@@ -57,6 +78,9 @@ class Item
   bool mHeld;
   int mType;
   float mAmount;
+
+  float mUnitSize; //
+  std::string mName;
   
 };
 

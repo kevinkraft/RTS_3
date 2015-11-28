@@ -35,8 +35,8 @@ void Action::setActer(EntityAction * acter)
 void makeActionMenu(PopMenu * pop_menu, std::vector<FunctionCallerID> callerIDs, ArgContainer args)
 {
   std::cout << "makeActionMenu: Start populating pop menu" << std::endl;
-  args.setPosX(pop_menu->getPosX());
-  args.setPosY(pop_menu->getPosY());
+  args.setPosX( pop_menu->getGamePosX() );
+  args.setPosY( pop_menu->getGamePosY() );
   float rel_x = 0.; 
   float rel_y = 0.;
   float rel_h = 1./(callerIDs.size() + 0.0);

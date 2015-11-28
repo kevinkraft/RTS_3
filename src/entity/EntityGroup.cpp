@@ -29,6 +29,7 @@ void EntityGroup::addEntity(Entity* entity)
   std::cout << "INFO: Got sprite" << std::endl;
   mSpriteGroup->addSprite(sprite);
   std::cout << "INFO: returning from addEntity in EntityGroup" << std::endl;
+  entity->setupType();
 }
 
 Entity * EntityGroup::collide(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom)
