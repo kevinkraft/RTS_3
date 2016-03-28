@@ -1,5 +1,5 @@
 #include "Item.h"
-#include "Message.h"
+#include "TextLine.h"
 
 Item::Item(int type, int amount, float pos_x, float pos_y)
 {  

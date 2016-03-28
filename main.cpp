@@ -7,7 +7,7 @@
 //
 
 //Add:
-// * Resources
+// * Resources(done)
 //   * item number and resource number will be the same thing(done)
 //     * of course there will be additional item numbers for other things(ok)
 //   * need to also implement inventory fully (done)
@@ -18,10 +18,12 @@
 // * collect resource action
 //   * need to do exchange action first
 //     * this will require an exchange interface to decide what to exchange
-//     * will have an list of pairs of item type int and amount to exchange
+//     * will have a list of pairs of item type int and amount to exchange
 //     * the action will involve a rate at which things are exchanged 
 // * Add a menu function that display things about an entity
 //   * like its hp, name, pos and inventory
+//   * make sure clicks don't do anything when the info_menu is active(done)
+//     * currently you can click the pop menu accidently through the info menu(ok)
 //   * why is menu done in game coords? Need to change this(fixed)
 //     * to fix this I need to fix button, pop menu, all the collides(fixed)
 //   * for now just make info menu a function of menu(done)
@@ -31,7 +33,33 @@
 //       * will have a separate rendering function and rel coords (done)
 //       * when rendered it needs to set its actual coords properly in case they are needed (done)
 //         * this means we can have sub sub menus, as long as the parents are rendered first (done)
-//   * can make functions that split a menu into a user defined number of panels in a user defined pattern
+//   * need to add some text table functions to menus
+//     * need to be able to get the length in pixels of the text on the screen(done from texture)
+//       * maybe split message into a vector of words so that I can do line splits
+//         * make a text box, does this have to be a class? yes
+//           * has a vector of words, makes a vector of messages that fit inside the box nicely on each line
+//           * change name of message class to text line
+//           * for now you can just but the entity atributes in as a text box instead of a table
+//           * need to make a scroll function for text which is too large for the text box
+//             * do it with a button at top and bottom that is clicked to advance to later text
+//   * can make functions that split a menu into a user defined number of panels in a user defined pattern(done)
+// * Menu and TextBox should inherit from the same class called "DisplayPiece" or something
+//   * so that button and other classes don't two functions for menu and text box related functions
+
+//Problem:
+// * Does the width and height given to make a TextLine actually do anything?
+//   * clearly not if the texture that it makes has different dimensions
+//   * changing the text height definitely has an affect
+//   * for TextBox scrolling this matters, use the height from the texture instead
+// * The text lines in text box dont go where you tell them(fixed)
+//   * the y pos was actully set to the x pos in the constructors of textline and text box(fixed)
+// * There seem to be a few issuse with the last few lines in the textbox makelines(fixed)
+//   * occasionally the last word, which should be on the next line, is missing(done)
+//   * the last line wasn't begin added if there was only one word, fixed (done)
+// * The height of a text line returned from the texture is much larger than it should be
+//   * this results in the text box scroll function being created when the text is not larger than the 
+//     text box. 
+//   * I will have to tune the line height so that it works, but this will change if the font size changes
 
 //-------------------------------------------------------------------------------------      
 
@@ -59,10 +87,9 @@
 #include "Map.h"
 #include "Action.h"
 #include "TextMaker.h"
-#include "Message.h"
+#include "TextLine.h"
 #include "Resource.h"
 #include "Building.h"
-//#include "InfoMenu.h"
 
 //-------------------------------------------------------------------------------------      
 
@@ -186,8 +213,8 @@ int main(int argc, char **argv)
   //TextMaker * TextHandler = new TextMaker("res/fonts/sample.ttf", renderer, window);
   
   //make a temp message
-  Message * message = new Message(3., 3., 500., 50., "HELLO WORLD RTS 3", TextHandler);
-  message->setActive(true);
+  //TextLine * message = new TextLine(30. + 122., 125., 500., 50., "HELLO WORLD RTS 3", TextHandler);
+  //message->setActive(true);
   
   //make a pop_menu
   PopMenu * pop_menu = new PopMenu(renderer, window, TextHandler);
@@ -216,7 +243,7 @@ int main(int argc, char **argv)
   unit1->addItem(food2);
 
   //make buildings
-  //make a group to hold units
+  //make a group to hold buildings
   EntityGroup * Buildings = new EntityGroup(renderer, window);
   Building * hut = new Building(3., 3., 0);
   Buildings->addEntity(hut);
@@ -367,7 +394,8 @@ int main(int argc, char **argv)
 		  Menu * menu_called = Menus->collide(event.button.x, event.button.y);
 		  if ( menu_called != nullptr )
 		    {
-		      //true if menu is to be cleard
+		      //true if menu is to be cleared (should probably move this into the child classes of menu
+		      // that actually use it, like pop menu)
 		      if ( menu_called->outcome() == true)
 			{
 			  menu_called->setActive(false);
@@ -401,7 +429,6 @@ int main(int argc, char **argv)
 		  //pop_menu = Menus->getPopMenu();
 		  if (pop_menu != nullptr)
 		    {
-
 		      float pos_x = event.button.x;
 		      float pos_y = event.button.y;
 		      Entity * target_entity;
@@ -427,7 +454,8 @@ int main(int argc, char **argv)
 			}
 		      
 		      //make the pop menu for the available actions
-		      if ( !pop_menu->isActive() )
+		      //only make the pop_menu if no other menu is active
+		      if ( !pop_menu->isActive() && !Menus->isActive() )
 			{  
 			  pop_menu->setPositions(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom);
 			  if (target_entity != nullptr )
@@ -527,7 +555,7 @@ int main(int argc, char **argv)
       Menus->render(cameraoffset_x, cameraoffset_y, zoom);
 
       //render Temp text
-      //message->render(cameraoffset_x, cameraoffset_y, zoom);
+      //message->render();
 
       if (use_custom_cursor)
 	{

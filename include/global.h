@@ -26,9 +26,11 @@ const SDL_Color BLACK = {0, 0, 0, 255};
 //-------------------------------------------------------------------------------------
 // Text
 //-------------------------------------------------------------------------------------
-const int DEFAULT_FONT_SIZE = 64;
+//the text height is tuned to work with this font size, changing it may result in the
+//text in text boxs rendering longer than intended
+const int DEFAULT_FONT_SIZE = 64; 
 const SDL_Colour DEFAULT_TEXT_COLOUR = BLACK;
-
+const int ACTUAL_TEXT_HEIGHT = 35;
 
 //-------------------------------------------------------------------------------------
 // Menu Constants

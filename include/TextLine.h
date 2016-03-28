@@ -1,4 +1,4 @@
-//Base class for Messages
+//Base class for TextLines
 //
 //Kevin Maguire
 //13/09/2015
@@ -6,31 +6,28 @@
 
 //-------------------------------------------------------------------------------------
 
-#ifndef MESSAGE_H_
-#define MESSAGE_H_
+#ifndef TEXTLINE_H_
+#define TEXTLINE_H_
 
 #include <string>
 #include <iostream>
 
-#include "SDL2/SDL.h"
-#include "SDL2_image/SDL_image.h"
-#include "SDL2_ttf/SDL_ttf.h"
-
-#include "Message.h"
+#include "TextLine.h"
 #include "TextMaker.h"
 
 //-------------------------------------------------------------------------------------
 
-class Message
+class TextLine
 {
  public:
  
-  Message(float x, float y, float width, float height, std::string message, TextMaker * maker);
-  Message(std::string message, TextMaker * maker);
-  virtual ~Message();
+  TextLine(float x, float y, float width, float height, std::string message, TextMaker * maker);
+  TextLine(std::string message, TextMaker * maker);
+  virtual ~TextLine();
   
-  void loadMessage(std::string);
-  void loadMessage(std::string, SDL_Color colour);
+  int getLineHeight();
+  void loadText(std::string);
+  void loadText(std::string, SDL_Color colour);
   void render();
 
   SDL_Color getColour()
@@ -41,9 +38,9 @@ class Message
   {
     return mHeight;
   }
-  std::string getMessage()
+  std::string getText()
   {
-    return mMessage;
+    return mText;
   }
   float getPosX()
   {
@@ -77,9 +74,10 @@ class Message
   {
     mHeight = h;
   }
-  void setMessage(std::string message)
+  void setText(std::string message)
   {
-    mMessage = message;
+    mText = message;
+    loadText(message);
   }
   void setPosX(float x)
   {
@@ -107,11 +105,12 @@ class Message
   float mWidth;
   float mHeight;
   
-  std::string mMessage;
+  std::string mText;
   SDL_Colour mColour = DEFAULT_TEXT_COLOUR;
   bool mActive;
 
   TextMaker * mTextMaker;
+
 
 };
 

@@ -8,7 +8,7 @@
 #include "SDL2/SDL.h"
 #include "SDL2_image/SDL_image.h"
 
-#include "Message.h"
+#include "TextLine.h"
 
 #include "FunctionCaller.h"
 
@@ -16,6 +16,7 @@ class Menu;
 
 //Note:
 // * members are relative to the menu in which the button is contained
+//   * The relevant menu is given to the button render function and is not itself a member of button
 
 class Button
 {
@@ -25,13 +26,17 @@ class Button
 	 SDL_Renderer *renderer, SDL_Window *window, TextMaker * TextHandler);
   Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, FunctionCaller caller, ArgContainer args,
 	 Menu * menu);
+  Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, FunctionCaller caller, ArgContainer args,
+	 SDL_Renderer *renderer, SDL_Window *window, TextMaker * TextHandler);
 			
   virtual ~Button();
 
   bool collide(float pos_x, float pos_y, Menu * menu);
-  void makeTitleMessage();
+  void makeTitleTextLine();
   ReturnContainer outcome();
+  void render(float posx, float posy, float width, float height);
   void render(Menu * menu);
+  void render(TextBox * tb);
 
   ArgContainer getArgContainer()
   {
@@ -61,7 +66,7 @@ class Button
   {
     return mRelWidth;
   }
-  Message * getTitle()
+  TextLine * getTitle()
   {
     return mTitle;
   }
@@ -136,7 +141,7 @@ class Button
   FunctionCaller mFunctionCaller;
   ArgContainer mArgContainer;
 
-  Message * mTitle;
+  TextLine * mTitle;
 
   SDL_Rect * mRect;
   bool mHighlight;

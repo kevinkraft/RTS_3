@@ -3,7 +3,7 @@
 #include "SDL2/SDL.h"
 #include "SDL2_image/SDL_image.h"
 #include "Map.h"
-#include "Message.h"
+#include "TextLine.h"
 
 #include "Menu.h"
 
@@ -43,7 +43,7 @@ Button::Button(float rel_x, float rel_y, float rel_w, float rel_h, std::string t
 
   setTitleString(title);
   mTextMaker = TextHandler;
-  makeTitleMessage();
+  makeTitleTextLine();
 
   setOutcome(outcome);
 }
@@ -55,6 +55,16 @@ Button::Button(float rel_x, float rel_y, float rel_width, float rel_height, std:
   setArgContainer(args);
   setFunctionCaller(caller);
 }
+
+Button::Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, FunctionCaller caller, ArgContainer args,
+	       SDL_Renderer *renderer, SDL_Window *window, TextMaker * TextHandler)
+  : Button::Button(rel_x, rel_y, rel_width, rel_height, title, 0, renderer, window, TextHandler )
+{
+  setArgContainer(args);
+  setFunctionCaller(caller);
+}
+
+
 
 Button::~Button()
 {
@@ -87,9 +97,9 @@ bool Button::collide(float x_screen, float y_screen, Menu * menu)
     }
 }
 
-void Button::makeTitleMessage()
+void Button::makeTitleTextLine()
 {
-  Message * message = new Message(mTitleString, mTextMaker);
+  TextLine * message = new TextLine(mTitleString, mTextMaker);
   mTitle = message;
 }
 
@@ -115,14 +125,26 @@ ReturnContainer Button::outcome()
   return funcReturn;
 }
 
-
 void Button::render(Menu * menu)
 {
-  //NEED TO RESET THE MESSAGE POSITIONS HERE SOMEWHERE
   float posx = menu->getPosX();
   float posy = menu->getPosY(); 
   float width = menu->getWidth() * mRelWidth;
   float height = menu->getHeight() * mRelHeight;
+  this->render(posx, posy, width, height);
+}
+
+void Button::render(TextBox * tb)
+{
+  float posx = tb->getPosX();
+  float posy = tb->getPosY(); 
+  float width = tb->getWidth() * mRelWidth;
+  float height = tb->getHeight() * mRelHeight;
+  this->render(posx, posy, width, height);
+}
+
+void Button::render(float posx, float posy, float width, float height)
+{
   //float rectposx = getPixelX(posx, posy, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE) + mRel_x;
   //float rectposy = getPixelY(posx, posy, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE) + mRel_y;
   float rectposx = posx + mRel_x;

@@ -10,6 +10,7 @@ class Menu;
 class Action;
 class Entity;
 class EntityHP;
+class TextBox;
 
 class ArgContainer
 {
@@ -21,6 +22,7 @@ class ArgContainer
       mSelectedEntity = nullptr;
       mTargetEntity = nullptr;
       mMenu = nullptr;
+      mTextBox = nullptr;
     }
   virtual ~ArgContainer()
     {}
@@ -56,6 +58,7 @@ class ArgContainer
   Entity * mTargetEntity;
   EntityHP * mTargetEntityHP;
   Menu * mMenu;
+  TextBox * mTextBox;
 
 };
 

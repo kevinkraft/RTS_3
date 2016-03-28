@@ -6,6 +6,24 @@
 //Add:
 // * another function which accepts a rectangle rather than making one
 
+int getTextureHeight(SDL_Texture* texture)
+{
+  //seems to give a value which is too large so I divided by 2
+  int w(0);
+  int h(0);
+  SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+  return h/2.;
+}
+
+int getTextureWidth(SDL_Texture* texture)
+{
+  //seems to give a value which is too large so I divided by 2
+  int w(0);
+  int h(0);
+  SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+  return w/2.;
+}
+
 
 SDL_Texture *loadTexture(std::string file, SDL_Renderer *renderer, bool colorkey)
 {

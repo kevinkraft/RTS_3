@@ -1,5 +1,5 @@
 #include "ItemGroup.h"
-#include "Message.h"
+#include "TextLine.h"
 
 ItemGroup::ItemGroup(float cap)
 {

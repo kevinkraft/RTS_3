@@ -24,6 +24,7 @@
 
 #include "Button.h"
 //#include "SubMenu.h"
+#include "TextBox.h"
 
 //-------------------------------------------------------------------------------------
 
@@ -38,7 +39,8 @@ class Menu
   virtual ~Menu();
 
   void addButton(Button * button);
-  void addMessage(Message * message);
+  void addTextBox(TextBox * box);
+  void addTextLine(TextLine * message);
   void addSubMenu(SubMenu * submenu);
   void clear();
   bool collide(float pos_x, float pos_y);
@@ -58,9 +60,13 @@ class Menu
   {
     return mHeight;
   }  
-  Message * getMessage(int e)
+  TextBox * getTextBox(int e)
   {
-    return mMessages[e];
+    return mTextBoxes[e];
+  }  
+  TextLine * getTextLine(int e)
+  {
+    return mTextLines[e];
   }  
   float getPosX() const
   {
@@ -74,9 +80,13 @@ class Menu
   {
     return mButtons.size();
   }  
-  int getSizeMessages()
+  int getSizeTextLines()
   {
-    return mMessages.size();
+    return mTextLines.size();
+  }  
+  int getSizeTextBoxes()
+  {
+    return mTextBoxes.size();
   }  
   int getSizeSubMenus()
   {
@@ -125,7 +135,8 @@ class Menu
  protected:
   std::vector<Button*> mButtons;
   std::vector<SubMenu*> mSubMenus;
-  std::vector<Message*> mMessages;
+  std::vector<TextLine*> mTextLines;
+  std::vector<TextBox*> mTextBoxes;
   
  private:
   float mPos_x;

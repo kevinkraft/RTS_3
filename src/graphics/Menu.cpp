@@ -45,7 +45,7 @@ Menu::~Menu()
     {
       delete (*it);
     }
-  for(std::vector<Message*>::iterator it = mMessages.begin(); it != mMessages.end(); ++it)
+  for(std::vector<TextLine*>::iterator it = mTextLines.begin(); it != mTextLines.end(); ++it)
     {
       delete (*it);
     }
@@ -60,9 +60,14 @@ void Menu::addButton(Button * button)
   mButtons.push_back(button);
 }
 
-void Menu::addMessage(Message * message)
+void Menu::addTextBox(TextBox * box)
 {
-  mMessages.push_back(message);
+  mTextBoxes.push_back(box);
+}
+
+void Menu::addTextLine(TextLine * message)
+{
+  mTextLines.push_back(message);
 }
 
 void Menu::addSubMenu(SubMenu * submenu)
@@ -78,11 +83,11 @@ void Menu::clear()
       delete (*it);
     }
   mSubMenus.clear();
-  for(std::vector<Message*>::iterator it = mMessages.begin(); it != mMessages.end(); ++it)
+  for(std::vector<TextLine*>::iterator it = mTextLines.begin(); it != mTextLines.end(); ++it)
     {
       delete (*it);
     }
-  mMessages.clear();
+  mTextLines.clear();
   for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
     {
       delete (*it);
@@ -97,6 +102,22 @@ bool Menu::collide(float x, float y)
   for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
     {
       if ( (*it)->collide(x, y, this) == true)
+	{
+	  return true;
+	}
+    }
+  //check submenus
+  for(std::vector<SubMenu*>::iterator it = mSubMenus.begin(); it != mSubMenus.end(); ++it)
+    {
+      if ( (*it)->collide(x, y) == true)
+	{
+	  return true;
+	}
+    }
+  //check text boxes
+  for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
+    {
+      if ( (*it)->collide(x, y) == true)
 	{
 	  return true;
 	}
@@ -136,6 +157,14 @@ bool Menu::outcome()
 	      break;
 	    }
 	}
+      for(std::vector<SubMenu*>::iterator it = mSubMenus.begin(); it != mSubMenus.end(); ++it)
+	{
+	  (*it)->outcome();
+	}
+      for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
+	{
+	  (*it)->outcome();
+	}
     }
   return false;
 }
@@ -153,6 +182,7 @@ void Menu::render(int cameraoffset_x, int cameraoffset_y, float zoom)
 
 void Menu::renderSubItems()
 {
+  //std::cout << "Menu::render: INFO: In This Function" << std::endl;
   for(std::vector<SubMenu*>::iterator it = mSubMenus.begin(); it != mSubMenus.end(); ++it)
     {
       (*it)->render();
@@ -161,8 +191,13 @@ void Menu::renderSubItems()
     {
       (*it)->render(this);
     }
-  for(std::vector<Message*>::iterator it = mMessages.begin(); it != mMessages.end(); ++it)
+  for(std::vector<TextLine*>::iterator it = mTextLines.begin(); it != mTextLines.end(); ++it)
     {
+      (*it)->render();
+    }
+  for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
+    {
+      //std::cout << "Menu::renderSubItems: INFO: Rendering the text boxes" << std::endl;
       (*it)->render();
     }
 }
@@ -177,9 +212,16 @@ void Menu::setActive(bool b)
 	    (*it)->setActive(b);
 	  }
       }
-    if ( getSizeMessages() != 0 )
+    if ( getSizeTextLines() != 0 )
       {
-	for(std::vector<Message*>::iterator it = mMessages.begin(); it != mMessages.end(); ++it)
+	for(std::vector<TextLine*>::iterator it = mTextLines.begin(); it != mTextLines.end(); ++it)
+	  {
+	    (*it)->setActive(b);
+	  }
+      }
+    if ( getSizeTextBoxes() != 0 )
+      {
+	for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
 	  {
 	    (*it)->setActive(b);
 	  }
@@ -199,7 +241,6 @@ void Menu::setPositions(float x, float y)
 
 ReturnContainer closeMenu(ArgContainer ac)
 {
-  std::cout << "Menu: closeMenu: INFO: In This Function" << std::endl;
   ac.mMenu->setActive(false);
   ReturnContainer rt;
   return rt;
@@ -207,23 +248,32 @@ ReturnContainer closeMenu(ArgContainer ac)
 
 Menu * makeInfoMenu(SDL_Renderer *renderer, SDL_Window *window, TextMaker * textHandler)
 {
+  std::string splitline = "And to find out that he has to carry this saddness with him in his heart is simply soulcrushing. It is like pouring salt on the wound because it reminds you that this amazing actor has died too. She wheeled her wheel barrow through the streets broad and  narrow crying cockles and mussels alive alive o. 65 people were killed and 314 injured in a blast in Gulshan-e-Iqbal Park, in Iqbal Town area of Lahore. The sound of the blast was heard around 6:30 pm today, with rescue teams dispatched to the site. These include 23 ambulances and rescue vehicles. The Irish Times today claims it has reproduced a copy of the paper from 1916 but guess what, it has taken out the sentence";
   //make the info menu
   Menu * info_menu = new Menu( 0., 0., SCREEN_WIDTH, SCREEN_HEIGHT, renderer, window, textHandler);
+  TextBox* main_box = new TextBox( info_menu->getPosX(), info_menu->getPosY()+30., info_menu->getWidth(), 100.,
+				   splitline, textHandler );  
+  info_menu->addTextBox(main_box);
+
   //add a close button
   info_menu->makeCloseButton();
-  //make a title
-  Message * title = new Message(0., 0., 100., 100., "HELLO", textHandler);
-  info_menu->addMessage(title);
+  //  //make a title
+  //TextLine * title = new TextLine(0., 0., 100., 50., "HELLO", textHandler);
+  //info_menu->addTextLine(title);
   //make a stats menu
-  std::cout << "Menu: makeInfoMenu: INFO: About To Make the Stat submenu" << std::endl;
   SubMenu * submenu_stats = new SubMenu(30., 125., 0.3, 0.75, info_menu);
-  submenu_stats->setActive(true);
   info_menu->addSubMenu(submenu_stats);
+  TextBox* stat_box = new TextBox( submenu_stats->getPosX(), submenu_stats->getPosY(), submenu_stats->getWidth(), submenu_stats->getHeight(),
+				   splitline, textHandler );  
+  submenu_stats->addTextBox(stat_box);
+  submenu_stats->setActive(true);
   //make an inventory menu
   SubMenu * submenu_inv = new SubMenu(340., 125., 0.65, 0.75, info_menu);
   info_menu->addSubMenu(submenu_inv);
+  TextBox* inv_box = new TextBox( submenu_inv->getPosX(), submenu_inv->getPosY(), submenu_inv->getWidth(), submenu_inv->getHeight(),
+				   splitline, textHandler );
+  submenu_inv->addTextBox(inv_box);
   submenu_inv->setActive(true);
   info_menu->setActive(true);
-  std::cout << "Menu: makeInfoMenu: INFO: Returning the Info Menu to main" << std::endl;
   return info_menu;
 }

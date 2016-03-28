@@ -28,6 +28,8 @@ class SubMenu: public Menu
 
   using Menu::render;
   void render();
+  using Menu::setPositions;
+  void setPositions();
 
   void setParent(Menu * parent)
   {
