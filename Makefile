@@ -19,7 +19,9 @@ main.o: $(OBJFILES) main.cpp
 	$(CXX) $(CXXFLAGS) -c main.cpp	
 
 clean:
-	rm *.o && rm */*.o && rm */*/*.o
+	rm *.o 
+	rm */*.o
+	rm */*/*.o
 
 depend: 
 	makedepend -- $(CXXFLAGS) -- $(CPPFILES)
@@ -77,8 +79,8 @@ src/action/Action.o: include/EntityHP.h include/Entity.h include/Sprite.h
 src/action/Action.o: include/global.h include/texture.h include/logging.h
 src/action/Action.o: include/ActionGroup.h include/ItemGroup.h include/Item.h
 src/action/Action.o: include/PopMenu.h include/Button.h include/TextLine.h
-src/action/Action.o: include/TextMaker.h include/Map.h include/Menu.h
-src/action/Action.o: include/TextBox.h
+src/action/Action.o: include/TextMaker.h include/DisplayPiece.h include/Map.h
+src/action/Action.o: include/Menu.h include/TextBox.h
 src/action/ActionGroup.o: include/ActionGroup.h include/Action.h
 src/action/ActionGroup.o: include/FunctionCaller.h include/ArgContainer.h
 src/action/Attack.o: include/Action.h include/FunctionCaller.h
@@ -100,29 +102,40 @@ src/graphics/Button.o: include/Action.h include/FunctionCaller.h
 src/graphics/Button.o: include/ArgContainer.h include/texture.h
 src/graphics/Button.o: include/logging.h include/Map.h include/Sprite.h
 src/graphics/Button.o: include/global.h include/TextLine.h
-src/graphics/Button.o: include/TextMaker.h include/Menu.h include/Button.h
+src/graphics/Button.o: include/TextMaker.h include/Menu.h
+src/graphics/Button.o: include/DisplayPiece.h include/Button.h
 src/graphics/Button.o: include/TextBox.h
+src/graphics/DisplayPiece.o: include/texture.h include/logging.h
+src/graphics/DisplayPiece.o: include/Map.h include/Sprite.h include/global.h
+src/graphics/DisplayPiece.o: include/Menu.h include/DisplayPiece.h
+src/graphics/DisplayPiece.o: include/TextMaker.h include/Button.h
+src/graphics/DisplayPiece.o: include/TextLine.h include/FunctionCaller.h
+src/graphics/DisplayPiece.o: include/ArgContainer.h include/TextBox.h
+src/graphics/DisplayPiece.o: include/SubMenu.h
 src/graphics/Menu.o: include/texture.h include/logging.h include/Map.h
 src/graphics/Menu.o: include/Sprite.h include/global.h include/Menu.h
-src/graphics/Menu.o: include/TextMaker.h include/Button.h include/TextLine.h
+src/graphics/Menu.o: include/DisplayPiece.h include/TextMaker.h
+src/graphics/Menu.o: include/Button.h include/TextLine.h
 src/graphics/Menu.o: include/FunctionCaller.h include/ArgContainer.h
 src/graphics/Menu.o: include/TextBox.h include/SubMenu.h
 src/graphics/MenuGroup.o: include/MenuGroup.h include/Menu.h
-src/graphics/MenuGroup.o: include/TextMaker.h include/global.h
-src/graphics/MenuGroup.o: include/Button.h include/TextLine.h
-src/graphics/MenuGroup.o: include/FunctionCaller.h include/ArgContainer.h
-src/graphics/MenuGroup.o: include/TextBox.h include/PopMenu.h include/Map.h
-src/graphics/MenuGroup.o: include/Sprite.h include/texture.h
-src/graphics/MenuGroup.o: include/logging.h include/EntityAction.h
-src/graphics/MenuGroup.o: include/EntityHP.h include/Entity.h
-src/graphics/MenuGroup.o: include/Action.h include/ActionGroup.h
-src/graphics/MenuGroup.o: include/ItemGroup.h include/Item.h
+src/graphics/MenuGroup.o: include/DisplayPiece.h include/TextMaker.h
+src/graphics/MenuGroup.o: include/global.h include/Button.h
+src/graphics/MenuGroup.o: include/TextLine.h include/FunctionCaller.h
+src/graphics/MenuGroup.o: include/ArgContainer.h include/TextBox.h
+src/graphics/MenuGroup.o: include/PopMenu.h include/Map.h include/Sprite.h
+src/graphics/MenuGroup.o: include/texture.h include/logging.h
+src/graphics/MenuGroup.o: include/EntityAction.h include/EntityHP.h
+src/graphics/MenuGroup.o: include/Entity.h include/Action.h
+src/graphics/MenuGroup.o: include/ActionGroup.h include/ItemGroup.h
+src/graphics/MenuGroup.o: include/Item.h
 src/graphics/PopMenu.o: include/PopMenu.h include/Button.h include/TextLine.h
 src/graphics/PopMenu.o: include/TextMaker.h include/global.h
-src/graphics/PopMenu.o: include/FunctionCaller.h include/ArgContainer.h
-src/graphics/PopMenu.o: include/Map.h include/Sprite.h include/texture.h
-src/graphics/PopMenu.o: include/logging.h include/EntityAction.h
-src/graphics/PopMenu.o: include/EntityHP.h include/Entity.h include/Action.h
+src/graphics/PopMenu.o: include/DisplayPiece.h include/FunctionCaller.h
+src/graphics/PopMenu.o: include/ArgContainer.h include/Map.h include/Sprite.h
+src/graphics/PopMenu.o: include/texture.h include/logging.h
+src/graphics/PopMenu.o: include/EntityAction.h include/EntityHP.h
+src/graphics/PopMenu.o: include/Entity.h include/Action.h
 src/graphics/PopMenu.o: include/ActionGroup.h include/ItemGroup.h
 src/graphics/PopMenu.o: include/Item.h include/Menu.h include/TextBox.h
 src/graphics/Sprite.o: include/Sprite.h include/global.h include/texture.h
@@ -130,13 +143,15 @@ src/graphics/Sprite.o: include/logging.h include/Map.h
 src/graphics/SpriteGroup.o: include/SpriteGroup.h include/global.h
 src/graphics/SpriteGroup.o: include/Sprite.h include/texture.h
 src/graphics/SpriteGroup.o: include/logging.h
-src/graphics/SubMenu.o: include/SubMenu.h include/Menu.h include/TextMaker.h
+src/graphics/SubMenu.o: include/SubMenu.h include/Menu.h
+src/graphics/SubMenu.o: include/DisplayPiece.h include/TextMaker.h
 src/graphics/SubMenu.o: include/global.h include/Button.h include/TextLine.h
 src/graphics/SubMenu.o: include/FunctionCaller.h include/ArgContainer.h
 src/graphics/SubMenu.o: include/TextBox.h include/texture.h include/logging.h
 src/graphics/TextBox.o: include/TextBox.h include/TextLine.h
 src/graphics/TextBox.o: include/TextMaker.h include/global.h include/Button.h
-src/graphics/TextBox.o: include/FunctionCaller.h include/ArgContainer.h
+src/graphics/TextBox.o: include/DisplayPiece.h include/FunctionCaller.h
+src/graphics/TextBox.o: include/ArgContainer.h include/Menu.h
 src/graphics/TextBox.o: include/texture.h include/logging.h
 src/graphics/TextLine.o: include/texture.h include/logging.h
 src/graphics/TextLine.o: include/TextMaker.h include/global.h

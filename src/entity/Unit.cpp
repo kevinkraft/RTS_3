@@ -10,7 +10,7 @@
 #include "FunctionCaller.h"
 
 Unit::Unit(float pos_x, float pos_y, std::string name) :
-  EntityAction(UNIT_INV_CAP)
+  EntityAction(pos_x, pos_y, UNIT_INV_CAP)
 {
   setSprite( new Sprite(pos_x, pos_y, UNIT_CLICK_WIDTH, UNIT_CLICK_HEIGHT, UNIT_CLICK_OFFSET_X, UNIT_CLICK_OFFSET_Y) );
   setPosX(pos_x);

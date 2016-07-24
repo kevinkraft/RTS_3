@@ -17,25 +17,13 @@
 // * When you add submenus and tabs lots of things will need to be added here
 
 Menu::Menu(float x, float y, float w, float h, SDL_Renderer *renderer, SDL_Window *window, TextMaker * textMaker)
+  : DisplayPiece(x, y, w, h, renderer, window, textMaker)
 {
-  mTexture = nullptr;
-  mRenderer = nullptr;
-  mWindow = nullptr;
-  mTextMaker = textMaker;
+}
 
-  mRenderer = renderer;
-  mWindow = window;
-  
-  mRect = new SDL_Rect();
-
-  setPosX(x);
-  setPosY(y);
-  setWidth(w);
-  setHeight(h);
-
-  this->loadImage("res/images/menu/menu.png");
-
-  setActive(false);
+Menu::Menu(float rel_x, float rel_y, float rel_w, float rel_h, Menu * parent)
+  : DisplayPiece(rel_x, rel_y, rel_w, rel_h, parent)
+{
 }
 
 Menu::~Menu()
@@ -50,6 +38,10 @@ Menu::~Menu()
       delete (*it);
     }
   for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
+    {
+      delete (*it);
+    }
+  for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
     {
       delete (*it);
     }
@@ -93,6 +85,11 @@ void Menu::clear()
       delete (*it);
     }
   mButtons.clear();
+  for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
+    {
+      delete (*it);
+    }
+  mTextBoxes.clear();
 }
 
 bool Menu::collide(float x, float y)
@@ -101,7 +98,7 @@ bool Menu::collide(float x, float y)
   //x and y in screen pos
   for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
     {
-      if ( (*it)->collide(x, y, this) == true)
+      if ( (*it)->collide(x, y) == true)
 	{
 	  return true;
 	}
@@ -117,18 +114,14 @@ bool Menu::collide(float x, float y)
   //check text boxes
   for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
     {
+      //if ( (*it)->collide(x, y, this) == true)
       if ( (*it)->collide(x, y) == true)
 	{
 	  return true;
 	}
     }
   //check if menu is clicked in
-  return pointInSquare(x, y, mPos_x, mPos_y, mWidth, mHeight);
-}
-
-void Menu::loadImage(std::string filename)
-{
-  mTexture = loadTexture(filename, mRenderer, true);
+  return pointInSquare(x, y, this->getPosX(), this->getPosY(), this->getWidth(), this->getHeight() );
 }
 
 void Menu::makeCloseButton()
@@ -139,12 +132,12 @@ void Menu::makeCloseButton()
   ArgContainer ac;
   ac.setMenu(this);
   Button * closeInfoMenu = new Button( close_scale * getWidth() , 0., 1-close_scale, 1-close_scale, "X", closeFunc, ac, this );
-  addButton(closeInfoMenu);
+  addButton(closeInfoMenu); 
 }
 
 bool Menu::outcome()
 {
-  //returns true if we are done with the menu, fals otherwise
+  //returns true if we are done with the menu, false otherwise
   if (mButtons.size() != 0)
     {
       ReturnContainer funcReturn;
@@ -157,25 +150,29 @@ bool Menu::outcome()
 	      break;
 	    }
 	}
-      for(std::vector<SubMenu*>::iterator it = mSubMenus.begin(); it != mSubMenus.end(); ++it)
-	{
-	  (*it)->outcome();
-	}
-      for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
-	{
-	  (*it)->outcome();
-	}
+    }
+  for(std::vector<SubMenu*>::iterator it = mSubMenus.begin(); it != mSubMenus.end(); ++it)
+    {
+      (*it)->outcome();
+    }
+  for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
+    {
+      (*it)->outcome();
     }
   return false;
 }
 
 void Menu::render(int cameraoffset_x, int cameraoffset_y, float zoom)
 {
-  if (mActive)
+  if ( this->isActive() )
     {
-      float rectposx = mPos_x;
-      float rectposy = mPos_y;
-      renderTexture(mTexture, mRenderer, rectposx, rectposy, mWidth, mHeight);
+      float rectposx = this->getPosX();
+      float rectposy = this->getPosY();
+      /*std::cout << "INFO: Menu::render: this->getPosX(): " << this->getPosX() << std::endl;
+      std::cout << "INFO: Menu::render: this->getPosY(): " << this->getPosY() << std::endl;
+      std::cout << "INFO: Menu::render: this->getWidth(): " << this->getWidth() << std::endl;
+      std::cout << "INFO: Menu::render: this->getHeight(): " << this->getHeight() << std::endl;*/
+      renderTexture(mTexture, mRenderer, rectposx, rectposy, this->getWidth(), this->getHeight());
       renderSubItems();
     }
 }
@@ -189,7 +186,7 @@ void Menu::renderSubItems()
     }
   for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
     {
-      (*it)->render(this);
+      (*it)->render();
     }
   for(std::vector<TextLine*>::iterator it = mTextLines.begin(); it != mTextLines.end(); ++it)
     {
@@ -197,38 +194,39 @@ void Menu::renderSubItems()
     }
   for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
     {
-      //std::cout << "Menu::renderSubItems: INFO: Rendering the text boxes" << std::endl;
       (*it)->render();
     }
 }
 
 void Menu::setActive(bool b)
-  {
-    mActive = b;
-    if ( getSizeSubMenus() != 0 )
-      {
-	for(std::vector<SubMenu*>::iterator it = mSubMenus.begin(); it != mSubMenus.end(); ++it)
-	  {
-	    (*it)->setActive(b);
-	  }
-      }
-    if ( getSizeTextLines() != 0 )
-      {
-	for(std::vector<TextLine*>::iterator it = mTextLines.begin(); it != mTextLines.end(); ++it)
-	  {
-	    (*it)->setActive(b);
-	  }
-      }
-    if ( getSizeTextBoxes() != 0 )
-      {
-	for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
-	  {
-	    (*it)->setActive(b);
-	  }
-      }
-  }
+{
+  std::cout << "INFO: Menu::setActive: In This Function" << std::endl;
+  mActive = b;
+  if ( getSizeSubMenus() != 0 )
+    {
+      for(std::vector<SubMenu*>::iterator it = mSubMenus.begin(); it != mSubMenus.end(); ++it)
+	{
+	  (*it)->setActive(b);
+	}
+    }
+  //    if ( getSizeTextLines() != 0 )
+  //   {
+  //	for(std::vector<TextLine*>::iterator it = mTextLines.begin(); it != mTextLines.end(); ++it)
+  //  {
+  //   (*it)->setActive(b);
+  //  }
+  //}
+  if ( getSizeTextBoxes() != 0 )
+    {
+      for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
+	{
+	  std::cout << "INFO: Menu::setActive: Setting The Text Boxes active status" << std::endl;
+	  (*it)->setActive(b);
+	}
+    }
+}
 
-void Menu::setPositions(float x, float y)
+void Menu::setXYPositions(float x, float y)
 {
   //x and y are screen coords
   setPosX(x);
@@ -248,32 +246,38 @@ ReturnContainer closeMenu(ArgContainer ac)
 
 Menu * makeInfoMenu(SDL_Renderer *renderer, SDL_Window *window, TextMaker * textHandler)
 {
-  std::string splitline = "And to find out that he has to carry this saddness with him in his heart is simply soulcrushing. It is like pouring salt on the wound because it reminds you that this amazing actor has died too. She wheeled her wheel barrow through the streets broad and  narrow crying cockles and mussels alive alive o. 65 people were killed and 314 injured in a blast in Gulshan-e-Iqbal Park, in Iqbal Town area of Lahore. The sound of the blast was heard around 6:30 pm today, with rescue teams dispatched to the site. These include 23 ambulances and rescue vehicles. The Irish Times today claims it has reproduced a copy of the paper from 1916 but guess what, it has taken out the sentence";
+  std::string splitline = "And to find out that he has to carry this saddness with him in his heart is simply soulcrushing. It is like pouring salt on the wound because it reminds you that this amazing actor has died too. She wheeled her wheel barrow through the streets broad and  narrow crying cockles and mussels alive alive o. 65 people were killed and 314 injured in a blast in Gulshan-e-Iqbal-long-name-very-long Park, in Iqbal Town area of Lahore. The sound of the blast was heard around 6:30 pm today, with rescue teams dispatched to the site. These include 23 ambulances and rescue vehicles. The Irish Times today claims it has reproduced a copy of the paper from 1916 but guess what, it has taken out a sentence";
   //make the info menu
   Menu * info_menu = new Menu( 0., 0., SCREEN_WIDTH, SCREEN_HEIGHT, renderer, window, textHandler);
-  TextBox* main_box = new TextBox( info_menu->getPosX(), info_menu->getPosY()+30., info_menu->getWidth(), 100.,
-				   splitline, textHandler );  
-  info_menu->addTextBox(main_box);
+  /*TextBox* main_box = new TextBox( info_menu->getPosX(), info_menu->getPosY()+30., info_menu->getWidth(), 100.,
+				   splitline, textHandler, info_menu);  
+				   info_menu->addTextBox(main_box);*/
 
   //add a close button
   info_menu->makeCloseButton();
-  //  //make a title
+  //make a title
   //TextLine * title = new TextLine(0., 0., 100., 50., "HELLO", textHandler);
   //info_menu->addTextLine(title);
+  /*TextBox* title_box = new TextBox( 0., 0., 1., 1., splitline, textHandler, info_menu);  
+    info_menu->addTextBox(title_box);*/
+  /*TextBox* title_box = new TextBox( 0., 40., 1, 0.2, splitline, textHandler, info_menu);  
+    info_menu->addTextBox(title_box);*/
   //make a stats menu
-  SubMenu * submenu_stats = new SubMenu(30., 125., 0.3, 0.75, info_menu);
+  //SubMenu * submenu_stats = new SubMenu(.5, 115., 0.3, 0.75, info_menu);
+  SubMenu * submenu_stats = new SubMenu(50, 150, 0.3, 0.68, info_menu);
   info_menu->addSubMenu(submenu_stats);
-  TextBox* stat_box = new TextBox( submenu_stats->getPosX(), submenu_stats->getPosY(), submenu_stats->getWidth(), submenu_stats->getHeight(),
-				   splitline, textHandler );  
+  TextBox* stat_box = new TextBox( 0., 0., 1., 1., splitline, textHandler, submenu_stats);  
   submenu_stats->addTextBox(stat_box);
-  submenu_stats->setActive(true);
   //make an inventory menu
-  SubMenu * submenu_inv = new SubMenu(340., 125., 0.65, 0.75, info_menu);
+  SubMenu * submenu_inv = new SubMenu(380., 150., 0.60, 0.68, info_menu);
   info_menu->addSubMenu(submenu_inv);
-  TextBox* inv_box = new TextBox( submenu_inv->getPosX(), submenu_inv->getPosY(), submenu_inv->getWidth(), submenu_inv->getHeight(),
-				   splitline, textHandler );
+  TextBox* inv_box = new TextBox( 0., 0., 1., 1., splitline, textHandler, submenu_inv);  
   submenu_inv->addTextBox(inv_box);
-  submenu_inv->setActive(true);
+
+  /*TextBox* inv_box = new TextBox( submenu_inv->getPosX(), submenu_inv->getPosY(), submenu_inv->getWidth(), submenu_inv->getHeight(),
+				  splitline, textHandler, info_menu);
+  submenu_inv->addTextBox(inv_box);
+  submenu_inv->setActive(true);*/
   info_menu->setActive(true);
   return info_menu;
 }

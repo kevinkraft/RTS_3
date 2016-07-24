@@ -11,7 +11,7 @@ class EntityHP: public Entity
 {
  public:
   
-  EntityHP(float HP = UNIT_HP);
+  EntityHP(float pos_x, float pos_y, float HP = UNIT_HP);
   virtual ~EntityHP();
   virtual bool update();
 

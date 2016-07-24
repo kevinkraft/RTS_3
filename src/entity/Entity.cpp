@@ -16,8 +16,8 @@ Entity::Entity(float pos_x, float pos_y, bool dead)
 
 }
 
-Entity::Entity()
-{}
+//Entity::Entity()
+//{}
 
 Entity::~Entity()
 {

@@ -6,13 +6,13 @@
 #include "TextLine.h"
 
 #include "Menu.h"
+#include "DisplayPiece.h"
 
 #include "Button.h"
 
-
-
-Button::Button(float rel_x, float rel_y, float rel_w, float rel_h, std::string title, int outcome, SDL_Renderer *renderer, SDL_Window *window,
+/*Button::Button(float rel_x, float rel_y, float rel_w, float rel_h, std::string title, int outcome, SDL_Renderer *renderer, SDL_Window *window,
 	       TextMaker * TextHandler)
+	       : RelativeDisplayPiece( rel_x, rel_y, rel_w, rel_h )
 {
 
   std::cout << "Button::Button: INFO: In first constructor" << std::endl;
@@ -46,24 +46,83 @@ Button::Button(float rel_x, float rel_y, float rel_w, float rel_h, std::string t
   makeTitleTextLine();
 
   setOutcome(outcome);
+  std::cout << "Button::Button: INFO: End of first constructor" << std::endl;
+  }*/
+
+Button::Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, int outcome, DisplayPiece * parent)
+  : DisplayPiece(rel_x, rel_y, rel_width, rel_height, parent)
+{
+  std::cout << "INFO: Button::Button:1 In first Constructor" << std::endl;
+  /*mTexture = parent->mTexture;
+  mRenderer = nullptr;
+  mWindow = nullptr;
+  mTitle = nullptr;*/
+
+  //FunctionCaller funcCaller = nullptr;
+  mFunctionCaller = nullptr;
+  ArgContainer args = ArgContainer();
+  //setFunctionCaller(funcCaller);
+  setArgContainer(args);
+  
+  setParent(parent);
+
+  mTexture = loadTexture("res/images/menu/button_0_0.png", mRenderer, true);
+  
+  //mRenderer = renderer;
+  //mWindow = window;
+  
+  //mRect = new SDL_Rect();
+
+  /*  setRelPosX(rel_x);
+  setRelPosY(rel_y);
+  setRelWidth(rel_w);
+  setRelHeight(rel_h);*/
+
+  setHighlight(false);
+
+  setTitleString(title);
+  //mTextMaker = TextHandler;
+  makeTitleTextLine();
+
+  setOutcome(outcome);
+
+  std::cout << "INFO: Button::Button:1 End of first constructor" << std::endl;
+
+}
+
+Button::Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, int outcome, Menu * menu)
+  : Button( rel_x, rel_y, rel_width, rel_height, title, outcome, dynamic_cast<DisplayPiece*>(menu) )
+{
+  //  menu->addButton(this);
 }
 
 Button::Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, FunctionCaller caller, ArgContainer args,
-	       Menu * menu)
-  : Button::Button(rel_x, rel_y, rel_width, rel_height, title, 0, menu->mRenderer, menu->mWindow, menu->getTextMaker() )
+	       DisplayPiece * parent)
+  : Button(rel_x, rel_y, rel_width, rel_height, title, 0, parent)
 {
   setArgContainer(args);
   setFunctionCaller(caller);
 }
 
 Button::Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, FunctionCaller caller, ArgContainer args,
+	       Menu * menu)
+  : Button( rel_x, rel_y, rel_width, rel_height, title, 0, dynamic_cast<DisplayPiece*>(menu) )
+{
+  std::cout << "INFO: Button::Button:4 In the 4th Button constructor" << std::endl;
+  setArgContainer(args);
+  setFunctionCaller(caller);
+  //  menu->addButton(this);
+  std::cout << "INFO: Button::Button:4 End of Button 4th constructor" << std::endl;
+}
+
+
+/*Button::Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, FunctionCaller caller, ArgContainer args,
 	       SDL_Renderer *renderer, SDL_Window *window, TextMaker * TextHandler)
   : Button::Button(rel_x, rel_y, rel_width, rel_height, title, 0, renderer, window, TextHandler )
 {
   setArgContainer(args);
   setFunctionCaller(caller);
-}
-
+  }*/
 
 
 Button::~Button()
@@ -71,17 +130,20 @@ Button::~Button()
   std::cout << "Deleting Button" << std::endl;
 }
 
-bool Button::collide(float x_screen, float y_screen, Menu * menu)
+bool Button::collide(float x_screen, float y_screen)
 {
   //need to figure out the screen pos of the button corner and its width and heigh in pixels
-  float posx = menu->getPosX();
-  float posy = menu->getPosY(); 
-  float width = menu->getWidth() * mRelWidth;
-  float height = menu->getHeight() * mRelHeight;
-  //float rposx = getPixelX(posx, posy, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE) + mRel_x;
-  float rposx = posx + mRel_x;
-  //float rposy = getPixelY(posx, posy, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE) + mRel_y;  
-  float rposy = posy + mRel_y;  
+  /*  float posx = parent->getPosX();
+  float posy = parent->getPosY(); 
+  float width = parent->getWidth() * this->getRelWidth();
+  float height = parent->getHeight() * this->getRelHeight();
+  float rposx = posx + getRelX();
+  float rposy = posy + getRelY();*/
+  setPositions();
+  float rposx = getPosX();
+  float rposy = getPosY();
+  float width = getWidth();
+  float height = getHeight();
   if ( 
       (x_screen < rposx + width) && (rposx <= x_screen ) && 
       (y_screen < rposy + height) && (rposy <= y_screen )
@@ -122,34 +184,39 @@ ReturnContainer Button::outcome()
 	  std::cout << "Button::outcome: WARN: This button has no outcome" << std::endl; 
 	}
     }
+  setPressed(false);
   return funcReturn;
 }
 
-void Button::render(Menu * menu)
+/*void Button::render()
 {
-  float posx = menu->getPosX();
-  float posy = menu->getPosY(); 
-  float width = menu->getWidth() * mRelWidth;
-  float height = menu->getHeight() * mRelHeight;
+  setPositions();
   this->render(posx, posy, width, height);
-}
+  }*/
 
-void Button::render(TextBox * tb)
+ /*void Button::render(TextBox * tb)
 {
   float posx = tb->getPosX();
   float posy = tb->getPosY(); 
   float width = tb->getWidth() * mRelWidth;
   float height = tb->getHeight() * mRelHeight;
   this->render(posx, posy, width, height);
-}
+  }*/
 
-void Button::render(float posx, float posy, float width, float height)
+void Button::render(bool resetPos)
 {
-  //float rectposx = getPixelX(posx, posy, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE) + mRel_x;
-  //float rectposy = getPixelY(posx, posy, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE) + mRel_y;
-  float rectposx = posx + mRel_x;
-  float rectposy = posy + mRel_y;
-  renderTexture(mTexture, mRenderer, rectposx, rectposy, width, height);
+  //std::cout << "INFO: Button::render: Rendering the Button" << std::endl;
+  float posx = getPosX();
+  float posy = getPosY();
+  float height = getHeight();
+  float width = getWidth();
+  if ( resetPos )
+    setPositions();
+  posx = getPosX();
+  posy = getPosY();
+  height = getHeight();
+  width = getWidth();
+  renderTexture( mTexture, mRenderer, posx, posy, width, height );
   //render the title message
   if (mTitle != nullptr)
     {
@@ -158,11 +225,8 @@ void Button::render(float posx, float posy, float width, float height)
       mTitle->setHeight(height * title_scale);
       mTitle->setWidth(width * title_scale);
       float tborder = (1.-0.8)/2.;
-      //float tposx = getIsoX(rectposx + tborder * width, rectposy + tborder * height, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
-      //float tposy = getIsoY(rectposx+ tborder * width, rectposy + tborder * height, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
-      //float tposx = posx + mRel_x
-      mTitle->setPosX( rectposx + tborder * width);
-      mTitle->setPosY( rectposy + tborder * height);
+      mTitle->setPosX( posx + tborder * width);
+      mTitle->setPosY( posy + tborder * height);
       mTitle->render();
     }
 }

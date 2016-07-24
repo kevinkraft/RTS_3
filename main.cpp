@@ -3,14 +3,10 @@
 //Kevin Maguire
 //18/08/15
 //
-//Version 0.4
+//Version 0.5
 //
 
 //Add:
-// * Resources(done)
-//   * item number and resource number will be the same thing(done)
-//     * of course there will be additional item numbers for other things(ok)
-//   * need to also implement inventory fully (done)
 // * stockpile
 //   * so beginnings of building class
 //     * add a unit inventory to building
@@ -45,21 +41,38 @@
 //   * can make functions that split a menu into a user defined number of panels in a user defined pattern(done)
 // * Menu and TextBox should inherit from the same class called "DisplayPiece" or something
 //   * so that button and other classes don't two functions for menu and text box related functions
+//   * I think RelativeDisplayPiece shouldnt inherit from display piece
+//     * at render you need to pass the display piece to the relative display piece
+//       * the advantage of this is that you dont need to give the menu to the button constructor for example
+//       * ok it should inherit from display piece but not use display piece in its constructor 
+//   * big part done, now just have to clean up
+//     * reimplement the menu title textline as a single line textbox
+//     * reimplement the textbox as a child class of DisplayPiece
+//     * reimplement button as a child class of RelativeDisplayPiece if possible.
 
 //Problem:
+// * TextBox scroll
+//   * Seg faults if you press up or down too many times in a row(fixed)
+//   * up scroll only works if you click somewhere else first
+//   * It doesn't actually scroll the text, it just shows the next lines further down the screen(fixed)
+//     * you just need to add a factor to the textline y positions to pull them up(done)
+// * The setPositions function of the DisplayPiece class doesnt work?
+//   * I needed to set the relative positions in the constructors or relative DisplayPieces
+//     * I don't understand why this is necessary as setPositions is supposed to do that for me at the 
+//       end of the constructor
+//   * I bet if I change the pos of the DisplayPiece during the game it wouldn't actually move
 // * Does the width and height given to make a TextLine actually do anything?
 //   * clearly not if the texture that it makes has different dimensions
 //   * changing the text height definitely has an affect
 //   * for TextBox scrolling this matters, use the height from the texture instead
-// * The text lines in text box dont go where you tell them(fixed)
-//   * the y pos was actully set to the x pos in the constructors of textline and text box(fixed)
-// * There seem to be a few issuse with the last few lines in the textbox makelines(fixed)
-//   * occasionally the last word, which should be on the next line, is missing(done)
-//   * the last line wasn't begin added if there was only one word, fixed (done)
 // * The height of a text line returned from the texture is much larger than it should be
 //   * this results in the text box scroll function being created when the text is not larger than the 
 //     text box. 
 //   * I will have to tune the line height so that it works, but this will change if the font size changes
+// * All the entity classes have default constructors which do nothing. This is bad, then can be initialsed with a pos(fixed)
+//   * all but Entitiy.cpp don't have the defualt constructor defined in their headers so it doenst matter(ok)
+//    * remove all the defaults(what was I doing?)
+//    * those are the destructors fool!(ok)
 
 //-------------------------------------------------------------------------------------      
 
@@ -83,6 +96,7 @@
 #include "Attack.h"
 #include "Menu.h"
 #include "PopMenu.h"
+#include "SubMenu.h"
 #include "MenuGroup.h"
 #include "Map.h"
 #include "Action.h"
@@ -373,8 +387,13 @@ int main(int argc, char **argv)
 	      else if (event.key.keysym.sym == SDLK_t)
 		{
 		  std::cout << "Main: Temporary button: There is nothing here" << std::endl;
-		  /*  //temporary testing
-		  //std::cout << "Main: INFO: In temporary testing " << std::endl;
+		  //temporary testing
+		  std::cout << "Main: Temporary button: Pressing Scroll Button" << std::endl;
+		  info_menu->getSubMenu(0)->getTextBox(0)->getScrollButtonDown()->setPressed(true);
+		  info_menu->getSubMenu(0)->getTextBox(0)->getScrollButtonDown()->outcome();
+		  info_menu->getSubMenu(0)->getTextBox(0)->getScrollButtonDown()->setPressed(false);
+
+		  /*//std::cout << "Main: INFO: In temporary testing " << std::endl;
 		  if (pop_menu != nullptr)
 		    {
 		      //TEMP
@@ -402,9 +421,9 @@ int main(int argc, char **argv)
 			  menu_called->clear();
 			}
 		    }
+		  //remove menu if not clicked and on
 		  else
 		    {
-		      //remove menu if not clicked and on
 		      if (Menus->isActive())
 			{
 			  Menus->setAllNotActive();
@@ -457,7 +476,7 @@ int main(int argc, char **argv)
 		      //only make the pop_menu if no other menu is active
 		      if ( !pop_menu->isActive() && !Menus->isActive() )
 			{  
-			  pop_menu->setPositions(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom);
+			  pop_menu->setXYPositions(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom);
 			  if (target_entity != nullptr )
 			    {
 			      makeActionMenu(pop_menu, selected_entity, target_entity);

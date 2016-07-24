@@ -21,7 +21,7 @@ class Entity
  public:
   
   Entity(float pos_X, float pos_y, bool dead = false);
-  Entity();
+  //Entity();
   virtual ~Entity();
 
   virtual std::vector<FunctionCallerID> actionsOnMe();

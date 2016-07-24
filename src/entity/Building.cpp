@@ -6,7 +6,7 @@
 #include "global.h"
 
 Building::Building(float pos_x, float pos_y, int type) :
-  EntityAction(0.)
+  EntityAction(pos_x, pos_y, 0.)
 {
   setSprite( new Sprite(pos_x, pos_y, BUILDING_CLICK_WIDTH, BUILDING_CLICK_HEIGHT, BUILDING_CLICK_OFFSET_X, BUILDING_CLICK_OFFSET_Y) );
   setPosX(pos_x);

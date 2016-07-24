@@ -9,6 +9,7 @@
 #include "SDL2_image/SDL_image.h"
 
 #include "TextLine.h"
+#include "DisplayPiece.h"
 
 #include "FunctionCaller.h"
 
@@ -16,27 +17,33 @@ class Menu;
 
 //Note:
 // * members are relative to the menu in which the button is contained
-//   * The relevant menu is given to the button render function and is not itself a member of button
+// * the DisplayPiece of the parent menu becomes the Button DisplayPiece parent
 
-class Button
+class Button : public DisplayPiece
 {
  public:
   
-  Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, int outcome,
-	 SDL_Renderer *renderer, SDL_Window *window, TextMaker * TextHandler);
+  //Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, int outcome,
+  //	 SDL_Renderer *renderer, SDL_Window *window, TextMaker * TextHandler);
+  Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, int outcome, DisplayPiece * parent);
+  Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, int outcome, Menu * menu);
+  Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, FunctionCaller caller, ArgContainer args,
+	 DisplayPiece * parent);
   Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, FunctionCaller caller, ArgContainer args,
 	 Menu * menu);
-  Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, FunctionCaller caller, ArgContainer args,
-	 SDL_Renderer *renderer, SDL_Window *window, TextMaker * TextHandler);
+  //Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, FunctionCaller caller, ArgContainer args,
+  //SDL_Renderer *renderer, SDL_Window *window, TextMaker * TextHandler);
 			
   virtual ~Button();
 
-  bool collide(float pos_x, float pos_y, Menu * menu);
+  bool collide(float pos_x, float pos_y, DisplayPiece * parent);
+  bool collide(float pos_x, float pos_y);
   void makeTitleTextLine();
   ReturnContainer outcome();
-  void render(float posx, float posy, float width, float height);
-  void render(Menu * menu);
-  void render(TextBox * tb);
+  //void render(float posx, float posy, float width, float height);
+  //void render(Menu * menu);
+  void render(bool resetPos = true);
+  //void render(TextBox * tb);
 
   ArgContainer getArgContainer()
   {
@@ -50,11 +57,11 @@ class Button
   {
     return mOutcome;
   }
-  float getRelHeight()
-  {
-    return mRelHeight;
-  }  
-  float getRelPosX()
+  //  float getRelHeight()
+  //{
+  //  return mRelHeight;
+  //}  
+  /*float getRelPosX()
   {
     return mRel_x;
   }
@@ -65,7 +72,7 @@ class Button
   float getRelWidth()
   {
     return mRelWidth;
-  }
+    }*/
   TextLine * getTitle()
   {
     return mTitle;
@@ -102,7 +109,7 @@ class Button
   {
     mPressed = p;
   }
-  void setRelHeight(float h)
+  /*void setRelHeight(float h)
   {
     mRelHeight = h;
   }
@@ -117,22 +124,22 @@ class Button
   void setRelWidth(float w)
   {
     mRelWidth = w;
-  }
+    }*/
   void setTitleString(std::string t)
   {
     mTitleString = t;
   }
   
-  SDL_Texture *mTexture;
+  /*  SDL_Texture *mTexture;
   SDL_Renderer *mRenderer;
-  SDL_Window *mWindow;
-  TextMaker * mTextMaker;
+  SDL_Window *mWindow;*/
+  //TextMaker * mTextMaker;
 
  private:
-  float mRel_x;
+  /*  float mRel_x;
   float mRel_y;
   float mRelWidth;
-  float mRelHeight;
+  float mRelHeight;*/
 
   std::string mTitleString;
   bool mPressed;
@@ -143,7 +150,6 @@ class Button
 
   TextLine * mTitle;
 
-  SDL_Rect * mRect;
   bool mHighlight;
 };
 

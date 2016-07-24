@@ -36,7 +36,13 @@ SDL_Texture *loadTexture(std::string file, SDL_Renderer *renderer, bool colorkey
 	{
 	  SDL_SetColorKey(loadedImage, SDL_TRUE, SDL_MapRGB(loadedImage->format, 0, 0xFF, 0xFF));	//Cyan.
 	}
+      //std::cout << "INFO: texture:loadTexture: In This Function Before making texture" << std::endl;
+      if ( renderer == nullptr )
+	{
+	  std::cout << "INFO: texture:loadTexture: renderer is NULL" << std::endl;
+	}
       texture = SDL_CreateTextureFromSurface(renderer, loadedImage);
+      //std::cout << "INFO: texture:loadTexture: In This Function After making texture" << std::endl;
       SDL_FreeSurface(loadedImage);
       if (texture == nullptr)
 	logSDLError(std::cout, "CreateTextureFromSurface");

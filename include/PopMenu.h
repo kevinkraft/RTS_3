@@ -35,8 +35,8 @@ class PopMenu: public Menu
 
   bool outcome();
   void scaleHeight();
-  using Menu::setPositions;
-  void setPositions(float x, float y, float cameraoffset_x, float cameraoffset_y, float zoom);
+  using Menu::setXYPositions;
+  void setXYPositions(float x, float y, float cameraoffset_x, float cameraoffset_y, float zoom);
   //needs its own render so it stays in the same place on the map
   using Menu::render;
   void render(int cameraoffset_x, int cameraoffset_y, float zoom);
@@ -69,14 +69,14 @@ class PopMenu: public Menu
   {
     mGamePosY = y;
   }
-  void setItemHeight(float h)
+  /*  void setItemHeight(float h)
   {
     mItemHeight = h;
   }
   void setItemWidth(float w)
   {
     mItemWidth = w;
-  }
+    }*/
   void setSelectedEntity(EntityAction * entity)
   {
     mSelectedEntity = entity;
@@ -84,8 +84,8 @@ class PopMenu: public Menu
   
  private:
 
-  float mItemHeight = POP_MENU_ITEM_HEIGHT;
-  float mItemWidth = POP_MENU_ITEM_WIDTH;
+  const float mItemHeight = POP_MENU_ITEM_HEIGHT;
+  const float mItemWidth = POP_MENU_ITEM_WIDTH;
 
   float mGamePosX;
   float mGamePosY;

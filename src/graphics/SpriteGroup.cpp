@@ -32,8 +32,11 @@ void SpriteGroup::addSprite(Sprite * sprite){
   std::cout << "INFO: Size of SpriteGroup container is " << sprites.size() << std::endl;
   if (sprite->mRenderer == nullptr)
     {
-      std::cout << "WARN: The sprites renderer was null, now set in SpriteGroup::addSprite" << std::endl;
       sprite->mRenderer = this->mRenderer;
+      if ( this->mRenderer == nullptr )
+	{
+	  std::cout << "SpriteGroup:addSprite: WARN: The SpriteGroups renderer is NULL" << std::endl;
+	}
     }
   sprites.push_back(sprite);
   std::cout << "INFO: Returning from  SpriteGroup::addSprite" << std::endl;

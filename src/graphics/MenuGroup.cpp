@@ -74,6 +74,11 @@ void MenuGroup::render(int cameraoffset_x, int cameraoffset_y, float zoom)
 {
   for(std::vector<Menu*>::iterator it = menus.begin(); it != menus.end(); ++it)
     {
+      //std::cout << "INFO: MenuGroup::render: Is Menu active? " << (*it)->isActive() << std::endl;
+      //std::cout << "INFO: MenuGroup::render:  (*it)->getPosX(): " << (*it)->getPosX() << std::endl;
+      //std::cout << "INFO: MenuGroup::render:  (*it)->getPosY(): " << (*it)->getPosY() << std::endl;
+      //std::cout << "INFO: MenuGroup::render:  (*it)->getHeight(): " << (*it)->getHeight() << std::endl;
+      //std::cout << "INFO: MenuGroup::render:  (*it)->getWidth(): " << (*it)->getWidth() << std::endl;
       (*it)->render(cameraoffset_x, cameraoffset_y, zoom);
     }    
 }

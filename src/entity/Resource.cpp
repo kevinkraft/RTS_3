@@ -4,11 +4,11 @@
 #include "global.h"
 
 Resource::Resource(float pos_x, float pos_y, int type, float amount) :
-  Entity()
+  Entity(pos_x, pos_y)
 {
   setSprite( new Sprite(pos_x, pos_y, RES_CLICK_WIDTH, RES_CLICK_HEIGHT, RES_CLICK_OFFSET_X, RES_CLICK_OFFSET_Y) );
-  setPosX(pos_x);
-  setPosY(pos_y);
+  //  setPosX(pos_x);
+  //setPosY(pos_y);
   setDead(false);
 
   setType(type);

@@ -2,8 +2,8 @@
 #include "global.h"
 #include "Attack.h"
 
-EntityHP::EntityHP(float HP) :
-  Entity()
+EntityHP::EntityHP(float pos_x, float pos_y, float HP) :
+  Entity(pos_x, pos_y)
 {
   setHP(HP);
 }

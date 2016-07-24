@@ -18,12 +18,8 @@
 #include "SDL2/SDL.h"
 #include "SDL2_image/SDL_image.h"
 
-#include "TextMaker.h"
-
-//#include "FunctionCaller.h"
-
+#include "DisplayPiece.h"
 #include "Button.h"
-//#include "SubMenu.h"
 #include "TextBox.h"
 
 //-------------------------------------------------------------------------------------
@@ -31,11 +27,12 @@
 class SubMenu;
 //class Button;
 
-class Menu
+class Menu: virtual public DisplayPiece
 {
  public:
   
   Menu(float screen_x, float screen_y, float width, float height, SDL_Renderer *renderer, SDL_Window *window, TextMaker * textMaker);
+  Menu(float rel_x, float rel_y, float rel_w, float rel_h,  Menu * parent );
   virtual ~Menu();
 
   void addButton(Button * button);
@@ -44,21 +41,17 @@ class Menu
   void addSubMenu(SubMenu * submenu);
   void clear();
   bool collide(float pos_x, float pos_y);
-  void loadImage(std::string filename);
   void makeCloseButton();
   virtual bool outcome();
   virtual void render(int cameraoffset_x, int cameraoffset_y, float zoom);
   void renderSubItems();
+  using DisplayPiece::setActive;
   void setActive(bool b);
-  virtual void setPositions(float x, float y);
+  virtual void setXYPositions(float x, float y);
   
   Button * getButton(int e)
   {
     return mButtons[e];
-  }  
-  float getHeight()
-  {
-    return mHeight;
   }  
   TextBox * getTextBox(int e)
   {
@@ -68,14 +61,6 @@ class Menu
   {
     return mTextLines[e];
   }  
-  float getPosX() const
-  {
-    return mPos_x;
-  }
-  float getPosY() const
-  {
-    return mPos_y;
-  }
   int getSizeButtons()
   {
     return mButtons.size();
@@ -96,41 +81,12 @@ class Menu
   {
     return mSubMenus[e];
   }  
-  TextMaker * getTextMaker()
+  /*TextMaker * getTextMaker()
   {
     return mTextMaker;
-  }
-  float getWidth()
-  {
-    return mWidth;
-  }
-  bool isActive()
-  {
-    return mActive;
-  }
-  void setHeight(float h)
-  {
-    mHeight = h;
-    mRect->h = h;
-  }
-  void setPosX(float posx)
-  {
-    mPos_x = posx;
-  }
-  void setPosY(float posy)
-  {
-    mPos_y = posy;
-  }
-  void setWidth(float w)
-  {
-    mWidth = w;
-    mRect->w = w;
-  }
+    }*/
   
-  SDL_Texture *mTexture;
-  SDL_Renderer *mRenderer;
-  SDL_Window *mWindow;
-  TextMaker * mTextMaker;
+  //TextMaker * mTextMaker;
 
  protected:
   std::vector<Button*> mButtons;
@@ -139,14 +95,7 @@ class Menu
   std::vector<TextBox*> mTextBoxes;
   
  private:
-  float mPos_x;
-  float mPos_y;
-
-  float mWidth;
-  float mHeight;
-
-  SDL_Rect * mRect;
-  bool mActive;
+  
 };
 
 ReturnContainer closeMenu(ArgContainer);

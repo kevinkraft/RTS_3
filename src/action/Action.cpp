@@ -34,22 +34,23 @@ void Action::setActer(EntityAction * acter)
 
 void makeActionMenu(PopMenu * pop_menu, std::vector<FunctionCallerID> callerIDs, ArgContainer args)
 {
-  std::cout << "makeActionMenu: Start populating pop menu" << std::endl;
+  std::cout << "INFO: Action: makeActionMenu: Start populating pop menu" << std::endl;
   args.setPosX( pop_menu->getGamePosX() );
   args.setPosY( pop_menu->getGamePosY() );
-  float rel_x = 0.; 
-  float rel_y = 0.;
-  float rel_h = 1./(callerIDs.size() + 0.0);
-  std::cout << "makeActionMenu: Before Making buttons pop menu" << std::endl;
+  //float rel_x = 0.; 
+  //float rel_y = 0.;
+  //float rel_h = 1./(callerIDs.size() + 0.0);
   for(std::vector<FunctionCallerID>::iterator it = callerIDs.begin(); it != callerIDs.end(); ++it)
     {
-      Button * button = new Button(rel_x, rel_y, 1., rel_h, (it)->second, (it)->first, args, pop_menu);
+      //The button positions are set in PopMenu at render time
+      //Button * button = new Button(rel_x, rel_y, 1., rel_h, (it)->second, (it)->first, args, pop_menu);
+      Button * button = new Button(0., 0., 1., 0., (it)->second, (it)->first, args, pop_menu);
       pop_menu->addButton(button);
-      rel_y += pop_menu->getItemHeight(); 
+      //pop_menu->addButton(button);
+      //rel_y += pop_menu->getItemHeight(); 
     }
   pop_menu->scaleHeight();
   pop_menu->setActive(true);   
-  std::cout << "makeActionMenu: After populating pop menu" << std::endl;
 }
 
 void makeActionMenu(PopMenu * pop_menu, EntityAction * selected)

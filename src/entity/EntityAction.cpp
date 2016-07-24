@@ -17,8 +17,8 @@
   std::cout << "EntityAction: INFO: leaving second constructor" << std::endl;
   }*/
 
-EntityAction::EntityAction(float inv_cap) :
-  EntityHP()
+EntityAction::EntityAction(float pos_x, float pos_y, float inv_cap) :
+  EntityHP(pos_x, pos_y)
 {
   std::cout << "EntityAction: INFO: Infirst constructor" << std::endl;
   //ActionGroup actionList = ActionGroup();

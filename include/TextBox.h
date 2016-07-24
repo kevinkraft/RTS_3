@@ -19,68 +19,54 @@
 
 //-------------------------------------------------------------------------------------
 
-class TextBox
+class TextBox: virtual public DisplayPiece
 {
  public:
  
   //TextBox(float x, float y, float width, float height, std::vector<std::string> words, TextMaker * maker);
-  TextBox(float x, float y, float width, float height, std::string splitline, TextMaker * maker);
+  TextBox(float rel_x, float rel_y, float rel_w, float rel_h, std::string splitline, TextMaker * maker, DisplayPiece * parent);
+  TextBox(float rel_x, float rel_y, float rel_w, float rel_h, std::string splitline, TextMaker * maker, Menu * menu);
   virtual ~TextBox();
   bool collide(float x, float y);
   void makeLines();
   void outcome();
   void render();
 
+  using DisplayPiece::setActive;
   void setActive(bool b);
-    
-  float getHeight()
-  {
-    return mHeight;
-  }
+
   TextLine* getLine(int e)
   {
     return mLines[e];
   }  
-  float getPosX()
+  std::vector<TextLine*> getLines()
   {
-    return mPosX;
-  }
-  float getPosY()
+    return mLines;
+  }  
+  int getMaxLines()
   {
-    return mPosY;
-  }
+    return mMaxLines;
+  }  
   int getScroll()
   {
     return mScroll;
+  }
+  Button * getScrollButtonDown()
+  {
+    return mScrollButtonDown;
+  }
+  Button * getScrollButtonUp()
+  {
+    return mScrollButtonUp;
   }
   TextMaker * getTextMaker()
   {
     return mTextMaker;
   }
-  float getWidth()
-  {
-    return mWidth;
-  }
   std::string getWord(int e)
   {
     return mWords[e];
   }  
-  bool isActive()
-  {
-    return mActive;
-  }
-  void setHeight(float h)
-  {
-    mHeight = h;
-  }
-  void setPosX(float x)
-  {
-    mPosX = x;
-  }
-  void setPosY(float y)
-  {
-    mPosY = y;
-  }
   void setScroll(int s)
   {
     mScroll = s;
@@ -93,10 +79,6 @@ class TextBox
   {
     mWords = words;
   }
-  void setWidth(float w)
-  {
-    mWidth = w;
-  }
 
  protected:
   std::vector<std::string> mWords;
@@ -104,13 +86,6 @@ class TextBox
   
  private:
   
-  float mPosX;
-  float mPosY;
-  float mWidth;
-  float mHeight;
-  
-  bool mActive;
-
   TextMaker * mTextMaker;
 
   //for scrolling

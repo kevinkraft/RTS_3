@@ -72,6 +72,7 @@ class TextLine
   }
   void setHeight(float h)
   {
+
     mHeight = h;
   }
   void setText(std::string message)

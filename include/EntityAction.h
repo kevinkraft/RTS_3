@@ -18,7 +18,7 @@ class EntityAction: public EntityHP
  public:
   
   //EntityAction(ActionGroup actionList, ItemGroup inventory);
-  EntityAction(float inv_cap);
+  EntityAction(float pos_x, float pos_y, float inv_cap);
   virtual ~EntityAction();
 
   bool addItem(Item* item);
