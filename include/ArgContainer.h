@@ -7,10 +7,12 @@
 //#include "Menu.h"
 
 class Menu;
+class InfoMenu;
 class Action;
 class Entity;
 class EntityHP;
 class TextBox;
+class SelectionMenu;
 
 class ArgContainer
 {
@@ -23,10 +25,20 @@ class ArgContainer
       mTargetEntity = nullptr;
       mMenu = nullptr;
       mTextBox = nullptr;
+      mInfoMenu = nullptr;
+      mInt = 0;
     }
   virtual ~ArgContainer()
     {}
   
+  void setInfoMenu(InfoMenu * im)
+  {
+    mInfoMenu = im;
+  }
+  void setInt( int i)
+  {
+    mInt = i;
+  }
   void setMenu(Menu * m)
   {
     mMenu = m;
@@ -42,6 +54,10 @@ class ArgContainer
   void setSelectedEntity(Entity * entity)
   {
     mSelectedEntity = entity;
+  }
+  void setSelectionMenu(SelectionMenu * sm)
+  {
+    mSelectionMenu = sm;
   }
   void setTargetEntity(Entity * entity)
   {
@@ -59,6 +75,9 @@ class ArgContainer
   EntityHP * mTargetEntityHP;
   Menu * mMenu;
   TextBox * mTextBox;
+  InfoMenu * mInfoMenu;
+  int mInt;
+  SelectionMenu * mSelectionMenu;
 
 };
 

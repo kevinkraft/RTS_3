@@ -19,7 +19,7 @@ bool ItemGroup::addItem(Item* item)
   //check capacity
   if ( getSize() + item->getSize() < mCapacity || mCapacity == -1)
     {
-      mItems.push_back(item);      
+      mItems.push_back( item );      
       return true;
     }
   else
@@ -39,15 +39,29 @@ float ItemGroup::getSize()
   return sum;
 }
 
-void ItemGroup::print()
+std::vector<std::string> ItemGroup::print()
 {
-  //print some of the item atributes to the terminal
-  printTerminal("------------------------------------------");
+  //make a string of the items and pass it back, to be added to a menu
+  //see InfoMenu
+  std::vector<std::string> rstr{"Item","#vspace10","Amount","#newline"};
   for(std::vector<Item*>::iterator it = mItems.begin(); it != mItems.end(); ++it)
     {
-      (*it)->print();
+      std::vector<std::string> istr = (*it)->print();
+      rstr.insert( rstr.end(), istr.begin(), istr.end() );
+      rstr.push_back("#newline");
     }
-  printTerminal("------------------------------------------");
+  return rstr;
+}
+
+void ItemGroup::printTerminal()
+{
+  //print some of the item atributes to the terminal
+  TerminalText::printTerminal("------------------------------------------");
+  for(std::vector<Item*>::iterator it = mItems.begin(); it != mItems.end(); ++it)
+    {
+      (*it)->printTerminal();
+    }
+  TerminalText::printTerminal("------------------------------------------");
 }
 
 void ItemGroup::removeItem(Item* item)

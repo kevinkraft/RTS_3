@@ -29,7 +29,9 @@ class EntityAction: public EntityHP
   void clearAddAction(Action * act);
   void doAction();
   void prependAction(Action * act);
-  void printInventory();
+  std::vector<std::string> printInventory();
+  void printInventoryTerminal();
+  std::vector<std::string> printStats();
   bool update();
 
   //are there issues with this function?

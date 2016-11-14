@@ -3,7 +3,7 @@
 //Kevin Maguire
 //18/08/15
 //
-//Version 0.5
+//Version 0.6
 //
 
 //Add:
@@ -13,49 +13,36 @@
 //     * be careful, the default range and att damage of an EntityAction is set to the unit values, need to fix
 // * collect resource action
 //   * need to do exchange action first
-//     * this will require an exchange interface to decide what to exchange
-//     * will have a list of pairs of item type int and amount to exchange
-//     * the action will involve a rate at which things are exchanged 
 // * Add a menu function that display things about an entity
 //   * like its hp, name, pos and inventory
-//   * make sure clicks don't do anything when the info_menu is active(done)
-//     * currently you can click the pop menu accidently through the info menu(ok)
-//   * why is menu done in game coords? Need to change this(fixed)
-//     * to fix this I need to fix button, pop menu, all the collides(fixed)
-//   * for now just make info menu a function of menu(done)
-//   * need a submenu that I can put info and extra buttons on
-//     * does this need to be another class? (yes, done)
-//       * it will be like a button with relative coords (done)
-//       * will have a separate rendering function and rel coords (done)
-//       * when rendered it needs to set its actual coords properly in case they are needed (done)
-//         * this means we can have sub sub menus, as long as the parents are rendered first (done)
-//   * need to add some text table functions to menus
-//     * need to be able to get the length in pixels of the text on the screen(done from texture)
-//       * maybe split message into a vector of words so that I can do line splits
-//         * make a text box, does this have to be a class? yes
-//           * has a vector of words, makes a vector of messages that fit inside the box nicely on each line
-//           * change name of message class to text line
-//           * for now you can just but the entity atributes in as a text box instead of a table
-//           * need to make a scroll function for text which is too large for the text box
-//             * do it with a button at top and bottom that is clicked to advance to later text
-//   * can make functions that split a menu into a user defined number of panels in a user defined pattern(done)
-// * Menu and TextBox should inherit from the same class called "DisplayPiece" or something
-//   * so that button and other classes don't two functions for menu and text box related functions
-//   * I think RelativeDisplayPiece shouldnt inherit from display piece
-//     * at render you need to pass the display piece to the relative display piece
-//       * the advantage of this is that you dont need to give the menu to the button constructor for example
-//       * ok it should inherit from display piece but not use display piece in its constructor 
-//   * big part done, now just have to clean up
-//     * reimplement the menu title textline as a single line textbox
-//     * reimplement the textbox as a child class of DisplayPiece
-//     * reimplement button as a child class of RelativeDisplayPiece if possible.
+//   * need to add some text table functions to menus(done)
+//   * add a sort of Action called Info which will appear in the pop_menu and display the info_menu 
+//     populated for that entity(done)
+// * exchange action
+//   * need a text input menu or box first(skip)
+//     * do a quick demo in the main loop, done in SDLExamples (done)
+//     * I don't want to get stuck doing this, so just use buttons to add the number of an item you
+//       want to transfer (ok)
+//   * this will require an exchange interface to decide what to exchange
+//   * will have a list of pairs of item type int and amount to exchange
+//   * the action will involve a rate at which things are exchanged
+//   * need a menu with two text boxes and a button beside each entry to select
+//     * make a menu derived class caled SelectionMenu to do this
+//       * will contain buttons and list of text items
+//       * the button outcome and text must match somehow
+//       * the button outcome will make the desired class selected and return it
+//       * will have to make Item and Entity and anything else that you can put in a selectin list 
+//         inherit from the same class (done)
+//       * test this by using it to switch the selected_entity
+//         * it's outcome needs to come back when Menus->outcome is called
+//         * but it can't exist before it's needed as the other menus do as this is not a unique menu
+//           there may be many instances of SelectionMenu
+// * Low Priority:
+//   * InfoMenu
+//     * it would be nice if the InfoMenu updated in real time
 
 //Problem:
-// * TextBox scroll
-//   * Seg faults if you press up or down too many times in a row(fixed)
-//   * up scroll only works if you click somewhere else first
-//   * It doesn't actually scroll the text, it just shows the next lines further down the screen(fixed)
-//     * you just need to add a factor to the textline y positions to pull them up(done)
+// * seg fault when consctucting the SelectionMenu
 // * The setPositions function of the DisplayPiece class doesnt work?
 //   * I needed to set the relative positions in the constructors or relative DisplayPieces
 //     * I don't understand why this is necessary as setPositions is supposed to do that for me at the 
@@ -69,10 +56,6 @@
 //   * this results in the text box scroll function being created when the text is not larger than the 
 //     text box. 
 //   * I will have to tune the line height so that it works, but this will change if the font size changes
-// * All the entity classes have default constructors which do nothing. This is bad, then can be initialsed with a pos(fixed)
-//   * all but Entitiy.cpp don't have the defualt constructor defined in their headers so it doenst matter(ok)
-//    * remove all the defaults(what was I doing?)
-//    * those are the destructors fool!(ok)
 
 //-------------------------------------------------------------------------------------      
 
@@ -94,9 +77,11 @@
 #include "Unit.h"
 #include "Movement.h"
 #include "Attack.h"
+#include "InfoMenu.h"
 #include "Menu.h"
 #include "PopMenu.h"
 #include "SubMenu.h"
+#include "SelectionMenu.h"
 #include "MenuGroup.h"
 #include "Map.h"
 #include "Action.h"
@@ -202,8 +187,8 @@ int main(int argc, char **argv)
   //make an entity and move it
   std::cout << "Main: INFO: Starting To Make Objects" << std::endl;
   Unit * unit_you = new Unit(0., 0., "You");
-  EntityAction * selected_entity = unit_you;
   Unit * unit1 = new Unit(4.5, 4.5, "Unit1");
+  EntityAction * selected_entity = unit_you;
   //Movement * move1 = new Movement(10., 8.);
   //unit_you->appendAction(move1);
   Movement * move2 = new Movement(0., 0.);
@@ -263,9 +248,16 @@ int main(int argc, char **argv)
   Buildings->addEntity(hut);
   
   //make a menu
-  //InfoMenu * info_menu = new InfoMenu(0., 0., SCREEN_WIDTH, SCREEN_HEIGHT, renderer, window, TextHandler);
-  Menu * info_menu = makeInfoMenu(renderer, window, TextHandler);
+  InfoMenu * info_menu = new InfoMenu(renderer, window, TextHandler);
+  info_menu->setActive(false);
   Menus->addMenu(info_menu);
+
+  //TEMP
+  /*  Menu * sel_menu = new Menu(0, 0, 500, 600, renderer, window, TextHandler);;
+  SelectionMenu * sl = new SelectionMenu(0, 0, 1, 1, sel_menu, Units );
+  sel_menu->addSelectionMenu( sl );
+  Menus->addMenu( sel_menu );*/
+  
 
   //Start timers:
   fpsTimer.start();
@@ -386,23 +378,14 @@ int main(int argc, char **argv)
 		}
 	      else if (event.key.keysym.sym == SDLK_t)
 		{
+		  /*if ( sel_menu->isActive() == false )
+		    sel_menu->setActive(true);
 		  std::cout << "Main: Temporary button: There is nothing here" << std::endl;
 		  //temporary testing
-		  std::cout << "Main: Temporary button: Pressing Scroll Button" << std::endl;
-		  info_menu->getSubMenu(0)->getTextBox(0)->getScrollButtonDown()->setPressed(true);
-		  info_menu->getSubMenu(0)->getTextBox(0)->getScrollButtonDown()->outcome();
-		  info_menu->getSubMenu(0)->getTextBox(0)->getScrollButtonDown()->setPressed(false);
-
-		  /*//std::cout << "Main: INFO: In temporary testing " << std::endl;
-		  if (pop_menu != nullptr)
-		    {
-		      //TEMP
-		      pop_menu->getButton(0)->setPressed(true);
-		      //TEMP
-		      pop_menu->outcome();
-		    }
-		  pop_menu->setActive(false);
-		  pop_menu->clear();*/
+		  std::cout << "INFO: main: sel_menu has buttons: " << sel_menu->getSizeButtons() << std::endl; 
+		  std::cout << "INFO: main: sel_menu has text boxes: " << sel_menu->getSizeTextBoxes() << std::endl; 
+		  std::cout << "INFO: main: sel_menu has selection menus: " << sel_menu->getSizeSelectionMenus() << std::endl;
+		  }*/
 		}
 	    }
 	  else if (event.type == SDL_MOUSEBUTTONDOWN)
@@ -479,7 +462,7 @@ int main(int argc, char **argv)
 			  pop_menu->setXYPositions(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom);
 			  if (target_entity != nullptr )
 			    {
-			      makeActionMenu(pop_menu, selected_entity, target_entity);
+			      makeActionMenu(pop_menu, selected_entity, target_entity, info_menu);
 			    }
 			  else
 			    {
@@ -630,7 +613,7 @@ int main(int argc, char **argv)
   delete Resources;
   delete Buildings;
   delete Menus;
-  
+
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   

@@ -63,7 +63,7 @@ void makeActionMenu(PopMenu * pop_menu, EntityAction * selected)
   makeActionMenu(pop_menu, callerIDs, args);
 }
 
-void makeActionMenu(PopMenu * pop_menu, EntityAction * selected, Entity * target)
+void makeActionMenu(PopMenu * pop_menu, EntityAction * selected, Entity * target, InfoMenu * info_menu)
 {
   //make the buttons for actions that selected can do on target
   std::vector<FunctionCallerID> callerIDs = selected->actionsByMyself();
@@ -83,6 +83,7 @@ void makeActionMenu(PopMenu * pop_menu, EntityAction * selected, Entity * target
   ArgContainer args = ArgContainer();
   args.setTargetEntity(target);
   args.setTargetEntityHP(dynamic_cast<EntityHP*>(target));
+  args.setInfoMenu(info_menu);
   pop_menu->setSelectedEntity(selected);
   makeActionMenu(pop_menu, callerIDs, args);
 }

@@ -1,22 +1,21 @@
 #ifndef ENTITY_H_
 #define ENTITY_H_
 
-
 #include <string>
 #include <iostream>
 #include <vector>
 #include <cstdarg>
-
 
 //#include "SDL2/SDL.h"
 //#include "SDL2_image/SDL_image.h"
 
 #include "Sprite.h"
 #include "Action.h"
+#include "Selectable.h"
 //#include "global.h"
 //#include "texture.h"
 
-class Entity
+class Entity: public Selectable
 {
  public:
   
@@ -25,6 +24,7 @@ class Entity
   virtual ~Entity();
 
   virtual std::vector<FunctionCallerID> actionsOnMe();
+  virtual std::string blurb();
   bool collide(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom);
   void render(int cameraoffset_x, int cameraoffset_y, float zoom, int height = 0);
   virtual void setImage(std::string image);
@@ -34,6 +34,10 @@ class Entity
   virtual void doAction()
   {
     std::cout << "WARN: This entity can't do actions." << std::endl;
+  }
+  std::string getName()
+  {
+    return mName;
   }  
   float getPosX() const
   {
@@ -55,6 +59,10 @@ class Entity
   {
     mDead = dead;
   }
+  void setName(std::string name)
+  {
+    mName = name;
+  }
   void setPosX(float posx)
   {
     mPos_x = posx;
@@ -70,6 +78,8 @@ class Entity
     mSprite = sprite;
   }
 
+ protected:
+  //  std::string mName = "NAME";
   
  private:
   float mPos_x;
@@ -77,6 +87,8 @@ class Entity
 
   bool mDead;
   Sprite * mSprite;
+
+
   
 };
 

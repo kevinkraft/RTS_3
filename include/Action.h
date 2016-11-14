@@ -30,6 +30,6 @@ class Action
 
 void makeActionMenu(PopMenu * pop_menu, FunctionCallerID callerIDs, ArgContainer args);
 void makeActionMenu(PopMenu * pop_menu, EntityAction * selected);
-void makeActionMenu(PopMenu * pop_menu, EntityAction * selected, Entity * target);
+void makeActionMenu(PopMenu * pop_menu, EntityAction * selected, Entity * target, InfoMenu * info_menu);
 
 #endif

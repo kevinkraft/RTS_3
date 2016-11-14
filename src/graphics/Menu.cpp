@@ -6,6 +6,7 @@
 #include "Menu.h"
 
 #include "SubMenu.h"
+#include "SelectionMenu.h"
 
 //Note:
 // * x and y are game coordinates
@@ -45,12 +46,22 @@ Menu::~Menu()
     {
       delete (*it);
     }
+  for(std::vector<SelectionMenu*>::iterator it = mSelectionMenus.begin(); it != mSelectionMenus.end(); ++it)
+    {
+      delete (*it);
+    }
 }
 
 void Menu::addButton(Button * button)
 {
   mButtons.push_back(button);
 }
+
+void Menu::addSelectionMenu(SelectionMenu * box)
+{
+  mSelectionMenus.push_back(box);
+}
+
 
 void Menu::addTextBox(TextBox * box)
 {
@@ -90,6 +101,11 @@ void Menu::clear()
       delete (*it);
     }
   mTextBoxes.clear();
+  for(std::vector<SelectionMenu*>::iterator it = mSelectionMenus.begin(); it != mSelectionMenus.end(); ++it)
+    {
+      delete (*it);
+    }
+  mSelectionMenus.clear();
 }
 
 bool Menu::collide(float x, float y)
@@ -115,6 +131,14 @@ bool Menu::collide(float x, float y)
   for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
     {
       //if ( (*it)->collide(x, y, this) == true)
+      if ( (*it)->collide(x, y) == true)
+	{
+	  return true;
+	}
+    }
+  //check SelectionMenus
+  for(std::vector<SelectionMenu*>::iterator it = mSelectionMenus.begin(); it != mSelectionMenus.end(); ++it)
+    {
       if ( (*it)->collide(x, y) == true)
 	{
 	  return true;
@@ -159,6 +183,10 @@ bool Menu::outcome()
     {
       (*it)->outcome();
     }
+  for(std::vector<SelectionMenu*>::iterator it = mSelectionMenus.begin(); it != mSelectionMenus.end(); ++it)
+    {
+      (*it)->outcome();
+    }
   return false;
 }
 
@@ -196,6 +224,10 @@ void Menu::renderSubItems()
     {
       (*it)->render();
     }
+  for(std::vector<SelectionMenu*>::iterator it = mSelectionMenus.begin(); it != mSelectionMenus.end(); ++it)
+    {
+      (*it)->render();
+    }
 }
 
 void Menu::setActive(bool b)
@@ -224,6 +256,13 @@ void Menu::setActive(bool b)
 	  (*it)->setActive(b);
 	}
     }
+  if ( getSizeSelectionMenus() != 0 )
+    {
+      for(std::vector<SelectionMenu*>::iterator it = mSelectionMenus.begin(); it != mSelectionMenus.end(); ++it)
+	{
+	  (*it)->setActive(b);
+	}
+    }
 }
 
 void Menu::setXYPositions(float x, float y)
@@ -231,6 +270,27 @@ void Menu::setXYPositions(float x, float y)
   //x and y are screen coords
   setPosX(x);
   setPosY(y);
+}
+
+void Menu::wipe()
+{
+  //this is like Menu::clear() but it doesn't delete the subparts, just clears the TextBoxes
+  for(std::vector<SubMenu*>::iterator it = mSubMenus.begin(); it != mSubMenus.end(); ++it)
+    {
+      (*it)->wipe();
+    }
+  for(std::vector<TextLine*>::iterator it = mTextLines.begin(); it != mTextLines.end(); ++it)
+    {
+      (*it)->setText("");
+    }
+  /*  for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
+    {
+      delete (*it);
+      }*/
+  for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
+    {
+      (*it)->setWords("");
+    }
 }
 
 //-------------------------------------------------------------------------------------
@@ -278,6 +338,6 @@ Menu * makeInfoMenu(SDL_Renderer *renderer, SDL_Window *window, TextMaker * text
 				  splitline, textHandler, info_menu);
   submenu_inv->addTextBox(inv_box);
   submenu_inv->setActive(true);*/
-  info_menu->setActive(true);
+  info_menu->setActive(false);
   return info_menu;
 }

@@ -2,6 +2,7 @@
 #include "Map.h"
 #include "Button.h"
 #include "TextMaker.h"
+#include "InfoAction.h"
 
 //Note:
 // * This class is inherantly linked to Action classes and Entity classes
@@ -52,8 +53,15 @@ bool PopMenu::outcome()
 	      std::cout << "PopMenu::outcome: INFO: mSelectedEntity is a nullptr" << std::endl;
 	      return true;
 	    }
-	  std::cout << "PopMenu::outcome: INFO: After checking for null pointer" << std::endl;
-	  mSelectedEntity->clearAddAction(funcReturn.mAction);
+	  else if ( dynamic_cast<InfoAction*>(funcReturn.mAction) )
+	    {
+	      mSelectedEntity->prependAction(funcReturn.mAction);
+	    }
+	  else
+	    {
+	      std::cout << "PopMenu::outcome: INFO: After checking for null pointer" << std::endl;
+	      mSelectedEntity->clearAddAction(funcReturn.mAction);
+	    }
 	  return true;
 	}
       else if ( funcReturn.mOutcome != 0) //this could be done better

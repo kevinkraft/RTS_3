@@ -4,6 +4,10 @@
 //13/09/2015
 //
 
+//Notes:
+// * If the text contains #newline, the following words will be on a newline
+// * if the text contains #vspace10 there will be 10 spaces, where 10 can be any number
+
 //-------------------------------------------------------------------------------------
 
 #ifndef TEXTBOX_H_
@@ -18,6 +22,8 @@
 #include "Button.h"
 
 //-------------------------------------------------------------------------------------
+
+class Button;
 
 class TextBox: virtual public DisplayPiece
 {
@@ -34,6 +40,8 @@ class TextBox: virtual public DisplayPiece
 
   using DisplayPiece::setActive;
   void setActive(bool b);
+  void setWords(std::vector<std::string> words);
+  void setWords(std::string splitlines);
 
   TextLine* getLine(int e)
   {
@@ -74,10 +82,6 @@ class TextBox: virtual public DisplayPiece
   void setTextMaker(TextMaker * maker)
   {
     mTextMaker = maker;
-  }
-  void setWords(std::vector<std::string> words)
-  {
-    mWords = words;
   }
 
  protected:

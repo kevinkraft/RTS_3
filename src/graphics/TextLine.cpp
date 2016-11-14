@@ -90,16 +90,15 @@ std::string makeString(float val)
   return strval;
 }
 
-std::string makeString(int val)
+/*std::string makeString(int val)
 {
   std::stringstream sstrval;
   sstrval << val;
   std::string strval = sstrval.str();
   return strval;
-}
+}*/
 
-
-void printTerminal(std::string message)
+void TerminalText::printTerminal(std::string message)
 {
   std::cout << message << std::endl;
 }

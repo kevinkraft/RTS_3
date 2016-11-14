@@ -60,7 +60,7 @@ const float UNIT_CLICK_OFFSET_Y = 50.;//105;
 //-------------------------------------------------------------------------------------
 // Resource Constants
 //-------------------------------------------------------------------------------------
-const float DEFAULT_RESOURCE_AMOUNT = 1000;
+const float DEFAULT_RESOURCE_AMOUNT = 1000.;
 const float RES_CLICK_WIDTH = 60;
 const float RES_CLICK_HEIGHT = 65;
 const float RES_CLICK_OFFSET_X = 0.;

@@ -61,3 +61,7 @@ std::vector<std::string> Unit::actionsOnMe()
   return parentActions;
   }*/
 
+std::string Unit::blurb()
+{
+  return "Unit: "+getName()+" #newline A unit is the main acter of the game. They are the smallest part of your empire. ";
+}

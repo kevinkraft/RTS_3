@@ -38,6 +38,11 @@ std::vector<FunctionCallerID> Building::actionsOnMe()
   return list;
 }
 
+std::string Building::blurb()
+{
+  return "Building: "+getName()+" #newline A building can have many different roles. They store, produce and enable certain items to be made and actions to be done.";
+}
+
 void Building::setupType()
 {
   //Caution: you need to set the sprite renderer before you do this

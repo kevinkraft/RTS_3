@@ -1,6 +1,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <regex>
 
 #include "TextBox.h"
 #include "Menu.h"
@@ -23,9 +24,9 @@ TextBox::TextBox(float rel_x, float rel_y, float rel_w, float rel_h, std::string
   std::cout << "INFO: TextBox::TextBox:1 In First Constructor " << std::endl;
   std::vector<std::string> words = makeVectorString(splitline, ' ');
   setParent(parent);
-  setWords(words);
   setTextMaker(maker);
-  makeLines();  
+  setWords(words);
+  //makeLines();  
   std::cout << "INFO: TextBox::TextBox:1 Leaving Constructor " << std::endl;
 }
 
@@ -74,15 +75,27 @@ void TextBox::makeLines()
   double text_height = 50.; //this doesn't define the text height to be 50 pixels, unclear 
   for(std::vector<std::string>::iterator it = mWords.begin(); it != mWords.end(); ++it)
     {
+      std::string word = (*it);
       TextLine * line;
-      lstring = lstring + (*it) + " ";
-      line = new TextLine( xoff + this->getPosX(), yoff + this->getPosY() + step*30., lstring.size()*10., text_height, lstring, mTextMaker);
-      if ( getTextureWidth(line->mTexture) >= this->getWidth() )
+      std::regex vspace("#vspace\\d+");
+      //std::cout << "INFO: TextBox:makeLines: The vspace regex is: " << "#vspace\\d+" << std::endl;
+      //std::cout << "INFO: TextBox::makeLines: The Word is: " << word << std::endl;
+      if ( regex_match(word, vspace) )
 	{
+	  std::cout << "INFO: TextBox::makeLines: Word Matches the vspace Regex. " << std::endl;
+	  std::string spaces = std::string( std::stoi(word.substr(7)) , ' ');
+	  word = spaces;
+	}
+      lstring = lstring + word + " ";
+      line = new TextLine( xoff + this->getPosX(), yoff + this->getPosY() + step*30., lstring.size()*10., text_height, lstring, mTextMaker);
+      //there are special words that add new lines and spaces
+      if ( getTextureWidth(line->mTexture) >= this->getWidth() || word == "#newline" )
+	{
+	  if ( word == "#newline" ) word = "";
 	  line = new TextLine( xoff + this->getPosX(), yoff + this->getPosY() + step*30., lstring_prev.size()*10., text_height, lstring_prev, mTextMaker);
 	  lines.push_back(line);
 	  step++;
-	  lstring = (*it)+ " ";
+	  lstring = word+ " ";
 	}
       lstring_prev = lstring;
     }
@@ -162,6 +175,19 @@ void TextBox::setActive(bool b)
     {
       (*it)->setActive(b);
     }
+}
+
+void TextBox::setWords(std::vector<std::string> words)
+{
+  mWords = words;
+  makeLines();
+}
+
+void TextBox::setWords( std::string splitline)
+{
+  std::vector<std::string> words = makeVectorString(splitline, ' ');
+  mWords = words;
+  makeLines();
 }
 
 //-------------------------------------------------------------------------------------

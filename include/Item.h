@@ -5,15 +5,17 @@
 #include <iostream>
 
 #include "Sprite.h"
+#include "Selectable.h"
 
-class Item
+class Item: public Selectable
 {
  public:
   Item(int type, int amount, float pos_x=0., float pos_y=0.);
   virtual ~Item();
 
   float getSize();
-  void print();
+  std::vector<std::string> print();
+  void printTerminal();
   void setType(int type);
   
     
@@ -80,7 +82,7 @@ class Item
   float mAmount;
 
   float mUnitSize; //
-  std::string mName;
+  //std::string mName;
   
 };
 

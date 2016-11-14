@@ -2,6 +2,7 @@
 #include "TextLine.h"
 
 Item::Item(int type, int amount, float pos_x, float pos_y)
+  : Selectable()
 {  
   setPosX(pos_x);
   setPosY(pos_y);
@@ -23,10 +24,17 @@ float Item::getSize()
   return mAmount * mUnitSize;
 }
 
-void Item::print()
+std::vector<std::string> Item::print()
+{
+  //return a string with item info
+  std::vector<std::string> rstr { getName()+"("+makeString(getType())+")", "#vspace10", makeString(getAmount()) };
+  return rstr;
+}
+
+void Item::printTerminal()
 {
   //print some atributes to the terminal
-  printTerminal( getName() + " " + makeString(getType()) + " " + makeString(getAmount()) );
+  TerminalText::printTerminal( getName() + " " + makeString(getType()) + " " + makeString(getAmount()) );
 }
 
 void Item::setType(int type)

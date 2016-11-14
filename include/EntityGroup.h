@@ -29,10 +29,17 @@ class EntityGroup
   void setRenderer(SDL_Renderer *renderer);
   void setWindow(SDL_Window *window);
   void update();
+
+  std::vector<Entity*> getEntities()
+    {
+      return mEntities;
+    }
+
     
-  std::vector<Entity*> entities;
   SpriteGroup * mSpriteGroup;
-    
+  std::vector<Entity*> mEntities;
+
+
 };
 
 #endif /* ENTITYGROUP_H_ */

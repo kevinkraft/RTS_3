@@ -19,13 +19,16 @@
 #include "SDL2_image/SDL_image.h"
 
 #include "DisplayPiece.h"
-#include "Button.h"
+//#include "Button.h"
 #include "TextBox.h"
+//#include "SelectionMenu.h"
+//#include "SubMenu.h"
 
 //-------------------------------------------------------------------------------------
 
 class SubMenu;
-//class Button;
+class SelectionMenu;
+class Button;
 
 class Menu: virtual public DisplayPiece
 {
@@ -39,6 +42,7 @@ class Menu: virtual public DisplayPiece
   void addTextBox(TextBox * box);
   void addTextLine(TextLine * message);
   void addSubMenu(SubMenu * submenu);
+  void addSelectionMenu(SelectionMenu * sl);
   void clear();
   bool collide(float pos_x, float pos_y);
   void makeCloseButton();
@@ -48,7 +52,8 @@ class Menu: virtual public DisplayPiece
   using DisplayPiece::setActive;
   void setActive(bool b);
   virtual void setXYPositions(float x, float y);
-  
+  void wipe();
+
   Button * getButton(int e)
   {
     return mButtons[e];
@@ -61,6 +66,10 @@ class Menu: virtual public DisplayPiece
   {
     return mTextLines[e];
   }  
+  SelectionMenu * getSelectionMenu(int sl)
+  {
+    return mSelectionMenus[sl];
+  }  
   int getSizeButtons()
   {
     return mButtons.size();
@@ -72,6 +81,10 @@ class Menu: virtual public DisplayPiece
   int getSizeTextBoxes()
   {
     return mTextBoxes.size();
+  }  
+  int getSizeSelectionMenus()
+  {
+    return mSelectionMenus.size();
   }  
   int getSizeSubMenus()
   {
@@ -93,6 +106,7 @@ class Menu: virtual public DisplayPiece
   std::vector<SubMenu*> mSubMenus;
   std::vector<TextLine*> mTextLines;
   std::vector<TextBox*> mTextBoxes;
+  std::vector<SelectionMenu*> mSelectionMenus;
   
  private:
   

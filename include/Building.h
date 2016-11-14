@@ -17,20 +17,13 @@ class Building: public EntityAction
   virtual std::vector<FunctionCallerID> actionsByMe();
   virtual std::vector<FunctionCallerID> actionsByMyself();
   virtual std::vector<FunctionCallerID> actionsOnMe();
+  std::string blurb();
   void setupType();
 
-  std::string getName()
-    {
-      return mName;
-    }
   int getType()
     {
       return mType;
     }
-  void setName(std::string name)
-  {
-    mName = name;
-  }
   void setType(int type)
   {
     mType = type;
@@ -38,8 +31,9 @@ class Building: public EntityAction
   
  private:
   int mType;
-  std::string mName;
+  //std::string mName;
   
 };
 
 #endif
+ 

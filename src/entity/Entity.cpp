@@ -5,7 +5,8 @@
 //#include "SDL2/SDL.h"
 //#include "SDL2_image/SDL_image.h"
 
-Entity::Entity(float pos_x, float pos_y, bool dead)
+Entity::Entity(float pos_x, float pos_y, bool dead) 
+  : Selectable()  
 {  
 
   mSprite = new Sprite(pos_x, pos_y);
@@ -29,6 +30,11 @@ std::vector<FunctionCallerID> Entity::actionsOnMe()
   std::cout << "Entity::actionsOnMe: WARN: This function should not be called" << std::endl;
   std::vector<FunctionCallerID> list;
   return list;
+}
+
+std::string Entity::blurb()
+{
+  return "Entity: #newline Main class for sprites. Contains positions, dead or alive and Sprite.";
 }
 
 bool Entity::collide(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom)

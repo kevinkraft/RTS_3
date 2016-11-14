@@ -13,7 +13,8 @@
 
 #include "FunctionCaller.h"
 
-class Menu;
+#include "Menu.h"
+//class Menu;
 
 //Note:
 // * members are relative to the menu in which the button is contained

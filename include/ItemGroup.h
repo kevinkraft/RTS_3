@@ -14,11 +14,10 @@ class ItemGroup
   
   bool addItem(Item * item);
   float getSize();
-  void print();
+  std::vector<std::string> print();
+  void printTerminal();
   void removeItem(Item * item);  
 
-  
-  
   float getCapacity()
   {
     return mCapacity;
@@ -28,8 +27,10 @@ class ItemGroup
     mCapacity = cap;
   }
 
-  std::vector<Item*> mItems;
+  //std::vector<Item*> mItems;
   
+  std::vector<Item*> mItems;
+
  private:
   
   float mCapacity; //-1 is no cap

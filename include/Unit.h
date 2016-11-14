@@ -19,26 +19,27 @@ class Unit: public EntityAction
   virtual std::vector<FunctionCallerID> actionsByMe();
   virtual std::vector<FunctionCallerID> actionsByMyself();
   virtual std::vector<FunctionCallerID> actionsOnMe();
+  std::string blurb();
   
-  std::string getName()
+  /*  std::string getName()
     {
       return mName;
-    }
+      }*/
   double getSpeed()
   {
     return mSpeed;
   }
-  void setName(std::string name)
+  /*void setName(std::string name)
   {
     mName = name;
-  }
+    }*/
   void setSpeed(double speed)
   {
     mSpeed = speed;
   }
   
  private:
-  std::string mName;
+  //std::string mName;
   double mSpeed = UNIT_SPEED;
   
 };

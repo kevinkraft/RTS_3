@@ -116,8 +116,11 @@ class TextLine
 };
 
 std::string makeString(float val);
-std::string makeString(int val);
-void printTerminal(std::string message);
+//std::string makeString(int val);
 
+namespace TerminalText
+{
+  void printTerminal(std::string message);
+}
 
 #endif
