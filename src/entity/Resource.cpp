@@ -24,14 +24,14 @@ std::vector<FunctionCallerID> Resource::actionsOnMe()
 {
   //NEED TO ADD THE COLLECT ACTION IN HERE
   /*std::vector<FunctionCallerID> list;
-  FunctionCaller coll = &makeAttack; 
+  FunctionCaller coll = &makeAttack;
   FunctionCallerID functionID(att, "Attack");
   list.push_back(functionID);
   return list;*/
   std::vector<FunctionCallerID> list = Entity::actionsOnMe();
   FunctionCaller ia = &makeInfoAction;
   FunctionCallerID functionID(ia, " Info ");
-  list.push_back(functionID);  
+  list.push_back(functionID);
   return list;
 }
 
@@ -86,11 +86,12 @@ void Resource::setupType()
 void placeResources(EntityGroup * Resources, int type, int number)
 {
   //randomly places number of resource type and adds them to the entity group
-  
-  std::default_random_engine gen(time(NULL));
-  std::uniform_real_distribution<float> frand(0., MAP_SIZE+0.0);  
+
+  std::default_random_engine gen(std::random_device{}());
+  //std::default_random_engine gen(time(NULL));
+  std::uniform_real_distribution<float> frand(0., MAP_SIZE+0.0);
   //usage frand(gen)
-  
+
   for (int i = 0; i < number; i++)
     {
       Resource * res = new Resource(frand(gen), frand(gen), type, DEFAULT_RESOURCE_AMOUNT);

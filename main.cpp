@@ -16,7 +16,7 @@
 // * Add a menu function that display things about an entity
 //   * like its hp, name, pos and inventory
 //   * need to add some text table functions to menus(done)
-//   * add a sort of Action called Info which will appear in the pop_menu and display the info_menu 
+//   * add a sort of Action called Info which will appear in the pop_menu and display the info_menu
 //     populated for that entity(done)
 // * exchange action
 //   * need a text input menu or box first(skip)
@@ -31,7 +31,7 @@
 //       * will contain buttons and list of text items
 //       * the button outcome and text must match somehow
 //       * the button outcome will make the desired class selected and return it
-//       * will have to make Item and Entity and anything else that you can put in a selectin list 
+//       * will have to make Item and Entity and anything else that you can put in a selectin list
 //         inherit from the same class (done)
 //       * test this by using it to switch the selected_entity
 //         * it's outcome needs to come back when Menus->outcome is called
@@ -45,7 +45,7 @@
 // * seg fault when consctucting the SelectionMenu
 // * The setPositions function of the DisplayPiece class doesnt work?
 //   * I needed to set the relative positions in the constructors or relative DisplayPieces
-//     * I don't understand why this is necessary as setPositions is supposed to do that for me at the 
+//     * I don't understand why this is necessary as setPositions is supposed to do that for me at the
 //       end of the constructor
 //   * I bet if I change the pos of the DisplayPiece during the game it wouldn't actually move
 // * Does the width and height given to make a TextLine actually do anything?
@@ -53,19 +53,23 @@
 //   * changing the text height definitely has an affect
 //   * for TextBox scrolling this matters, use the height from the texture instead
 // * The height of a text line returned from the texture is much larger than it should be
-//   * this results in the text box scroll function being created when the text is not larger than the 
-//     text box. 
+//   * this results in the text box scroll function being created when the text is not larger than the
+//     text box.
 //   * I will have to tune the line height so that it works, but this will change if the font size changes
 
-//-------------------------------------------------------------------------------------      
+//Cross Platform Problems:
+// * The building sprite doesn't appear, but the entity is there and can be clicked
+// * The map isn't generated randomly, its always the same
+
+//-------------------------------------------------------------------------------------
 
 #include <iostream>
 #include <string>
 #include <sstream>
 
-#include <SDL2/SDL.h>
-#include <SDL2_image/SDL_image.h>
-#include <SDL2_ttf/SDL_ttf.h>
+#include <SDL.h>
+//#include <SDL2_image/SDL_image.h>
+//#include <SDL2_ttf/SDL_ttf.h>
 
 #include "global.h"
 #include "logging.h"
@@ -90,39 +94,39 @@
 #include "Resource.h"
 #include "Building.h"
 
-//-------------------------------------------------------------------------------------      
+//-------------------------------------------------------------------------------------
 
 int main(int argc, char **argv)
 {
-  //-------------------------------------------------------------------------------------      
+  //-------------------------------------------------------------------------------------
   // Variable declarations
-  //-------------------------------------------------------------------------------------      
+  //-------------------------------------------------------------------------------------
   bool quit = false;
   SDL_Event event;
-  
+
   Timer fpsTimer;
   int countedFrames = 0;
   Timer capTimer;
-  
+
   int cameraoffset_x = 0;
   int cameraoffset_y = 0;
   const int SCROLL_SPEED = 10;
-  
+
   int mouse_x = 0;
   int mouse_y = 0;
   int screen_width = SCREEN_WIDTH;
   int screen_height = SCREEN_HEIGHT;
-  
+
   bool scroll_active = true;
   bool fullscreen = false;
   bool use_custom_cursor = USE_CUSTOM_CURSOR;
   bool debug_mode = false;
-  
+
   float zoom = 1.0;
 
-  //-------------------------------------------------------------------------------------      
+  //-------------------------------------------------------------------------------------
   //Initialization:
-  //-------------------------------------------------------------------------------------      
+  //-------------------------------------------------------------------------------------
   //initialise
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {
@@ -141,7 +145,7 @@ int main(int argc, char **argv)
       SDL_Quit();
       return 1;
     }
-  
+
   SDL_Window *window = nullptr;
   window = SDL_CreateWindow("Civ",
 			    SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -152,7 +156,7 @@ int main(int argc, char **argv)
       logSDLError(std::cout, "CreateWindow");
       return 1;
     }
-  
+
   SDL_Renderer *renderer = nullptr;
   if (VSYNC_ACTIVE)
     {
@@ -169,19 +173,19 @@ int main(int argc, char **argv)
       logSDLError(std::cout, "CreateRenderer");
       return 1;
     }
-  
+
   if (use_custom_cursor)
     {
       SDL_ShowCursor(false);
     }
-  
-  //-------------------------------------------------------------------------------------      
+
+  //-------------------------------------------------------------------------------------
   // Create objects:
-  //-------------------------------------------------------------------------------------      
+  //-------------------------------------------------------------------------------------
   SDL_Texture *texture_cursor  = loadTexture("res/images/cursor.png", renderer, false);
-  
+
   Map map(renderer, window);
-  
+
   Sprite *sprite_selection = new Sprite("res/images/iso/selection.png", 2, 2, renderer, window, TILE_SIZE);
 
   //make an entity and move it
@@ -210,11 +214,11 @@ int main(int argc, char **argv)
   //TextMaker * TextHandler = new TextMaker("res/fonts/Pacifico.ttf", renderer, window);
   //TextMaker * TextHandler = new TextMaker("res/fonts/FFF_Tusj.ttf", renderer, window);
   //TextMaker * TextHandler = new TextMaker("res/fonts/sample.ttf", renderer, window);
-  
+
   //make a temp message
   //TextLine * message = new TextLine(30. + 122., 125., 500., 50., "HELLO WORLD RTS 3", TextHandler);
   //message->setActive(true);
-  
+
   //make a pop_menu
   PopMenu * pop_menu = new PopMenu(renderer, window, TextHandler);
   //pop_menu->loadImage("res/images/menu/menu.png");
@@ -246,7 +250,7 @@ int main(int argc, char **argv)
   EntityGroup * Buildings = new EntityGroup(renderer, window);
   Building * hut = new Building(3., 3., 0);
   Buildings->addEntity(hut);
-  
+
   //make a menu
   InfoMenu * info_menu = new InfoMenu(renderer, window, TextHandler);
   info_menu->setActive(false);
@@ -257,44 +261,44 @@ int main(int argc, char **argv)
   SelectionMenu * sl = new SelectionMenu(0, 0, 1, 1, sel_menu, Units );
   sel_menu->addSelectionMenu( sl );
   Menus->addMenu( sel_menu );*/
-  
+
 
   //Start timers:
   fpsTimer.start();
 
-  //-------------------------------------------------------------------------------------      
+  //-------------------------------------------------------------------------------------
   // Main loop:
-  //-------------------------------------------------------------------------------------      
+  //-------------------------------------------------------------------------------------
   while (!quit)
     {
       if (!VSYNC_ACTIVE)
 	{
 	  capTimer.start();
 	}
-      
-      //-------------------------------------------------------------------------------------      
+
+      //-------------------------------------------------------------------------------------
       // Update Entity states
-      //-------------------------------------------------------------------------------------      
+      //-------------------------------------------------------------------------------------
       Units->update();
       Resources->update();
       Buildings->update();
 
-      //-------------------------------------------------------------------------------------      
+      //-------------------------------------------------------------------------------------
       // Entity operations
-      //-------------------------------------------------------------------------------------      
+      //-------------------------------------------------------------------------------------
       Units->doActions();
       Buildings->doActions();
-      
-      //-------------------------------------------------------------------------------------      
+
+      //-------------------------------------------------------------------------------------
       // Screen
-      //-------------------------------------------------------------------------------------      
-      
+      //-------------------------------------------------------------------------------------
+
       //Mouse position:
       SDL_GetMouseState(&mouse_x, &mouse_y);
-      
+
       //Resolution:
       SDL_GetWindowSize(window, &screen_width, &screen_height);
-      
+
       if (scroll_active)
 	{
 	  if (mouse_x < 20 ) // cameraoffset_x > map.getMinPixelX(zoom))
@@ -314,16 +318,16 @@ int main(int argc, char **argv)
 	      cameraoffset_y -= SCROLL_SPEED;
 	    }
 	}
-      
-      //-------------------------------------------------------------------------------------      
+
+      //-------------------------------------------------------------------------------------
       //Events:
-      //-------------------------------------------------------------------------------------      
+      //-------------------------------------------------------------------------------------
       while (SDL_PollEvent(&event))
 	{
 	  if (event.type == SDL_QUIT)
 	    {
 	      quit = true;
-	    } 
+	    }
 	  else if (event.type == SDL_KEYDOWN)
 	    {
 	      if (event.key.keysym.sym == SDLK_ESCAPE)
@@ -349,7 +353,7 @@ int main(int argc, char **argv)
 	      else if (event.key.keysym.sym == SDLK_f)
 		{
 		  fullscreen = not(fullscreen);
-		  
+
 		  if (fullscreen)
 		    {
 		      SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
@@ -382,8 +386,8 @@ int main(int argc, char **argv)
 		    sel_menu->setActive(true);
 		  std::cout << "Main: Temporary button: There is nothing here" << std::endl;
 		  //temporary testing
-		  std::cout << "INFO: main: sel_menu has buttons: " << sel_menu->getSizeButtons() << std::endl; 
-		  std::cout << "INFO: main: sel_menu has text boxes: " << sel_menu->getSizeTextBoxes() << std::endl; 
+		  std::cout << "INFO: main: sel_menu has buttons: " << sel_menu->getSizeButtons() << std::endl;
+		  std::cout << "INFO: main: sel_menu has text boxes: " << sel_menu->getSizeTextBoxes() << std::endl;
 		  std::cout << "INFO: main: sel_menu has selection menus: " << sel_menu->getSizeSelectionMenus() << std::endl;
 		  }*/
 		}
@@ -412,11 +416,11 @@ int main(int argc, char **argv)
 			  Menus->setAllNotActive();
 			}
 		    }
-		  
+
 		  //takes screen pos and gives tile coords
 		  float pos_x = getIsoX(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
 		  float pos_y = getIsoY(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
-		  
+
 		  if ((pos_x >= 0) and
 		      (pos_y >= 0) and
 		      (pos_x < map.mWidth) and
@@ -425,7 +429,7 @@ int main(int argc, char **argv)
 		      std::cout << "Click at: X=" << pos_x << " Y=" << pos_y << std::endl;
 		    }
 		}
-	      
+
 	      else if (event.button.button == SDL_BUTTON_RIGHT)
 		{
 		  //pop_menu = Menus->getPopMenu();
@@ -454,11 +458,11 @@ int main(int argc, char **argv)
 			{
 			  std::cout << "Clicked Nothing" << std::endl;
 			}
-		      
+
 		      //make the pop menu for the available actions
 		      //only make the pop_menu if no other menu is active
 		      if ( !pop_menu->isActive() && !Menus->isActive() )
-			{  
+			{
 			  pop_menu->setXYPositions(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom);
 			  if (target_entity != nullptr )
 			    {
@@ -481,7 +485,7 @@ int main(int argc, char **argv)
 	      //takes screen pos and gives tile coords
 	      int pos_x = getIsoCoordinateX(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
 	      int pos_y = getIsoCoordinateY(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
-	      
+
 	      sprite_selection->setPosX(pos_x);
 	      sprite_selection->setPosY(pos_y);
 	    }
@@ -496,10 +500,10 @@ int main(int argc, char **argv)
 		      //int iso_y = getIsoCoordinateY(screen_width/2, screen_height/2, cameraoffset_x, cameraoffset_y, zoom);
 		      int iso_x = getIsoX(screen_width/2, screen_height/2, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
 		      int iso_y = getIsoY(screen_width/2, screen_height/2, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
-		      
+
 		      //Zooming:
 		      zoom += 0.25;
-		      
+
 		      //Centering:
 		      //takes tile coords and gives pixel coords
 		      float pixel_x = getPixelX(iso_x, iso_y, 0,0, zoom, TILE_SIZE);
@@ -517,10 +521,10 @@ int main(int argc, char **argv)
 		      //int iso_y = getIsoCoordinateY(screen_width/2, screen_height/2, cameraoffset_x, cameraoffset_y, zoom);
 		      int iso_x = getIsoX(screen_width/2, screen_height/2, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
 		      int iso_y = getIsoY(screen_width/2, screen_height/2, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
-		      
+
 		      //Zooming:
 		      zoom -= 0.25;
-		      
+
 		      //Centering:
 		      //takes tile coords and gives pixel coords
 		      float pixel_x = getPixelX(iso_x, iso_y, 0,0, zoom, TILE_SIZE);
@@ -532,17 +536,17 @@ int main(int argc, char **argv)
 	    }
 	}
 
-      //-------------------------------------------------------------------------------------      
+      //-------------------------------------------------------------------------------------
       // Rendering: The Order Here Matters
       //-------------------------------------------------------------------------------------
       SDL_RenderClear(renderer);
 
       map.render(cameraoffset_x, cameraoffset_y, zoom);
-      
+
       sprite_selection->render(cameraoffset_x, cameraoffset_y, zoom);
-      
+
       //vill->render(cameraoffset_x, cameraoffset_y, zoom);
-      
+
       //std::cout << "INFO: Before rendering EntityGroup" << std::endl;
       Units->render(cameraoffset_x, cameraoffset_y, zoom);
       //std::cout << "INFO: After rendering EntityGroup" << std::endl;
@@ -563,13 +567,13 @@ int main(int argc, char **argv)
 	{
 	  renderTexture(texture_cursor, renderer, mouse_x, mouse_y);
 	}
-      
+
       SDL_RenderPresent(renderer);
-      
+
       //FPS:
       float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
       ++countedFrames;
-      
+
       if (!VSYNC_ACTIVE)
 	{
 	  int frameTicks = capTimer.getTicks();
@@ -578,14 +582,14 @@ int main(int argc, char **argv)
 	      SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
 	    }
 	}
-      
+
 
       //Window title:
       if (debug_mode)
 	{
 	  int pos_x = getIsoCoordinateX(mouse_x, mouse_y, cameraoffset_x, cameraoffset_y, zoom);
 	  int pos_y = getIsoCoordinateY(mouse_x, mouse_y, cameraoffset_x, cameraoffset_y, zoom);
-	  
+
 	  std::stringstream ss;
 	  ss << "IsoMap";
 	  ss << " | mouse: " << mouse_x << " " << mouse_y;
@@ -604,9 +608,9 @@ int main(int argc, char **argv)
 	}
     }
 
-  //-------------------------------------------------------------------------------------        
+  //-------------------------------------------------------------------------------------
   //Cleanup:
-  //-------------------------------------------------------------------------------------      
+  //-------------------------------------------------------------------------------------
   delete sprite_selection;
   delete TextHandler;
   delete Units;
@@ -616,9 +620,9 @@ int main(int argc, char **argv)
 
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
-  
+
   IMG_Quit();
   SDL_Quit();
-  
+
   return 0;
     }

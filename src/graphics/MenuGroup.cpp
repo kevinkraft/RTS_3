@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "MenuGroup.h"
 #include "EntityAction.h"
 #include "PopMenu.h"
@@ -26,7 +27,7 @@ void MenuGroup::addMenu(Menu* menu)
 	{
 	  return (*it);
 	}
-    }      
+    }
   std::cout << "MenuGroup::getPopMenu: WARN: The MenuGroup doesn't contain a pop menu" << std::endl;
   return nullptr;
   }*/
@@ -53,7 +54,7 @@ bool MenuGroup::isActive()
 	{
 	  active = true;
 	}
-    }      
+    }
   return active;
 }
 
@@ -62,7 +63,7 @@ void MenuGroup::setAllNotActive()
   for(std::vector<Menu*>::iterator it = menus.begin(); it != menus.end(); ++it)
     {
       (*it)->setActive(false);
-    }      
+    }
 }
 
 void MenuGroup::removeMenu(Menu* menu)
@@ -80,5 +81,5 @@ void MenuGroup::render(int cameraoffset_x, int cameraoffset_y, float zoom)
       //std::cout << "INFO: MenuGroup::render:  (*it)->getHeight(): " << (*it)->getHeight() << std::endl;
       //std::cout << "INFO: MenuGroup::render:  (*it)->getWidth(): " << (*it)->getWidth() << std::endl;
       (*it)->render(cameraoffset_x, cameraoffset_y, zoom);
-    }    
+    }
 }

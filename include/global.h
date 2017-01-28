@@ -2,7 +2,7 @@
 #define GLOBAL_HPP_
 
 #include <vector>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 //-------------------------------------------------------------------------------------
 // Screen Constants
@@ -28,7 +28,7 @@ const SDL_Color BLACK = {0, 0, 0, 255};
 //-------------------------------------------------------------------------------------
 //the text height is tuned to work with this font size, changing it may result in the
 //text in text boxs rendering longer than intended
-const int DEFAULT_FONT_SIZE = 64; 
+const int DEFAULT_FONT_SIZE = 64;
 const SDL_Colour DEFAULT_TEXT_COLOUR = BLACK;
 const int ACTUAL_TEXT_HEIGHT = 35;
 
@@ -47,7 +47,7 @@ const float UNIT_INV_CAP = 10.;
 const double UNIT_SPEED = 0.005;
 //const double UNIT_SPEED = 0.05; //for testing
 const double UNIT_INTERACTION_RANGE = 0.3;
-//const double UNIT_ATTACK_DAMAGE = .01; 
+//const double UNIT_ATTACK_DAMAGE = .01;
 const double UNIT_ATTACK_DAMAGE = .07;
 //const float UNIT_CLICK_COLLIDE_X = 0.5; //in game coords
 //const float UNIT_CLICK_COLLIDE_Y = 1.; //in game coords
@@ -89,4 +89,4 @@ const int MAP_SIZE = 15;
 						{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};*/
 
-#endif 
+#endif

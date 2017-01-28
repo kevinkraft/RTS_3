@@ -1,7 +1,7 @@
 #include "SpriteGroup.h"
 #include "Sprite.h"
-#include "SDL2/SDL.h"
-#include "SDL2_image/SDL_image.h"
+#include "SDL.h"
+#include "SDL_image.h"
 
 SpriteGroup::SpriteGroup(SDL_Renderer *renderer, bool zOrder){
   mRenderer = renderer;

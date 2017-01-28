@@ -1,3 +1,4 @@
+#include<algorithm>
 #include "ItemGroup.h"
 #include "TextLine.h"
 
@@ -19,7 +20,7 @@ bool ItemGroup::addItem(Item* item)
   //check capacity
   if ( getSize() + item->getSize() < mCapacity || mCapacity == -1)
     {
-      mItems.push_back( item );      
+      mItems.push_back( item );
       return true;
     }
   else

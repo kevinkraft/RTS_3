@@ -5,8 +5,8 @@
 #include <iostream>
 #include <vector>
 
-#include "SDL2/SDL.h"
-#include "SDL2_image/SDL_image.h"
+#include "SDL.h"
+//#include "SDL2_image/SDL_image.h"
 
 #include "TextLine.h"
 #include "DisplayPiece.h"
@@ -23,7 +23,7 @@
 class Button : public DisplayPiece
 {
  public:
-  
+
   //Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, int outcome,
   //	 SDL_Renderer *renderer, SDL_Window *window, TextMaker * TextHandler);
   Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, int outcome, DisplayPiece * parent);
@@ -34,7 +34,7 @@ class Button : public DisplayPiece
 	 Menu * menu);
   //Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, FunctionCaller caller, ArgContainer args,
   //SDL_Renderer *renderer, SDL_Window *window, TextMaker * TextHandler);
-			
+
   virtual ~Button();
 
   bool collide(float pos_x, float pos_y, DisplayPiece * parent);
@@ -61,7 +61,7 @@ class Button : public DisplayPiece
   //  float getRelHeight()
   //{
   //  return mRelHeight;
-  //}  
+  //}
   /*float getRelPosX()
   {
     return mRel_x;
@@ -130,7 +130,7 @@ class Button : public DisplayPiece
   {
     mTitleString = t;
   }
-  
+
   /*  SDL_Texture *mTexture;
   SDL_Renderer *mRenderer;
   SDL_Window *mWindow;*/

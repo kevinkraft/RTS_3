@@ -1,6 +1,6 @@
 #include "texture.h"
-#include "SDL2/SDL.h"
-#include "SDL2_image/SDL_image.h"
+#include "SDL.h"
+#include "SDL_image.h"
 #include "Map.h"
 
 #include "Menu.h"
@@ -156,7 +156,7 @@ void Menu::makeCloseButton()
   ArgContainer ac;
   ac.setMenu(this);
   Button * closeInfoMenu = new Button( close_scale * getWidth() , 0., 1-close_scale, 1-close_scale, "X", closeFunc, ac, this );
-  addButton(closeInfoMenu); 
+  addButton(closeInfoMenu);
 }
 
 bool Menu::outcome()
@@ -310,7 +310,7 @@ Menu * makeInfoMenu(SDL_Renderer *renderer, SDL_Window *window, TextMaker * text
   //make the info menu
   Menu * info_menu = new Menu( 0., 0., SCREEN_WIDTH, SCREEN_HEIGHT, renderer, window, textHandler);
   /*TextBox* main_box = new TextBox( info_menu->getPosX(), info_menu->getPosY()+30., info_menu->getWidth(), 100.,
-				   splitline, textHandler, info_menu);  
+				   splitline, textHandler, info_menu);
 				   info_menu->addTextBox(main_box);*/
 
   //add a close button
@@ -318,20 +318,20 @@ Menu * makeInfoMenu(SDL_Renderer *renderer, SDL_Window *window, TextMaker * text
   //make a title
   //TextLine * title = new TextLine(0., 0., 100., 50., "HELLO", textHandler);
   //info_menu->addTextLine(title);
-  /*TextBox* title_box = new TextBox( 0., 0., 1., 1., splitline, textHandler, info_menu);  
+  /*TextBox* title_box = new TextBox( 0., 0., 1., 1., splitline, textHandler, info_menu);
     info_menu->addTextBox(title_box);*/
-  /*TextBox* title_box = new TextBox( 0., 40., 1, 0.2, splitline, textHandler, info_menu);  
+  /*TextBox* title_box = new TextBox( 0., 40., 1, 0.2, splitline, textHandler, info_menu);
     info_menu->addTextBox(title_box);*/
   //make a stats menu
   //SubMenu * submenu_stats = new SubMenu(.5, 115., 0.3, 0.75, info_menu);
   SubMenu * submenu_stats = new SubMenu(50, 150, 0.3, 0.68, info_menu);
   info_menu->addSubMenu(submenu_stats);
-  TextBox* stat_box = new TextBox( 0., 0., 1., 1., splitline, textHandler, submenu_stats);  
+  TextBox* stat_box = new TextBox( 0., 0., 1., 1., splitline, textHandler, submenu_stats);
   submenu_stats->addTextBox(stat_box);
   //make an inventory menu
   SubMenu * submenu_inv = new SubMenu(380., 150., 0.60, 0.68, info_menu);
   info_menu->addSubMenu(submenu_inv);
-  TextBox* inv_box = new TextBox( 0., 0., 1., 1., splitline, textHandler, submenu_inv);  
+  TextBox* inv_box = new TextBox( 0., 0., 1., 1., splitline, textHandler, submenu_inv);
   submenu_inv->addTextBox(inv_box);
 
   /*TextBox* inv_box = new TextBox( submenu_inv->getPosX(), submenu_inv->getPosY(), submenu_inv->getWidth(), submenu_inv->getHeight(),

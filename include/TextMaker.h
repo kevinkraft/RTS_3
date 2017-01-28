@@ -12,9 +12,9 @@
 #include <string>
 #include <iostream>
 
-#include "SDL2/SDL.h"
-#include "SDL2_image/SDL_image.h"
-#include "SDL2_ttf/SDL_ttf.h"
+#include "SDL.h"
+#include "SDL_ttf.h"
+#include "SDL_image.h"
 
 #include "global.h"
 
@@ -24,12 +24,12 @@
 class TextMaker
 {
  public:
-  
+
   TextMaker(std::string fontFile, SDL_Renderer *renderer, SDL_Window *window);
   virtual ~TextMaker();
 
   void openFont();
-    
+
   TTF_Font * getFont()
   {
     return mFont;
@@ -57,7 +57,7 @@ class TextMaker
 
   SDL_Renderer *mRenderer;
   SDL_Window *mWindow;
- 
+
  private:
 
   std::string mFontFile;

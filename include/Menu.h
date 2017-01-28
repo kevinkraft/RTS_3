@@ -15,8 +15,8 @@
 #include <string>
 #include <iostream>
 
-#include "SDL2/SDL.h"
-#include "SDL2_image/SDL_image.h"
+#include "SDL.h"
+//#include "SDL2_image/SDL_image.h"
 
 #include "DisplayPiece.h"
 //#include "Button.h"
@@ -33,7 +33,7 @@ class Button;
 class Menu: virtual public DisplayPiece
 {
  public:
-  
+
   Menu(float screen_x, float screen_y, float width, float height, SDL_Renderer *renderer, SDL_Window *window, TextMaker * textMaker);
   Menu(float rel_x, float rel_y, float rel_w, float rel_h,  Menu * parent );
   virtual ~Menu();
@@ -57,48 +57,48 @@ class Menu: virtual public DisplayPiece
   Button * getButton(int e)
   {
     return mButtons[e];
-  }  
+  }
   TextBox * getTextBox(int e)
   {
     return mTextBoxes[e];
-  }  
+  }
   TextLine * getTextLine(int e)
   {
     return mTextLines[e];
-  }  
+  }
   SelectionMenu * getSelectionMenu(int sl)
   {
     return mSelectionMenus[sl];
-  }  
+  }
   int getSizeButtons()
   {
     return mButtons.size();
-  }  
+  }
   int getSizeTextLines()
   {
     return mTextLines.size();
-  }  
+  }
   int getSizeTextBoxes()
   {
     return mTextBoxes.size();
-  }  
+  }
   int getSizeSelectionMenus()
   {
     return mSelectionMenus.size();
-  }  
+  }
   int getSizeSubMenus()
   {
     return mSubMenus.size();
-  }  
+  }
   SubMenu * getSubMenu(int e)
   {
     return mSubMenus[e];
-  }  
+  }
   /*TextMaker * getTextMaker()
   {
     return mTextMaker;
     }*/
-  
+
   //TextMaker * mTextMaker;
 
  protected:
@@ -107,9 +107,9 @@ class Menu: virtual public DisplayPiece
   std::vector<TextLine*> mTextLines;
   std::vector<TextBox*> mTextBoxes;
   std::vector<SelectionMenu*> mSelectionMenus;
-  
+
  private:
-  
+
 };
 
 ReturnContainer closeMenu(ArgContainer);

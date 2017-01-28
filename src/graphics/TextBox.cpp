@@ -26,7 +26,7 @@ TextBox::TextBox(float rel_x, float rel_y, float rel_w, float rel_h, std::string
   setParent(parent);
   setTextMaker(maker);
   setWords(words);
-  //makeLines();  
+  //makeLines();
   std::cout << "INFO: TextBox::TextBox:1 Leaving Constructor " << std::endl;
 }
 
@@ -64,15 +64,15 @@ void TextBox::makeLines()
   // * Add to this function so that the height of the text box is not exceeded, it currently can be.
   std::cout << "INFO: TextBox::makeLines: In This Function " << std::endl;
   //make an offset to give some tolerance to the menu edge
-  float xoff = this->getWidth()/17.; 
-  float yoff = this->getHeight()/20.; 
+  float xoff = this->getWidth()/17.;
+  float yoff = this->getHeight()/20.;
   //split the words into a vector of TextLines based on the width of the text box
   std::vector<TextLine*> lines;
   int step = 0;
   std::string lstring = "";
   std::string lstring_prev = "";
   TextLine * oline;
-  double text_height = 50.; //this doesn't define the text height to be 50 pixels, unclear 
+  double text_height = 50.; //this doesn't define the text height to be 50 pixels, unclear
   for(std::vector<std::string>::iterator it = mWords.begin(); it != mWords.end(); ++it)
     {
       std::string word = (*it);
@@ -82,8 +82,10 @@ void TextBox::makeLines()
       //std::cout << "INFO: TextBox::makeLines: The Word is: " << word << std::endl;
       if ( regex_match(word, vspace) )
 	{
+      //this piece of codes gets the number of spaces from #vspacexxx, where the x's are the number of spaces
 	  std::cout << "INFO: TextBox::makeLines: Word Matches the vspace Regex. " << std::endl;
-	  std::string spaces = std::string( std::stoi(word.substr(7)) , ' ');
+	  //std::string spaces = std::string( std::stoi(word.substr(7)) , ' ');
+	  std::string spaces = std::string( std::atoi( word.substr(7).c_str() ) , ' ');
 	  word = spaces;
 	}
       lstring = lstring + word + " ";
@@ -165,7 +167,7 @@ void TextBox::render()
       //render the lines
       rl->render();
     }
-  
+
 }
 
 void TextBox::setActive(bool b)
@@ -201,7 +203,7 @@ std::vector<std::string> makeVectorString(std::string ts, char splitchar)
   std::vector<std::string> rvec;
   std::stringstream ss(ts);
   std::string item;
-  while ( std::getline( ss, item, splitchar ) ) 
+  while ( std::getline( ss, item, splitchar ) )
     {
       rvec.push_back(item);
     }

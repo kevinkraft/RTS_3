@@ -1,6 +1,6 @@
 #include "texture.h"
-#include "SDL2/SDL.h"
-#include "SDL2_image/SDL_image.h"
+#include "SDL.h"
+#include "SDL_image.h"
 #include "Map.h"
 
 #include "Menu.h"
@@ -26,7 +26,7 @@ DisplayPiece::DisplayPiece(float x, float y, float w, float h, SDL_Renderer *ren
 
   mRenderer = renderer;
   mWindow = window;
-  mTextMaker = TextHandler;  
+  mTextMaker = TextHandler;
 
   mRect = new SDL_Rect();
 
@@ -59,7 +59,7 @@ DisplayPiece::DisplayPiece(float rel_x, float rel_y, float rel_w, float rel_h, D
   mRenderer = nullptr;
   mWindow = nullptr;
   mTextMaker = nullptr;
-  
+
   mRect = new SDL_Rect();
 
   setPosX(0.);
@@ -97,10 +97,10 @@ void DisplayPiece::setPositions()
       float width = parent->getWidth();
       float height = parent->getHeight();
       this->setPosX(  posx + mRel_x );
-      this->setPosY( posy + mRel_y ); 
+      this->setPosY( posy + mRel_y );
       this->setWidth( width * mRelWidth );
       this->setHeight( height * mRelHeight );
     }
 }
-  
+
 
