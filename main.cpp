@@ -3,7 +3,7 @@
 //Kevin Maguire
 //18/08/15
 //
-//Version 0.6
+//Version 0.7
 //
 
 //Add:
@@ -12,83 +12,6 @@
 //     * add a unit inventory to building
 //     * be careful, the default range and att damage of an EntityAction is set to the unit values, need to fix
 // * collect resource action
-//   * need to do exchange action first
-// * Add a menu function that display things about an entity(done)
-//   * like its hp, name, pos and inventory(done)
-//   * need to add some text table functions to menus(done)
-//   * add a sort of Action called Info which will appear in the pop_menu and display the info_menu(done)
-//     populated for that entity(done)
-// * exchange action
-//   * Needs to be tested, its not clear if its working due to the problems with InfoMenu
-//     * is the ExchangeMenu ExchangeList cleared between exchanges? (yes it is, len of exchange list is zero during and after exchange)
-//     * Is the exchange menu list passed to the exchange action correctly? (yes, tested with temp button output)
-//     * If you press the close button it just opens itself again (fixed)
-//       * made a new close button, and a new attribute mWasClosed(ok)
-//     * It seems that the exchange speed isn't being accounted for, or is it?(yes it is)
-//     * When you try a second exchange, the menu doesn't come up, I need to clear the old menu somewhere(fixed)
-//       * it gets cleared in loads of places, its a bit confusing, but its working now(ok)
-//     * Various issues with the action itself:(all fixed)
-//       * I had an entity with 8 in its inventory and could give it more, inv cap is 10 though?(ok)
-//         * this is desired behaviour, wood has unit size of 3. add inv size to info menu(ok)
-//         * unit had 7 food and 1 wood, I was trying to give it one more wood.(ok)
-//       * Exchanging wood doesn't work? Value is never removed from acter(fixed)
-//         * its always duplicated and never reaches the final value, 0.93 instead of 1.(ok)
-//         * this seems to be the same issue as the one below.(its that issue plus another one)
-//         * the duplication was the same as the issue below. Not completely finishing the exchange is another issue(ok)
-//           * it probably stops too early for some reason.(yes)
-//           * changing the 0.01 tolerance doesnt change anything (ok)
-//           * why isnt food exchange also affected? (food is also affected)
-//           * this problem only occurs sometimes?(problem found)
-//             * related to having two items in the inventory? (no, also happens with one)
-//             * its when the acters inventory goes to zero(ok)
-//           * fixed it, there were some extra ccontinue commands after the item was removed from the acter and before it was(fixed)
-//             given to the target(fixed)
-//       * The first food exchange works fine, but subsequent ones do not, the value is duplicated as with wood.(fixed)
-//         * I think these issues are related to exchanging with a unit which doesn't have the item already, so the(ok)
-//           problem occurs when the unit doesnt already have some of the item its recieveing.(ok)
-//           * I verified this by exchanging wood to a unit that already had wood, it works fine. (ok)
-//           * Exchanges with negative amounts seem to be fine in this respect(ok)
-//           * I think I found the problem, the acter_item is given to the target where the target item should be given(yes)
-//             * yes this was the problem(ok)
-//       * exchanges with negative amounts leave a little bit left over in the targets inventry, about e-7.(fixed)
-//         * such a small number indicates amount = null, so maybe the empty item isnt deleted.(ok)
-//         * was this fixed by changing the tolerance to delete items from 0 to 0.01?(yes, think so)
-//       * The action gets stuck and just loops when amount is negative and the target doesnt have enough?(fixed already)
-//         * I can replicated this, but only sometimes(cant replicate)
-
-//   * currently the acter can give more than it has( this isnt true, or is fixed)
-//   * giving a negative amount to the target doesnt exchange things the other way, as it should (fixed, needed abs(amount))
-//   * The target also can give more than it has available(fixed)
-//   * the inventory cap isn't accounted for in exchange(done)
-//     * add this(done)
-//     * also add the exchange speed and the inv cap to the info menus(done)
-//   * make the action base first(done)
-//     * the action will involve a rate at which things are exchanged(done)
-//     * also a list of pairs of item number and amount to exchange(done)
-//     * it will need an acter and a target,  both must be EntityActions so that they have inventories(acter must be unit)
-//   * need a text input menu or box first(skip)
-//     * do a quick demo in the main loop, done in SDLExamples (done)
-//     * I don't want to get stuck doing this, so just use buttons to add the number of an item you(ok)
-//       want to transfer (ok)
-//   * this will require an exchange interface to decide what to exchange(done)
-//     * will have a list of pairs of item type int and amount to exchange(done)
-//     * the exchange action, when called from the pop menu will make an exchange menu.(done)
-//       The exchange menu will recieve the choice, pass it to the action, which will then doAction.(done)
-//       * The makeExchange function has to make an ExchangeMenu(done)
-//         * where is the acter set when the pop menu is used? I dont know!! (its in pop menu)
-//   * need a menu with two text boxes and a button beside each entry to select(done)
-//     * now need to make an exchange menu(done)
-//       * will contain a selection sub menu and a way to choose the amount, with arrow buttons(done)
-//     * make a SubMenu derived class called SelectionMenu to do this (done)
-//       * will contain buttons and list of text items (done)
-//       * the button outcome and text must match somehow (done)
-//       * the button outcome will make the desired class selected and return it(done)
-//       * will have to make Item and Entity and anything else that you can put in a selectin list(done)
-//         inherit from the same class (done)
-//       * test this by using it to switch the selected_entity (done)
-//         * it's outcome needs to come back when Menus->outcome is called (it's selected entity is called where the entity groups are updated)
-//         * but it can't exist before it's needed as the other menus do as this is not a unique menu(ok)
-//           there may be many instances of SelectionMenu (ok)
 // * Low Priority:
 //   * InfoMenu
 //     * it would be nice if the InfoMenu updated in real time
@@ -110,21 +33,8 @@
 //     * I opened and closed lots of exchange menus before the problem appeared. I also did it with the pop menu but not sure it
 //       filled up as much memory as the exchange menu does.
 //     * The PopMenu alone is enough to cause this problem after about 3 minutes of constant opening and closing
-// * AFTER MAKING THE EXCHANGE MENU THE INFO MENU NO LONGER WORKS (fixed)
-//   * some warnings before its called.(not the problem)
-//     * WARN: In Action::setActer. (not a problem)
-//       * This is expected behaviour. The InfoAction has no setActer function as it only requires a target. so(ok)
-//         it uses the base Action::setActer function, which does nothing. this is fine (ok)
-//     * Entity::actionsOnMe: WARN: This function should not be called, this error has dissappeared, it should give an error message anyway, fixed (ok)
-//   * something to do with the pop menu, and the actions?(no)
-//   * something to do with clearing the PopMenu? (no)
-//   * Switching the "Info" and "Exchange" buttons in the PopMenu doesn't change or fix the issue (ok)
-//   * The problem was this: InfoMenu is wiped before it is populated, Menu::wipe() calls TextBox::setWords(""). This function works fine with
-//     a blank string, but I had placed a print command "lines[0]" while debugging the Exchange Action, but an empty string has no split chars,
-//     so there are no lines to print and so it segfaults (ok)
 // * If you right click, the pop menu comes up, if you then left click off the menu and right click again the buttons are duplicated
 //   * It essentially allows you to have commands related to two different coords/entities in the same pop menu
-// * seg fault when constructing the SelectionMenu (fixed)
 // * The setPositions function of the DisplayPiece class doesnt work?
 //   * I needed to set the relative positions in the constructors or relative DisplayPieces
 //     * I don't understand why this is necessary as setPositions is supposed to do that for me at the
@@ -138,26 +48,6 @@
 //   * this results in the text box scroll function being created when the text is not larger than the
 //     text box.
 //   * I will have to tune the line height so that it works, but this will change if the font size change
-// * The number box textbox doesnt work
-//   * This is due to problems with TextBox I think.
-//     * it seems that changing the text in a TextBox breaks the TextBox. It seems that the new text
-//       exists and it looks like it is rendered, but I cant see it. Maybe it is being rendered behind
-//       the menu for some reason? Menu has non pointer members like mTextBoxes, I think these should be
-//       pointers, it's possible I'm asscessing the mTextBoxes of the parent Menu rather than the SubMenu
-//       child in NumberBox when I do mTextBoxes[0]. I tried to replace mTextBoxes with pointers, but there was
-//       a seg fault in TextBox
-//   * I think I fixed it, I just need to set the updated text box active, it must turn it off somewhere.
-//     * It makes a new list of text lines which are all default not active
-//
-
-//Cross Platform Problems:
-// * The building sprite doesn't appear, but the entity is there and can be clicked
-//   * the building and sprite positions are correct, 3 and 3 for the first bui;ding in the list
-//   * The problem is simply that the hut image is missing on github. Only 0.png is on github, but the game
-//     uses o_2.png. I tried using 0.png but it looks weird, parts of it are see through, so don't change anything
-//     and add the correct png to the repo
-// * The map isn't generated randomly, its always the same(fixed)
-//   * This is due to the new function I use as a random seed in map and resource class(fixed)
 
 //-------------------------------------------------------------------------------------
 
@@ -166,8 +56,6 @@
 #include <sstream>
 
 #include <SDL.h>
-//#include <SDL2_image/SDL_image.h>
-//#include <SDL2_ttf/ttf.h>
 
 #include "global.h"
 #include "logging.h"
