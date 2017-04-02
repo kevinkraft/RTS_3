@@ -36,10 +36,10 @@ Menu * MenuGroup::collide(float x, float y)
 {
   for(std::vector<Menu*>::iterator it = menus.begin(); it != menus.end(); ++it)
     {
-      if ( (*it)->collide(x, y) == true )
-	{
-	  return (*it);
-	}
+      if ( (*it)->isActive() == true && (*it)->collide(x, y) == true )
+	  {
+	    return (*it);
+	  }
     }
   return nullptr;
 }

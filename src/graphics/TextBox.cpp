@@ -21,19 +21,16 @@
 TextBox::TextBox(float rel_x, float rel_y, float rel_w, float rel_h, std::string splitline, TextMaker* maker, DisplayPiece * parent)
   : DisplayPiece(rel_x, rel_y, rel_w, rel_h, parent)
 {
-  std::cout << "INFO: TextBox::TextBox:1 In First Constructor " << std::endl;
   std::vector<std::string> words = makeVectorString(splitline, ' ');
   setParent(parent);
   setTextMaker(maker);
   setWords(words);
   //makeLines();
-  std::cout << "INFO: TextBox::TextBox:1 Leaving Constructor " << std::endl;
 }
 
 TextBox::TextBox(float rel_x, float rel_y, float rel_w, float rel_h, std::string splitline, TextMaker* maker, Menu * menu)
   : TextBox( rel_x, rel_y, rel_w, rel_h, splitline, maker, dynamic_cast<DisplayPiece*>(menu) )
 {
-  std::cout << "INFO: TextBox::TextBox:2 In Second Constructor " << std::endl;
 }
 
 TextBox::~TextBox()
@@ -62,7 +59,6 @@ void TextBox::makeLines()
 {
   //ADD:
   // * Add to this function so that the height of the text box is not exceeded, it currently can be.
-  std::cout << "INFO: TextBox::makeLines: In This Function " << std::endl;
   //make an offset to give some tolerance to the menu edge
   float xoff = this->getWidth()/17.;
   float yoff = this->getHeight()/20.;
@@ -81,24 +77,23 @@ void TextBox::makeLines()
       //std::cout << "INFO: TextBox:makeLines: The vspace regex is: " << "#vspace\\d+" << std::endl;
       //std::cout << "INFO: TextBox::makeLines: The Word is: " << word << std::endl;
       if ( regex_match(word, vspace) )
-	{
-      //this piece of codes gets the number of spaces from #vspacexxx, where the x's are the number of spaces
-	  std::cout << "INFO: TextBox::makeLines: Word Matches the vspace Regex. " << std::endl;
-	  //std::string spaces = std::string( std::stoi(word.substr(7)) , ' ');
-	  std::string spaces = std::string( std::atoi( word.substr(7).c_str() ) , ' ');
-	  word = spaces;
-	}
+        {
+          //this piece of codes gets the number of spaces from #vspacexxx, where the x's are the number of spaces
+          //std::string spaces = std::string( std::stoi(word.substr(7)) , ' ');
+          std::string spaces = std::string( std::atoi( word.substr(7).c_str() ) , ' ');
+          word = spaces;
+        }
       lstring = lstring + word + " ";
       line = new TextLine( xoff + this->getPosX(), yoff + this->getPosY() + step*30., lstring.size()*10., text_height, lstring, mTextMaker);
       //there are special words that add new lines and spaces
       if ( getTextureWidth(line->mTexture) >= this->getWidth() || word == "#newline" )
-	{
-	  if ( word == "#newline" ) word = "";
-	  line = new TextLine( xoff + this->getPosX(), yoff + this->getPosY() + step*30., lstring_prev.size()*10., text_height, lstring_prev, mTextMaker);
-	  lines.push_back(line);
-	  step++;
-	  lstring = word+ " ";
-	}
+        {
+          if ( word == "#newline" ) word = "";
+            line = new TextLine( xoff + this->getPosX(), yoff + this->getPosY() + step*30., lstring_prev.size()*10., text_height, lstring_prev, mTextMaker);
+          lines.push_back(line);
+          step++;
+          lstring = word+ " ";
+        }
       lstring_prev = lstring;
     }
   //last line
@@ -128,8 +123,8 @@ void TextBox::outcome()
     {
       //these default functions dont need anything done on the returns
       ReturnContainer funcReturn;
-      std::cout << "INFO: TextBox::outcome: Calling the Scroll Up button outcome " << std::endl;
       std::cout << "INFO: TextBox::outcome: mScrollButtonUp->isPressed() " << mScrollButtonUp->isPressed() << std::endl;
+      std::cout << "INFO: TextBox::outcome: mScrollButtonDown->isPressed() " << mScrollButtonDown->isPressed() << std::endl;
       funcReturn = mScrollButtonUp->outcome();
       funcReturn = mScrollButtonDown->outcome();
     }
@@ -165,6 +160,7 @@ void TextBox::render()
       //add the y of the i-th line in the mLines list as the y pos of the i-th line in rlines
       rl->setPosY( mLines[i]->getPosY() );
       //render the lines
+      //TerminalText::printTerminal( "INFO: TextBox::render: Rendering TextLine: Text: "+rl->getText() );
       rl->render();
     }
 
@@ -181,15 +177,19 @@ void TextBox::setActive(bool b)
 
 void TextBox::setWords(std::vector<std::string> words)
 {
+  bool isactive = isActive();
   mWords = words;
   makeLines();
+  setActive(isactive);
 }
 
 void TextBox::setWords( std::string splitline)
 {
+  bool isactive = isActive();
   std::vector<std::string> words = makeVectorString(splitline, ' ');
   mWords = words;
   makeLines();
+  setActive(isactive);
 }
 
 //-------------------------------------------------------------------------------------
@@ -217,27 +217,21 @@ std::vector<std::string> makeVectorString(std::string ts, char splitchar)
 ReturnContainer ScrollTextBoxDown(ArgContainer args)
 {
   //add 1 to mScroll
-  std::cout << "INFO: TextBox:ScrollTextBoxDown: mScroll is " << args.mTextBox->getScroll() << std::endl;
   TextBox * tb = args.mTextBox;
   if ( tb->getScroll() == floor(tb->getLines().size() / tb->getMaxLines()) )
     return ReturnContainer();
   args.mTextBox->setScroll( args.mTextBox->getScroll() + 1 );
-  std::cout << "INFO: TextBox:ScrollTextBoxDown: mScroll is " << args.mTextBox->getScroll() << std::endl;
   return ReturnContainer();
 }
 
 ReturnContainer ScrollTextBoxUp(ArgContainer args)
 {
-  std::cout << "INFO: TextBox:ScrollTextBoxUp: In this function " << std::endl;
-  std::cout << "INFO: TextBox:ScrollTextBoxUp: mScroll is " << args.mTextBox->getScroll() << std::endl;
   //subtract 1 from mScroll
   if ( args.mTextBox->getScroll() == 0 )
     {
-    std::cout << "INFO: TextBox:ScrollTextBoxUp: first retrun, mScroll is " << args.mTextBox->getScroll() << std::endl;
     return ReturnContainer();
     }
   args.mTextBox->setScroll( args.mTextBox->getScroll() - 1 );
-  std::cout << "INFO: TextBox:ScrollTextBoxUp: second return, mScroll is " << args.mTextBox->getScroll() << std::endl;
   return ReturnContainer();
 }
 

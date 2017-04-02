@@ -1,4 +1,5 @@
 #include <random>
+#include <ctime>
 
 #include "Resource.h"
 #include "InfoAction.h"
@@ -86,9 +87,7 @@ void Resource::setupType()
 void placeResources(EntityGroup * Resources, int type, int number)
 {
   //randomly places number of resource type and adds them to the entity group
-
-  std::default_random_engine gen(std::random_device{}());
-  //std::default_random_engine gen(time(NULL));
+  std::default_random_engine gen(time(NULL));
   std::uniform_real_distribution<float> frand(0., MAP_SIZE+0.0);
   //usage frand(gen)
 

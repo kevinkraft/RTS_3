@@ -60,6 +60,8 @@
 		<Unit filename="include/EntityAction.h" />
 		<Unit filename="include/EntityGroup.h" />
 		<Unit filename="include/EntityHP.h" />
+		<Unit filename="include/Exchange.h" />
+		<Unit filename="include/ExchangeMenu.h" />
 		<Unit filename="include/FunctionCaller.h" />
 		<Unit filename="include/InfoAction.h" />
 		<Unit filename="include/InfoMenu.h" />
@@ -69,6 +71,7 @@
 		<Unit filename="include/Menu.h" />
 		<Unit filename="include/MenuGroup.h" />
 		<Unit filename="include/Movement.h" />
+		<Unit filename="include/NumberBox.h" />
 		<Unit filename="include/PopMenu.h" />
 		<Unit filename="include/Resource.h" />
 		<Unit filename="include/Selectable.h" />
@@ -95,6 +98,7 @@
 		<Unit filename="src/action/Action.cpp" />
 		<Unit filename="src/action/ActionGroup.cpp" />
 		<Unit filename="src/action/Attack.cpp" />
+		<Unit filename="src/action/Exchange.cpp" />
 		<Unit filename="src/action/InfoAction.cpp" />
 		<Unit filename="src/action/Movement.cpp" />
 		<Unit filename="src/entity/Building.cpp" />
@@ -106,9 +110,11 @@
 		<Unit filename="src/entity/Unit.cpp" />
 		<Unit filename="src/graphics/Button.cpp" />
 		<Unit filename="src/graphics/DisplayPiece.cpp" />
+		<Unit filename="src/graphics/ExchangeMenu .cpp" />
 		<Unit filename="src/graphics/InfoMenu.cpp" />
 		<Unit filename="src/graphics/Menu.cpp" />
 		<Unit filename="src/graphics/MenuGroup.cpp" />
+		<Unit filename="src/graphics/NumberBox.cpp" />
 		<Unit filename="src/graphics/PopMenu.cpp" />
 		<Unit filename="src/graphics/SelectionMenu.cpp" />
 		<Unit filename="src/graphics/Sprite.cpp" />

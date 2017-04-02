@@ -14,18 +14,19 @@
 #include "Unit.h"
 #include <cmath>
 #include "FunctionCaller.h"
+#include "Map.h"
 
 //-------------------------------------------------------------------------------------
 
 Movement::Movement(float dest_x, float dest_y) :
   Action()
-{  
+{
   //setActer(acter);
   setDestX(dest_x);
   setDestY(dest_y);
 }
 
-ReturnContainer makeMovement(ArgContainer args) 
+ReturnContainer makeMovement(ArgContainer args)
 {
   Movement * move = new Movement(args.mPosX, args.mPosY);
   ReturnContainer rcontainer = ReturnContainer();
@@ -72,11 +73,11 @@ bool Movement::doAction()
 	}
       return false;
     }
-  else 
+  else
     {
-      std::cout << "Movement:doAction: INFO: Final x pos: " << mActer->getPosX() << std::endl;   
-      std::cout << "Movement:doAction: INFO: Final y pos: " << mActer->getPosY() << std::endl;   
-      std::cout << "INFO: Finished Moving, leaving Movement::doAction" << std::endl;   
+      std::cout << "Movement:doAction: INFO: Final x pos: " << mActer->getPosX() << std::endl;
+      std::cout << "Movement:doAction: INFO: Final y pos: " << mActer->getPosY() << std::endl;
+      std::cout << "INFO: Finished Moving, leaving Movement::doAction" << std::endl;
       return true;
     }
 }
@@ -93,6 +94,28 @@ void Movement::setActer(EntityAction * acter)
   std::cout << "In Movement with EntityAction, setting acter." << std::endl;
   Unit * unit_acter = dynamic_cast<Unit*>(acter);
   setActer(unit_acter);
+}
+
+//-------------------------------------------------------------------------------------
+// Other Movement functions
+//-------------------------------------------------------------------------------------
+
+bool advanceMove(EntityAction * acter, Entity * target)
+{
+  //move a quarter of the distance to the target
+  //used for attempting to meet a moving target
+  float aposx = acter->getPosX();
+  float aposy = acter->getPosY();
+  float tposx = target->getPosX();
+  float tposy = target->getPosY();
+  float dist = getDistBetween(aposx, aposy, tposx, tposy);
+  if (std::abs(dist) > acter->getIntrRange())
+    {
+      Movement * move = new Movement( aposx - (aposx - tposx)/4., aposy - (aposy - tposy)/4. );
+      acter->prependAction(move);
+      return false;
+    }
+  return true;
 }
 
 

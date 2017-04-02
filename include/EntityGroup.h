@@ -23,6 +23,7 @@ class EntityGroup
   void addEntity(Entity * entity);
   Entity * collide(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom);
   void doActions();
+  Entity * getEntity(std::string ename);
   void removeEntity(Entity * entity);
   void render(int cameraoffset_x, int cameraoffset_y, float zoom=1.0);
   void setImage(std::string filename);
@@ -34,6 +35,11 @@ class EntityGroup
     {
       return mEntities;
     }
+  Entity * getEntity(int el)
+    {
+      return mEntities[el];
+    }
+
 
 
   SpriteGroup * mSpriteGroup;

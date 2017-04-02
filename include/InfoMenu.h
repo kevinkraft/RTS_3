@@ -13,6 +13,10 @@
 // * populate function
 //   * one for EntityAction and one for Resourse
 
+//Potential Problem:
+// * What if the stats change while the menu is up?
+//   * You could put a lock on stats when the menu is up
+
 //-------------------------------------------------------------------------------------
 
 #ifndef INFOMENU_H_
@@ -33,7 +37,7 @@
 class InfoMenu: public Menu
 {
  public:
-  
+
   InfoMenu(float x, float y, float width, float height, SDL_Renderer *renderer, SDL_Window *window, TextMaker * textMaker);
   InfoMenu(SDL_Renderer *renderer, SDL_Window *window, TextMaker * textMaker);
   virtual ~InfoMenu();
@@ -72,7 +76,7 @@ class InfoMenu: public Menu
 
   EntityAction * mEntityAction = nullptr;
   Resource * mResource = nullptr;
-  
+
 };
 
 #endif

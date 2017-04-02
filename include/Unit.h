@@ -12,36 +12,38 @@
 class Unit: public EntityAction
 {
  public:
-  
+
   Unit(float pos_x, float pos_y, std::string name = "NAME");
   virtual ~Unit();
-  
+
   virtual std::vector<FunctionCallerID> actionsByMe();
   virtual std::vector<FunctionCallerID> actionsByMyself();
   virtual std::vector<FunctionCallerID> actionsOnMe();
   std::string blurb();
-  
-  /*  std::string getName()
+  virtual std::vector<std::string> printStats();
+
+  double getExchangeSpeed()
     {
-      return mName;
-      }*/
+      return mExchangeSpeed;
+    }
   double getSpeed()
   {
     return mSpeed;
   }
-  /*void setName(std::string name)
-  {
-    mName = name;
-    }*/
+  void setExchangeSpeed(double exspeed)
+    {
+      mExchangeSpeed = exspeed;
+    }
   void setSpeed(double speed)
   {
     mSpeed = speed;
   }
-  
+
  private:
   //std::string mName;
   double mSpeed = UNIT_SPEED;
-  
+  double mExchangeSpeed = UNIT_EXCHANGE_SPEED;
+
 };
 
 #endif

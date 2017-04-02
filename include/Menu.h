@@ -43,16 +43,16 @@ class Menu: virtual public DisplayPiece
   void addTextLine(TextLine * message);
   void addSubMenu(SubMenu * submenu);
   void addSelectionMenu(SelectionMenu * sl);
-  void clear();
+  virtual void clear();
   bool collide(float pos_x, float pos_y);
-  void makeCloseButton();
+  virtual void makeCloseButton();
   virtual bool outcome();
   virtual void render(int cameraoffset_x, int cameraoffset_y, float zoom);
   void renderSubItems();
   using DisplayPiece::setActive;
   void setActive(bool b);
   virtual void setXYPositions(float x, float y);
-  void wipe();
+  virtual void wipe();
 
   Button * getButton(int e)
   {

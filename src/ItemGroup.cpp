@@ -30,6 +30,22 @@ bool ItemGroup::addItem(Item* item)
     }
 }
 
+/*void ItemGroup::consolidate()
+{
+  std::vector<Item*>::iterator item = mItems.begin();
+  for(; item != mItems.end(); item++)
+  {
+    for( std::vector<Item*>::iterator itemin = item; itemin != mItems.end(); itemin++)
+    {
+      if (itemin == item) continue;
+      item->setAmount( itemin->getAmount()+item->getAmount() );
+    }
+
+  }
+
+
+}*/
+
 float ItemGroup::getSize()
 {
   float sum = 0.;
@@ -38,6 +54,13 @@ float ItemGroup::getSize()
       sum += (*it)->getSize();
     }
   return sum;
+}
+
+Item* ItemGroup::getItemOfType(int itype)
+{
+  for (auto &item: mItems)
+    if ( item->getType() == itype) return item;
+  return nullptr;
 }
 
 std::vector<std::string> ItemGroup::print()
@@ -67,6 +90,9 @@ void ItemGroup::printTerminal()
 
 void ItemGroup::removeItem(Item* item)
 {
-  mItems.erase(std::remove(mItems.begin(), mItems.end(), item), mItems.end());
+  //if ( mItems.size() == 1 )
+  //  mItems == nullptr;
+  //else
+    mItems.erase(std::remove(mItems.begin(), mItems.end(), item), mItems.end());
 }
 

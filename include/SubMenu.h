@@ -23,19 +23,17 @@
 class SubMenu: public Menu
 {
  public:
-  
+
   SubMenu(float rel_x, float rel_y, float rel_w, float rel_h, Menu * parent);
   virtual ~SubMenu();
 
-  using Menu::render; 
+  using Menu::render;
   void render();
 
  private:
 
 
 };
-
-
 
 #endif
 

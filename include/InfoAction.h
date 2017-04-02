@@ -28,12 +28,12 @@
 class InfoAction: public Action
 {
  public:
-  
+
   InfoAction(Entity * target, InfoMenu * info_menu);
   //InfoAction(EntityAction * target);
   InfoAction(Resource * target);
   virtual ~InfoAction();
-  
+
   bool doAction();
 
   InfoMenu * getInfoMenu()
@@ -57,7 +57,7 @@ class InfoAction: public Action
 
  private:
   Entity * mTarget;
-  
+
 };
 
 ReturnContainer makeInfoAction(ArgContainer args);

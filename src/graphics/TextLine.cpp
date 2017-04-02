@@ -85,6 +85,7 @@ void TextLine::render()
 std::string makeString(float val)
 {
   std::stringstream sstrval;
+  sstrval.precision(2);
   sstrval << val;
   std::string strval = sstrval.str();
   return strval;

@@ -3,6 +3,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include <random>
+#include <ctime>
 //#include <math.h>
 
 Map::Map(SDL_Renderer* renderer, SDL_Window *window){
@@ -56,8 +57,7 @@ std::vector<std::vector<int>> Map::makeMap(int size)
   //make the game map
 
   //rands
-  std::default_random_engine gen(std::random_device{}());
-  //std::default_random_engine gen(time(NULL));
+  std::default_random_engine gen(time(NULL));
   std::uniform_int_distribution<int> fullrand(0, 2);
   std::uniform_int_distribution<int> dec(0, 5);
   std::uniform_int_distribution<int> inMS(0, MAP_SIZE);

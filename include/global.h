@@ -45,6 +45,7 @@ const float POP_MENU_ITEM_HEIGHT = 35.;
 const float UNIT_HP = 100.;
 const float UNIT_INV_CAP = 10.;
 const double UNIT_SPEED = 0.005;
+const double UNIT_EXCHANGE_SPEED = 0.07;
 //const double UNIT_SPEED = 0.05; //for testing
 const double UNIT_INTERACTION_RANGE = 0.3;
 //const double UNIT_ATTACK_DAMAGE = .01;

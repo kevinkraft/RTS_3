@@ -1,14 +1,14 @@
 #include "Item.h"
 #include "TextLine.h"
 
-Item::Item(int type, int amount, float pos_x, float pos_y)
+Item::Item(int type, float amount, float pos_x, float pos_y)
   : Selectable()
-{  
+{
   setPosX(pos_x);
   setPosY(pos_y);
 
   mSprite = new Sprite(pos_x, pos_y);
-  
+
   setType(type);
   setAmount(amount);
 

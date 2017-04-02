@@ -44,12 +44,10 @@ DisplayPiece::DisplayPiece(float rel_x, float rel_y, float rel_w, float rel_h, D
   : DisplayPiece( parent->getPosX() + rel_x, parent->getPosY() + rel_y, parent->getWidth() * rel_w, parent->getHeight() * rel_h, parent->mRenderer,
 		  parent->mWindow, parent->mTextMaker )
 {
-  std::cout << "INFO: DisplayPiece::DisplayPiece:2 In the 2nd constructor" << std::endl;
   setRelX(rel_x);
   setRelY(rel_y);
   setRelWidth(rel_w);
   setRelHeight(rel_h);
-  std::cout << "INFO: DisplayPiece::DisplayPiece:2 Loading the image" << std::endl;
   setPositions();
 }
 

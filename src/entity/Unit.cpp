@@ -8,6 +8,9 @@
 #include "EntityAction.h"
 #include "Movement.h"
 #include "FunctionCaller.h"
+#include "TextLine.h"
+#include "Exchange.h"
+#include <vector>
 
 Unit::Unit(float pos_x, float pos_y, std::string name) :
   EntityAction(pos_x, pos_y, UNIT_INV_CAP)
@@ -16,7 +19,7 @@ Unit::Unit(float pos_x, float pos_y, std::string name) :
   setPosX(pos_x);
   setPosY(pos_y);
   setName(name);
-  
+
   setDead(false);
 }
 
@@ -25,14 +28,17 @@ Unit::~Unit()
 
 std::vector<FunctionCallerID> Unit::actionsByMe()
 {
-  std::vector<FunctionCallerID> list = EntityAction::actionsByMe();
+  std::vector<FunctionCallerID> list= EntityAction::actionsByMe();
+  FunctionCaller exa = &makeExchange;
+  FunctionCallerID functionID(exa, "Exchange");
+  list.push_back(functionID);
   return list;
 }
 
 std::vector<FunctionCallerID> Unit::actionsByMyself()
 {
   std::vector<FunctionCallerID> list = EntityAction::actionsByMyself();
-  FunctionCaller move = &makeMovement; 
+  FunctionCaller move = &makeMovement;
   FunctionCallerID functionID(move, "Move");
   list.push_back(functionID);
   return list;
@@ -63,5 +69,17 @@ std::vector<std::string> Unit::actionsOnMe()
 
 std::string Unit::blurb()
 {
-  return "Unit: "+getName()+" #newline A unit is the main acter of the game. They are the smallest part of your empire. ";
+  return "Unit: "+getName()+" #newline A unit is the main acter of the game. They are the smallest part of your empire. A unit is the main acter of the game. They are the smallest part of your empire. ";
+}
+
+std::vector<std::string> Unit::printStats()
+{
+  std::vector<std::string> rstr = this->EntityAction::printStats();
+  std::vector<std::string> istr = {"MoveSpd.:","#vspace5",makeString(getSpeed())};
+  rstr.insert( rstr.end(), istr.begin(), istr.end() );
+  rstr.push_back("#newline");
+  istr = {"Exchng.Spd.:","#vspace2",makeString( getExchangeSpeed() )};
+  rstr.insert( rstr.end(), istr.begin(), istr.end() );
+  rstr.push_back("#newline");
+  return rstr;
 }

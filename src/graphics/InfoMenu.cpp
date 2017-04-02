@@ -21,13 +21,13 @@ InfoMenu::~InfoMenu()
 }
 
 void InfoMenu::populate(EntityAction * ea)
-//populate the info menu with EntityAction related info
+//populate the info menu with EntityAction related info, these are currently in info action, but should be here
 {
 
 }
 
 void InfoMenu::populate(Resource * r)
-//populate the info menu with Resource related info
+//populate the info menu with Resource related info, these are currently in info action, but should be here
 {
 
 }
@@ -45,12 +45,12 @@ void InfoMenu::setup()
   //make a stats menu
   SubMenu * submenu_stats = new SubMenu(50, 150, 0.3, 0.68, this);
   this->addSubMenu(submenu_stats);
-  TextBox* stat_box = new TextBox( 0., 0., 1., 1., splitline, mTextMaker, submenu_stats);  
+  TextBox* stat_box = new TextBox( 0., 0., 1., 1., splitline, mTextMaker, submenu_stats);
   submenu_stats->addTextBox(stat_box);
   //make an inventory menu
   SubMenu * submenu_inv = new SubMenu(380., 150., 0.60, 0.68, this);
   this->addSubMenu(submenu_inv);
-  TextBox* inv_box = new TextBox( 0., 0., 1., 1., splitline, mTextMaker, submenu_inv);  
+  TextBox* inv_box = new TextBox( 0., 0., 1., 1., splitline, mTextMaker, submenu_inv);
   submenu_inv->addTextBox(inv_box);
 
   //this->setActive(true);

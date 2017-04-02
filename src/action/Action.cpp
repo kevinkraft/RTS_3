@@ -25,7 +25,7 @@ Action::~Action()
 }
 void Action::setActer(EntityAction * acter)
 {
-  std::cout << "WARN: In Action::setActer." << std::endl;
+  std::cout << "WARN: Action::setActer: This function should be overloaded and in most cases should not be called." << std::endl;
 }
 
 //-------------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ void makeActionMenu(PopMenu * pop_menu, std::vector<FunctionCallerID> callerIDs,
   std::cout << "INFO: Action: makeActionMenu: Start populating pop menu" << std::endl;
   args.setPosX( pop_menu->getGamePosX() );
   args.setPosY( pop_menu->getGamePosY() );
-  //float rel_x = 0.; 
+  //float rel_x = 0.;
   //float rel_y = 0.;
   //float rel_h = 1./(callerIDs.size() + 0.0);
   for(std::vector<FunctionCallerID>::iterator it = callerIDs.begin(); it != callerIDs.end(); ++it)
@@ -47,15 +47,16 @@ void makeActionMenu(PopMenu * pop_menu, std::vector<FunctionCallerID> callerIDs,
       Button * button = new Button(0., 0., 1., 0., (it)->second, (it)->first, args, pop_menu);
       pop_menu->addButton(button);
       //pop_menu->addButton(button);
-      //rel_y += pop_menu->getItemHeight(); 
+      //rel_y += pop_menu->getItemHeight();
     }
   pop_menu->scaleHeight();
-  pop_menu->setActive(true);   
+  pop_menu->setActive(true);
+  TerminalText::printTerminal( "INFO: action::makeActionMenu: Finished populating the pop menu" );
 }
 
 void makeActionMenu(PopMenu * pop_menu, EntityAction * selected)
 {
-  std::cout << "makeActionMenu: INFO: In this fuction." <<std::endl;
+  std::cout << "INFO: Action: makeActionMenu: In this fuction." <<std::endl;
  //make the buttons for actions selected can do on their own
   std::vector<FunctionCallerID> callerIDs = selected->actionsByMyself();
   ArgContainer args = ArgContainer();
@@ -63,7 +64,7 @@ void makeActionMenu(PopMenu * pop_menu, EntityAction * selected)
   makeActionMenu(pop_menu, callerIDs, args);
 }
 
-void makeActionMenu(PopMenu * pop_menu, EntityAction * selected, Entity * target, InfoMenu * info_menu)
+void makeActionMenu(PopMenu * pop_menu, EntityAction * selected, Entity * target, InfoMenu * info_menu, ExchangeMenu * exchange_menu)
 {
   //make the buttons for actions that selected can do on target
   std::vector<FunctionCallerID> callerIDs = selected->actionsByMyself();
@@ -84,6 +85,7 @@ void makeActionMenu(PopMenu * pop_menu, EntityAction * selected, Entity * target
   args.setTargetEntity(target);
   args.setTargetEntityHP(dynamic_cast<EntityHP*>(target));
   args.setInfoMenu(info_menu);
+  args.setExchangeMenu(exchange_menu);
   pop_menu->setSelectedEntity(selected);
   makeActionMenu(pop_menu, callerIDs, args);
 }

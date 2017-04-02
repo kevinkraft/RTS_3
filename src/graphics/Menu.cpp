@@ -16,6 +16,8 @@
 
 //Add:
 // * When you add submenus and tabs lots of things will need to be added here
+// * Selection menu doesnt need its own list, it derives from SubMenu
+//   * See NumberBox, they are added to the menu as just a SubMenu
 
 Menu::Menu(float x, float y, float w, float h, SDL_Renderer *renderer, SDL_Window *window, TextMaker * textMaker)
   : DisplayPiece(x, y, w, h, renderer, window, textMaker)
@@ -54,27 +56,31 @@ Menu::~Menu()
 
 void Menu::addButton(Button * button)
 {
+  button->setActive( isActive() );
   mButtons.push_back(button);
 }
 
 void Menu::addSelectionMenu(SelectionMenu * box)
 {
+  box->setActive( isActive() );
   mSelectionMenus.push_back(box);
 }
 
-
 void Menu::addTextBox(TextBox * box)
 {
+  box->setActive( isActive() );
   mTextBoxes.push_back(box);
 }
 
 void Menu::addTextLine(TextLine * message)
 {
+  message->setActive( isActive() );
   mTextLines.push_back(message);
 }
 
 void Menu::addSubMenu(SubMenu * submenu)
 {
+  submenu->setActive( isActive() );
   mSubMenus.push_back(submenu);
 }
 
@@ -166,14 +172,14 @@ bool Menu::outcome()
     {
       ReturnContainer funcReturn;
       for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
-	{
-	  if ( (*it)->isPressed() )
-	    {
-	      //these default functions dont need anything done on the returns
-	      funcReturn = (*it)->outcome();
-	      break;
-	    }
-	}
+        {
+          if ( (*it)->isPressed() )
+            {
+              //these default functions dont need anything done on the returns
+              funcReturn = (*it)->outcome();
+              break;
+            }
+        }
     }
   for(std::vector<SubMenu*>::iterator it = mSubMenus.begin(); it != mSubMenus.end(); ++it)
     {
@@ -216,6 +222,10 @@ void Menu::renderSubItems()
     {
       (*it)->render();
     }
+  for(std::vector<SelectionMenu*>::iterator it = mSelectionMenus.begin(); it != mSelectionMenus.end(); ++it)
+    {
+      (*it)->render();
+    }
   for(std::vector<TextLine*>::iterator it = mTextLines.begin(); it != mTextLines.end(); ++it)
     {
       (*it)->render();
@@ -224,44 +234,38 @@ void Menu::renderSubItems()
     {
       (*it)->render();
     }
-  for(std::vector<SelectionMenu*>::iterator it = mSelectionMenus.begin(); it != mSelectionMenus.end(); ++it)
-    {
-      (*it)->render();
-    }
 }
 
 void Menu::setActive(bool b)
 {
-  std::cout << "INFO: Menu::setActive: In This Function" << std::endl;
   mActive = b;
   if ( getSizeSubMenus() != 0 )
     {
       for(std::vector<SubMenu*>::iterator it = mSubMenus.begin(); it != mSubMenus.end(); ++it)
-	{
-	  (*it)->setActive(b);
-	}
+        {
+          (*it)->setActive(b);
+        }
     }
-  //    if ( getSizeTextLines() != 0 )
-  //   {
-  //	for(std::vector<TextLine*>::iterator it = mTextLines.begin(); it != mTextLines.end(); ++it)
-  //  {
-  //   (*it)->setActive(b);
-  //  }
-  //}
+  if ( getSizeTextLines() != 0 )
+    {
+      for(std::vector<TextLine*>::iterator it = mTextLines.begin(); it != mTextLines.end(); ++it)
+        {
+          (*it)->setActive(b);
+        }
+    }
   if ( getSizeTextBoxes() != 0 )
     {
       for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
-	{
-	  std::cout << "INFO: Menu::setActive: Setting The Text Boxes active status" << std::endl;
-	  (*it)->setActive(b);
-	}
+        {
+          (*it)->setActive(b);
+        }
     }
   if ( getSizeSelectionMenus() != 0 )
     {
       for(std::vector<SelectionMenu*>::iterator it = mSelectionMenus.begin(); it != mSelectionMenus.end(); ++it)
-	{
-	  (*it)->setActive(b);
-	}
+        {
+          (*it)->setActive(b);
+        }
     }
 }
 
@@ -281,7 +285,7 @@ void Menu::wipe()
     }
   for(std::vector<TextLine*>::iterator it = mTextLines.begin(); it != mTextLines.end(); ++it)
     {
-      (*it)->setText("");
+      (*it)->setText(" ");
     }
   /*  for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
     {
@@ -289,7 +293,7 @@ void Menu::wipe()
       }*/
   for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
     {
-      (*it)->setWords("");
+      (*it)->setWords(" ");
     }
 }
 
@@ -300,12 +304,15 @@ void Menu::wipe()
 ReturnContainer closeMenu(ArgContainer ac)
 {
   ac.mMenu->setActive(false);
+  ac.mMenu->wipe();
   ReturnContainer rt;
   return rt;
 }
 
 Menu * makeInfoMenu(SDL_Renderer *renderer, SDL_Window *window, TextMaker * textHandler)
 {
+  TerminalText::printTerminal("INFO: Menu: makeInfoMenu: In this function.");
+
   std::string splitline = "And to find out that he has to carry this saddness with him in his heart is simply soulcrushing. It is like pouring salt on the wound because it reminds you that this amazing actor has died too. She wheeled her wheel barrow through the streets broad and  narrow crying cockles and mussels alive alive o. 65 people were killed and 314 injured in a blast in Gulshan-e-Iqbal-long-name-very-long Park, in Iqbal Town area of Lahore. The sound of the blast was heard around 6:30 pm today, with rescue teams dispatched to the site. These include 23 ambulances and rescue vehicles. The Irish Times today claims it has reproduced a copy of the paper from 1916 but guess what, it has taken out a sentence";
   //make the info menu
   Menu * info_menu = new Menu( 0., 0., SCREEN_WIDTH, SCREEN_HEIGHT, renderer, window, textHandler);

@@ -5,28 +5,29 @@
 //
 
 //Notes:
-// * Class from which Item and Entity and anything that can go in a Selection List 
+// * Class from which Item and Entity and anything that can go in a Selection List
 //   must derive from
 
 
-//-------------------------------------------------------------------------------------      
+//-------------------------------------------------------------------------------------
 
 #ifndef SELECTABLE_H_
 #define SELECTABLE_H_
 
-//-------------------------------------------------------------------------------------      
+//-------------------------------------------------------------------------------------
 
 class Selectable
 {
  public:
-  
+
   Selectable();
   virtual ~Selectable();
   virtual std::string selectionString();
-    
+  std::string getName() { return mName;}
+
  protected:
-  std::string mName; 
- 
+  std::string mName;
+
 };
 
 #endif

@@ -5,9 +5,9 @@
 //#include "SDL2/SDL.h"
 //#include "SDL2_image/SDL_image.h"
 
-Entity::Entity(float pos_x, float pos_y, bool dead) 
-  : Selectable()  
-{  
+Entity::Entity(float pos_x, float pos_y, bool dead)
+  : Selectable()
+{
 
   mSprite = new Sprite(pos_x, pos_y);
   setPosX(pos_x);
@@ -27,7 +27,7 @@ Entity::~Entity()
 
 std::vector<FunctionCallerID> Entity::actionsOnMe()
 {
-  std::cout << "Entity::actionsOnMe: WARN: This function should not be called" << std::endl;
+  std::cout << "INFO: Entity::actionsOnMe: In this function." << std::endl;
   std::vector<FunctionCallerID> list;
   return list;
 }

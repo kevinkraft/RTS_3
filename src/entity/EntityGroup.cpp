@@ -4,10 +4,10 @@
 //#include "SDL2_image/SDL_image.h"
 
 EntityGroup::EntityGroup(SDL_Renderer *renderer, SDL_Window *window)
-{  
+{
   setWindow(window);
   setRenderer(renderer);
-  
+
   mSpriteGroup = new SpriteGroup(renderer);
 }
 
@@ -51,6 +51,26 @@ void EntityGroup::doActions()
     }
 }
 
+Entity * EntityGroup::getEntity(std::string ename)
+{
+  Entity * ret_ent = nullptr;
+  for (auto &ent: mEntities)
+  {
+    if ( ent->getName() == ename )
+      {
+        //make sure the entity name is unique in the group
+        if ( ret_ent != nullptr )
+          {
+            std::cout << "WARN: EntityGroup::getEntity: Name " << ename << " matches more than one entity in the group. Returning nullptr." << std::endl;
+            return nullptr;
+          }
+        else
+          ret_ent = ent;
+      }
+  }
+  return ret_ent;
+}
+
 void EntityGroup::removeEntity(Entity* entity)
 {
   mEntities.erase(std::remove(mEntities.begin(), mEntities.end(), entity), mEntities.end());
@@ -62,7 +82,7 @@ void EntityGroup::render(int cameraoffset_x, int cameraoffset_y, float zoom)
   for(std::vector<Entity*>::iterator it = mEntities.begin(); it != mEntities.end(); ++it)
     {
       (*it)->render(cameraoffset_x, cameraoffset_y, zoom);
-    }    
+    }
 }
 
 void EntityGroup::setImage(std::string filename)
@@ -71,7 +91,7 @@ void EntityGroup::setImage(std::string filename)
   for(std::vector<Entity*>::iterator it = mEntities.begin(); it != mEntities.end(); ++it)
     {
       (*it)->setImage(filename);
-    }  
+    }
   std::cout << "INFO: Leaving EntityGroup::setImage" << std::endl;
 }
 
@@ -83,7 +103,7 @@ void EntityGroup::setImage(std::string filename)
   for(std::vector<Entity*>::iterator it = mEntities.begin(); it != mEntities.end(); ++it)
     {
       (*it)->setImage();
-    }  
+    }
   std::cout << "INFO: Leaving EntityGroup::setImage no argument" << std::endl;
   }*/
 
@@ -92,7 +112,7 @@ void EntityGroup::setRenderer(SDL_Renderer *renderer)
   for(std::vector<Entity*>::iterator it = mEntities.begin(); it != mEntities.end(); ++it)
     {
       (*it)->getSprite()->mRenderer = renderer;
-    }  
+    }
 }
 
 void EntityGroup::setWindow(SDL_Window *window)
@@ -100,7 +120,7 @@ void EntityGroup::setWindow(SDL_Window *window)
   for(std::vector<Entity*>::iterator it = mEntities.begin(); it != mEntities.end(); ++it)
     {
       (*it)->getSprite()->mWindow = window;
-    }  
+    }
 }
 
 void EntityGroup::update()

@@ -13,6 +13,7 @@ class Entity;
 class EntityHP;
 class TextBox;
 class SelectionMenu;
+class ExchangeMenu;
 
 class ArgContainer
 {
@@ -26,14 +27,19 @@ class ArgContainer
       mMenu = nullptr;
       mTextBox = nullptr;
       mInfoMenu = nullptr;
+      mExchangeMenu = nullptr;
       mInt = 0;
     }
   virtual ~ArgContainer()
     {}
-  
+
   void setInfoMenu(InfoMenu * im)
   {
     mInfoMenu = im;
+  }
+  void setExchangeMenu(ExchangeMenu * em)
+  {
+    mExchangeMenu = em;
   }
   void setInt( int i)
   {
@@ -76,9 +82,9 @@ class ArgContainer
   Menu * mMenu;
   TextBox * mTextBox;
   InfoMenu * mInfoMenu;
+  ExchangeMenu * mExchangeMenu;
   int mInt;
   SelectionMenu * mSelectionMenu;
-
 };
 
 class ReturnContainer

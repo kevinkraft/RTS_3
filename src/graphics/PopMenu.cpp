@@ -7,7 +7,7 @@
 //Note:
 // * This class is inherantly linked to Action classes and Entity classes
 //   * if it is ever necessary to make over pop menus you can move some of the action/entity
-//     stuff to those classes 
+//     stuff to those classes
 // * x and y are game coordinates
 // * mRect is obsolete but may be needed for sub menus
 
@@ -35,40 +35,46 @@ PopMenu::~PopMenu()
 
 bool PopMenu::outcome()
 {
+  TerminalText::printTerminal("INFO: PopMenu::outcome: In this function");
   if (mButtons.size() != 0)
     {
+      TerminalText::printTerminal("INFO: PopMenu::outcome: HERE1");
       ReturnContainer funcReturn;
       for(std::vector<Button*>::iterator it = mButtons.begin(); it != mButtons.end(); ++it)
-	{
-	  if ( (*it)->isPressed() )
-	    {
-	      funcReturn = (*it)->outcome();
-	      break;
-	    }
-	}
+        {
+          if ( (*it)->isPressed() )
+            {
+              funcReturn = (*it)->outcome();
+              break;
+            }
+        }
+        TerminalText::printTerminal("INFO: PopMenu::outcome: HERE2");
       if (funcReturn.mAction != nullptr)
-	{
-	  if (mSelectedEntity == nullptr)
-	    {
-	      std::cout << "PopMenu::outcome: INFO: mSelectedEntity is a nullptr" << std::endl;
-	      return true;
-	    }
-	  else if ( dynamic_cast<InfoAction*>(funcReturn.mAction) )
-	    {
-	      mSelectedEntity->prependAction(funcReturn.mAction);
-	    }
-	  else
-	    {
-	      std::cout << "PopMenu::outcome: INFO: After checking for null pointer" << std::endl;
-	      mSelectedEntity->clearAddAction(funcReturn.mAction);
-	    }
-	  return true;
-	}
+        {
+          if (mSelectedEntity == nullptr)
+            {
+              TerminalText::printTerminal("INFO: PopMenu::outcome: HERE3");
+              std::cout << "PopMenu::outcome: INFO: mSelectedEntity is a nullptr" << std::endl;
+              return true;
+            }
+          else if ( dynamic_cast<InfoAction*>(funcReturn.mAction) != nullptr )
+            {
+            TerminalText::printTerminal("INFO: PopMenu::outcome: HERE4");
+            mSelectedEntity->prependAction(funcReturn.mAction);
+            TerminalText::printTerminal("INFO: PopMenu::outcome: HERE5");
+            }
+          else
+            {
+              std::cout << "PopMenu::outcome: INFO: After checking for null pointer" << std::endl;
+              mSelectedEntity->clearAddAction(funcReturn.mAction);
+            }
+          return true;
+        }
       else if ( funcReturn.mOutcome != 0) //this could be done better
-	{
-	  std::cout << "PopMenu::outcome: WARN: Integer outcome is not the correct return type." << std::endl;
-	  return true;
-	}
+        {
+          std::cout << "PopMenu::outcome: WARN: Integer outcome is not the correct return type." << std::endl;
+          return true;
+        }
     }
   else
     {
@@ -80,7 +86,7 @@ bool PopMenu::outcome()
 
 void PopMenu::scaleHeight()
 {
-  
+
   setHeight(mItemHeight * getSizeButtons());
 }
 
