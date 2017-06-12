@@ -386,9 +386,9 @@ int main(int argc, char **argv)
   Construction * hut_constr = new Construction(1., 7., 0);
   town00->addEntity(hut_constr);
 
-  /*//TEMP set unit_you to work on the construction
+  //TEMP set unit_you to work on the construction
   Construct * construct = new Construct(hut_constr);
-  unit_you->clearAddAction(construct);*/
+  //unit_you->clearAddAction(construct);
 
   //Make random number generators for the Region seeds
   std::default_random_engine RGen(time(NULL));
