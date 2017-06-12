@@ -18,7 +18,7 @@
 class Entity: public Selectable
 {
  public:
-  
+
   Entity(float pos_X, float pos_y, bool dead = false);
   //Entity();
   virtual ~Entity();
@@ -33,12 +33,12 @@ class Entity: public Selectable
 
   virtual void doAction()
   {
-    std::cout << "WARN: This entity can't do actions." << std::endl;
+    //std::cout << "WARN: Entity::doAction: This entity can't do actions." << std::endl;
   }
   std::string getName()
   {
     return mName;
-  }  
+  }
   float getPosX() const
   {
     return mPos_x;
@@ -80,7 +80,7 @@ class Entity: public Selectable
 
  protected:
   //  std::string mName = "NAME";
-  
+
  private:
   float mPos_x;
   float mPos_y;
@@ -88,8 +88,6 @@ class Entity: public Selectable
   bool mDead;
   Sprite * mSprite;
 
-
-  
 };
 
 #endif

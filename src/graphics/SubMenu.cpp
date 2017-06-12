@@ -2,7 +2,7 @@
 #include "SubMenu.h"
 #include "texture.h"
 
-SubMenu::SubMenu(float rel_x, float rel_y, float rel_w, float rel_h, Menu * parent) 
+SubMenu::SubMenu(float rel_x, float rel_y, float rel_w, float rel_h, Menu * parent)
   : DisplayPiece(parent->getPosX() + rel_x, parent->getPosY() + rel_y, parent->getWidth() * rel_w, parent->getHeight() * rel_h, parent),
     Menu( rel_x, rel_y, rel_w, rel_h, parent )
 {

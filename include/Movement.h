@@ -5,18 +5,19 @@
 #include <iostream>
 
 #include "Action.h"
-#include "EntityAction.h"
 #include "Entity.h"
+#include "EntityAction.h"
 #include "Unit.h"
 #include "FunctionCaller.h"
+
 
 class Movement: public Action
 {
  public:
-  
+
   Movement(float dest_x, float dest_y);
   virtual ~Movement();
-  
+
   bool doAction();
   void setActer(Unit * acter);
   //void setActer(EntityAction * acter) override { return setActer(dynamic_cast<Unit*>(acter)); }
@@ -50,5 +51,6 @@ class Movement: public Action
 };
 
 ReturnContainer makeMovement(ArgContainer args);
+bool advanceMove(EntityAction * acter, Entity * target);
 
 #endif

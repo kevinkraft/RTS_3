@@ -11,10 +11,11 @@ Building::Building(float pos_x, float pos_y, int type) :
   setSprite( new Sprite(pos_x, pos_y, BUILDING_CLICK_WIDTH, BUILDING_CLICK_HEIGHT, BUILDING_CLICK_OFFSET_X, BUILDING_CLICK_OFFSET_Y) );
   setPosX(pos_x);
   setPosY(pos_y);
-  
+
   setType(type);
 
   setDead(false);
+  setupType();
 }
 
 Building::~Building()
@@ -51,7 +52,13 @@ void Building::setupType()
     {
     case 0: //main hut
       setName("Hut");
-      filename = "res/images/buildings/0_2.png";
+      filename = "res/images/buildings/0.png";
+      this->getInventory()->setCapacity(50.);
+      break;
+    case 1: //stockpile
+      setName("Stockpile");
+      filename = "res/images/buildings/1.png";
+      this->getInventory()->setCapacity(1000.);
       break;
     default:
       std::cout << "Building::setType: ERROR: Building Type Not Recognised" << std::endl;

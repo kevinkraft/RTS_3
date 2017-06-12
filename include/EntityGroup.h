@@ -5,14 +5,18 @@
 #include <vector>
 #include <algorithm>
 
-#include "SDL2/SDL.h"
-#include "SDL2_image/SDL_image.h"
+#include "SDL.h"
+//#include "SDL2_image/SDL_image.h"
 
 
 //#include "global.h"
 #include "Entity.h"
 #include "SpriteGroup.h"
 
+//Notes:
+// * When an Entity is added, its setupType function is called again to make sure its
+//   Sprite is loaded. This is because the Sprite is overwritten by the Entity
+//   constructor
 
 class EntityGroup
 {
@@ -23,7 +27,9 @@ class EntityGroup
   void addEntity(Entity * entity);
   Entity * collide(float x, float y, int cameraoffset_x, int cameraoffset_y, float zoom);
   void doActions();
-  void removeEntity(Entity * entity);  
+  Entity * getClosest(float x, float y);
+  Entity * getEntity(std::string ename);
+  void removeEntity(Entity * entity);
   void render(int cameraoffset_x, int cameraoffset_y, float zoom=1.0);
   void setImage(std::string filename);
   void setRenderer(SDL_Renderer *renderer);
@@ -34,8 +40,13 @@ class EntityGroup
     {
       return mEntities;
     }
+  Entity * getEntity(int el)
+    {
+      return mEntities[el];
+    }
 
-    
+
+
   SpriteGroup * mSpriteGroup;
   std::vector<Entity*> mEntities;
 

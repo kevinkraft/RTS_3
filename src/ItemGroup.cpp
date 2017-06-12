@@ -1,3 +1,4 @@
+#include<algorithm>
 #include "ItemGroup.h"
 #include "TextLine.h"
 
@@ -19,16 +20,38 @@ bool ItemGroup::addItem(Item* item)
   //check capacity
   if ( getSize() + item->getSize() < mCapacity || mCapacity == -1)
     {
-      mItems.push_back( item );      
+      mItems.push_back( item );
       return true;
     }
   else
     {
-      std::cout << "ItemGroup::addItem: INFO: The ItemGroup is full" << std::endl;
+      std::cout << "INFO: ItemGroup::addItem: The ItemGroup is full" << std::endl;
       return false;
     }
 }
 
+std::vector< std::pair<int,float> > ItemGroup::makeExhangeList()
+{
+  //makes a list that is compatible with the Exchange action for all items in the group
+  //used for making an exchange for the entire inventory
+  std::vector< std::pair<int,float> > ret_list;
+  for (auto &itm: this->mItems )
+    {
+      std::pair<int, float> pr = {itm->getType(),itm->getAmount()};
+      ret_list.push_back(pr);
+    }
+  return ret_list;
+}
+
+float ItemGroup::getFreeSpace()
+{
+  //returns the amount of free space
+  float fs = getCapacity() - getSize();
+  if ( fs < 0 )
+    return 0.;
+  else
+    return fs;
+}
 float ItemGroup::getSize()
 {
   float sum = 0.;
@@ -37,6 +60,13 @@ float ItemGroup::getSize()
       sum += (*it)->getSize();
     }
   return sum;
+}
+
+Item* ItemGroup::getItemOfType(int itype)
+{
+  for (auto &item: mItems)
+    if ( item->getType() == itype) return item;
+  return nullptr;
 }
 
 std::vector<std::string> ItemGroup::print()
@@ -66,6 +96,9 @@ void ItemGroup::printTerminal()
 
 void ItemGroup::removeItem(Item* item)
 {
-  mItems.erase(std::remove(mItems.begin(), mItems.end(), item), mItems.end());
+  //if ( mItems.size() == 1 )
+  //  mItems == nullptr;
+  //else
+    mItems.erase(std::remove(mItems.begin(), mItems.end(), item), mItems.end());
 }
 

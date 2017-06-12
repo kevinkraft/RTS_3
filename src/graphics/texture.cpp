@@ -1,7 +1,7 @@
 #include "texture.h"
 #include "logging.h"
-#include "SDL2/SDL.h"
-#include "SDL2_image/SDL_image.h"
+#include "SDL.h"
+#include "SDL_image.h"
 
 //Add:
 // * another function which accepts a rectangle rather than making one
@@ -29,7 +29,7 @@ SDL_Texture *loadTexture(std::string file, SDL_Renderer *renderer, bool colorkey
 {
   SDL_Texture *texture = nullptr;
   SDL_Surface *loadedImage = IMG_Load(file.c_str());
-  
+
   if (loadedImage != nullptr)
     {
       if (colorkey)
@@ -49,7 +49,7 @@ SDL_Texture *loadTexture(std::string file, SDL_Renderer *renderer, bool colorkey
     }
   else
     logSDLError(std::cout, "LoadBMP");
-  
+
   return texture;
 }
 

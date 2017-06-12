@@ -1,6 +1,7 @@
 #include "ActionGroup.h"
 #include "Action.h"
 #include <vector>
+#include <algorithm>
 
 ActionGroup::ActionGroup()
 {}

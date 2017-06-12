@@ -11,12 +11,16 @@ class ItemGroup
  public:
   ItemGroup(float cap=0.);
   virtual ~ItemGroup();
-  
+
   bool addItem(Item * item);
+  //void consolidate();
+  std::vector< std::pair<int,float> > makeExhangeList();
+  float getFreeSpace();
   float getSize();
+  Item * getItemOfType(int itype);
   std::vector<std::string> print();
   void printTerminal();
-  void removeItem(Item * item);  
+  void removeItem(Item * item);
 
   float getCapacity()
   {
@@ -27,14 +31,12 @@ class ItemGroup
     mCapacity = cap;
   }
 
-  //std::vector<Item*> mItems;
-  
   std::vector<Item*> mItems;
 
  private:
-  
+
   float mCapacity; //-1 is no cap
-  
+
 };
 
-#endif 
+#endif

@@ -9,8 +9,8 @@
 #ifndef DISPLAYPIECE_H_
 #define DISPLAYPIECE_H_
 
-#include "SDL2/SDL.h"
-#include "SDL2_image/SDL_image.h"
+//#include "SDL.h"
+//#include "SDL2_image/SDL_image.h"
 
 #include "TextMaker.h"
 
@@ -19,7 +19,7 @@
 class DisplayPiece
 {
  public:
-  
+
   DisplayPiece(float screen_x, float screen_y, float width, float height, SDL_Renderer *renderer, SDL_Window *window, TextMaker * TextHandler);
   DisplayPiece(float rel_x, float rel_y, float rel_w, float rel_h, DisplayPiece * parent);
   //DisplayPiece();
@@ -28,12 +28,12 @@ class DisplayPiece
   void loadImage(std::string filename);
   virtual void setActive(bool b);
   void setPositions();
-  
+
 
   virtual float getHeight()
   {
     return mHeight;
-  }  
+  }
   virtual float getPosX() const
   {
     return mPos_x;
@@ -114,7 +114,7 @@ class DisplayPiece
   {
     mRel_y = ry;
   }
-  
+
   SDL_Texture *mTexture;
   SDL_Renderer *mRenderer;
   SDL_Window *mWindow;
@@ -122,14 +122,14 @@ class DisplayPiece
   SDL_Rect * mRect;
 
  protected:
-  bool mActive;  
-  
+  bool mActive;
+
  private:
   float mPos_x;
   float mPos_y;
   float mWidth;
   float mHeight;
-  
+
   //relative members
   float mRel_x;
   float mRel_y;

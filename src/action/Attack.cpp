@@ -28,7 +28,7 @@ class EntityHP;
 
 Attack::Attack(EntityHP * target) :
   Action()
-{  
+{
   setTarget(target);
 }
 
@@ -46,7 +46,7 @@ Attack::~Attack()
 }
 
 bool Attack::doAction()
-{  
+{
   float aposx = mActer->getPosX();
   float aposy = mActer->getPosY();
   float tposx = mTarget->getPosX();
@@ -55,24 +55,34 @@ bool Attack::doAction()
 
   std::cout << "Attack::doAction: INFO: mTarget->getHP(): " << mTarget->getHP() << std::endl;
 
-  if (std::abs(dist) > mActer->getIntrRange())
+  bool admove = advanceMove(mActer, mTarget);
+  if (admove == false)
     {
-      //move a quater of the distance to the target
-      Movement * move = new Movement( aposx - (aposx - tposx)/4., aposy - (aposy - tposy)/4. );
-      mActer->prependAction(move);
+      //if it isnt close enough advance towards and go to next loop
       return false;
     }
-  else if (std::abs(dist) <= mActer->getIntrRange())
+  /*if (std::abs(dist) > mActer->getIntrRange())
+    {
+      //move a quarter of the distance to the target
+      return advanceMove(mActer, mTarget);
+      //Movement * move = new Movement( aposx - (aposx - tposx)/4., aposy - (aposy - tposy)/4. );
+      //mActer->prependAction(move);
+      //return false;
+    }*/
+  if (std::abs(dist) <= mActer->getIntrRange())
     {
       //within range
       if ( mTarget->isDead() )
-	return true;
+        return true;
       else
-	{
-	  mTarget->setHP( mTarget->getHP() - mActer->getAttackDamage() );
-	  return false;
-	}
+        {
+          mTarget->setHP( mTarget->getHP() - mActer->getAttackDamage() );
+          return false;
+        }
     }
   std::cout << "Attack::doAction: ERROR: Invalid distance between objets." << std::endl;
   return true;
 }
+
+
+

@@ -7,6 +7,9 @@
 //Note:
 // * x and y are screen positions
 // * mSelection is the currently selected Selectable
+// * it uses the mMaxLines and mScroll of the TextBox to work out which
+//   selectable is selected when a button is pressed
+
 
 //-------------------------------------------------------------------------------------
 
@@ -38,30 +41,47 @@ class SelectionMenu: public SubMenu
   void setup();
 
   // * outcome();
-  /*  using SubMenu::render; 
+  /*  using SubMenu::render;
       void render();*/
 
   Selectable * getSelectable(int s)
   {
     return mSelectionList[s];
-  }  
+  }
   Selectable * getSelection()
   {
-    return mSelection;
-  }  
+    if (mSelection == nullptr)
+      return nullptr;
+    else
+      return mSelection;
+  }
+  int getSizeSelectionList()
+  {
+    return mSelectionList.size();
+  }
+  bool hasSelection()
+  {
+    return mHasSelection;
+  }
+  void setHasSelection(bool b)
+  {
+    mHasSelection = b;
+  }
   void setSelection( int i )
   {
     mSelection = mSelectionList[i];
+    setHasSelection(true);
   }
   void setSelectionList(std::vector<Selectable*> sl)
   {
     mSelectionList = sl;
   }
 
-
  private:
   std::vector<Selectable*> mSelectionList;
   Selectable* mSelection;
+  bool mHasSelection;
+
 };
 
   ReturnContainer setButtonSelection(ArgContainer args);

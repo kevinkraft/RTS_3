@@ -1,14 +1,14 @@
 #include "Item.h"
 #include "TextLine.h"
 
-Item::Item(int type, int amount, float pos_x, float pos_y)
+Item::Item(int type, float amount, float pos_x, float pos_y)
   : Selectable()
-{  
+{
   setPosX(pos_x);
   setPosY(pos_y);
 
   mSprite = new Sprite(pos_x, pos_y);
-  
+
   setType(type);
   setAmount(amount);
 
@@ -39,6 +39,7 @@ void Item::printTerminal()
 
 void Item::setType(int type)
 {
+  //NOTE THAT THE EXCHANGE AND COLLECT FUNCTION ARE NOT YET DESIGNED TO DEAL WITH item unit sizes GREATER THAN 1
   mType = type;
   switch (type)
     {
@@ -48,7 +49,8 @@ void Item::setType(int type)
       break;
     case 2:
       setName("Wood");
-      setUnitSize(3.);
+      //setUnitSize(3.);
+      setUnitSize(1.);
       break;
     default:
       std::cout << "Item::setType ERROR: Type Not Recognised" << std::endl;

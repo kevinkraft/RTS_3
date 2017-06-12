@@ -6,6 +6,7 @@
 #include "InfoAction.h"
 #include "ItemGroup.h"
 #include "TextLine.h"
+#include "Exchange.h"
 #include <vector>
 
 //class Attack;
@@ -19,15 +20,15 @@
   std::cout << "EntityAction: INFO: leaving second constructor" << std::endl;
   }*/
 
-EntityAction::EntityAction(float pos_x, float pos_y, float inv_cap) :
-  EntityHP(pos_x, pos_y)
+EntityAction::EntityAction(float pos_x, float pos_y, float inv_cap, float hp) :
+  EntityHP(pos_x, pos_y, hp)
 {
   std::cout << "EntityAction: INFO: Infirst constructor" << std::endl;
   //ActionGroup actionList = ActionGroup();
   //ItemGroup inventory = ItemGroup(inv_cap);
   //EntityAction(actionList, inventory);
-  mActions = ActionGroup();
-  mInventory = ItemGroup(inv_cap);
+  mActions = new ActionGroup();
+  mInventory = new ItemGroup(inv_cap);
 }
 
 EntityAction::~EntityAction()
@@ -35,8 +36,8 @@ EntityAction::~EntityAction()
 
 bool EntityAction::addItem(Item* item)
 {
-  std::cout << "EntityAction::addItem: INFO: Adding an Item to the ItemGroup" << std::endl;
-  return mInventory.addItem(item);
+  //std::cout << "EntityAction::addItem: INFO: Adding an Item to the ItemGroup" << std::endl;
+  return mInventory->addItem(item);
 }
 
 std::vector<FunctionCallerID> EntityAction::actionsByMe()
@@ -47,7 +48,7 @@ std::vector<FunctionCallerID> EntityAction::actionsByMe()
   list.push_back(functionID);
   FunctionCaller ia = &makeInfoAction;
   FunctionCallerID functionID2(ia, " Info ");
-  list.push_back(functionID2);  
+  list.push_back(functionID2);
   return list;
 }
 
@@ -61,8 +62,11 @@ std::vector<FunctionCallerID> EntityAction::actionsOnMe()
 {
   std::vector<FunctionCallerID> list = EntityHP::actionsOnMe();
   FunctionCaller ia = &makeInfoAction;
-  FunctionCallerID functionID(ia, " Info ");
-  list.push_back(functionID);  
+  FunctionCallerID ia_functionID(ia, " Info ");
+  list.push_back(ia_functionID);
+  FunctionCaller exa = &makeExchange;
+  FunctionCallerID exa_functionID(exa, "Exchange");
+  list.push_back(exa_functionID);
   return list;
 }
 
@@ -70,7 +74,7 @@ void EntityAction::appendAction(Action * act)
 {
   act->setActer(this);
   std::cout << "EntityAction::appendAction: INFO: After Setting acter, about to add action to the actions list" << std::endl;
-  mActions.appendAction(act);  
+  mActions->appendAction(act);
   std::cout << "EntityAction::appendAction: INFO: Added action to the actions list" << std::endl;
 }
 
@@ -79,28 +83,34 @@ void EntityAction::clearAddAction(Action * act)
   if (act == nullptr)
     std::cout << "EntityAction::clearAddAction: It's a null pointer" << std::endl;
   act->setActer(this);
-  mActions.clearAddAction(act);  
+  mActions->clearAddAction(act);
 }
+
+/*void EntityAction::consolidateInventory()
+{
+  mInventory.consolidate();
+}*/
 
 void EntityAction::doAction()
 {
-  if (mActions.getSize() > 0)
+  //TerminalText::printTerminal("INFO: EntityAction::doAction: Number of actions in list: "+makeString(mActions->getSize())+"." );
+  if (mActions->getSize() > 0)
     {
-      if (mActions.getAction(0)->doAction() == true)
-	{
-	  mActions.removeAction(mActions.getAction(0));
-	}
-    }  
+      if (mActions->getAction(0)->doAction() == true)
+	      {
+          mActions->removeAction(mActions->getAction(0));
+        }
+    }
 }
 
 std::vector<std::string> EntityAction::printInventory()
 {
-  return mInventory.print();
+  return mInventory->print();
 }
 
 void EntityAction::printInventoryTerminal()
 {
-  mInventory.printTerminal();
+  mInventory->printTerminal();
 }
 
 std::vector<std::string> EntityAction::printStats()
@@ -126,17 +136,24 @@ std::vector<std::string> EntityAction::printStats()
   istr = {"Y:","#vspace13",makeString( getPosY() )};
   rstr.insert( rstr.end(), istr.begin(), istr.end() );
   rstr.push_back("#newline");
+  istr = {"InvCap:","#vspace8",makeString( getInventory()->getCapacity() )};
+  rstr.insert( rstr.end(), istr.begin(), istr.end() );
+  rstr.push_back("#newline");
+  istr = {"InvSize:","#vspace7",makeString( getInventory()->getSize() )};
+  rstr.insert( rstr.end(), istr.begin(), istr.end() );
+  rstr.push_back("#newline");
   return rstr;
 }
 
 void EntityAction::prependAction(Action * act)
 {
   act->setActer(this);
-  mActions.prependAction(act);  
+  mActions->prependAction(act);
 }
 
 bool EntityAction::update()
 {
   //return false if entity is dead
+  //consolidateInventory();
   return EntityHP::update();
 }

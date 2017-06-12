@@ -28,7 +28,7 @@ class Button;
 class TextBox: virtual public DisplayPiece
 {
  public:
- 
+
   //TextBox(float x, float y, float width, float height, std::vector<std::string> words, TextMaker * maker);
   TextBox(float rel_x, float rel_y, float rel_w, float rel_h, std::string splitline, TextMaker * maker, DisplayPiece * parent);
   TextBox(float rel_x, float rel_y, float rel_w, float rel_h, std::string splitline, TextMaker * maker, Menu * menu);
@@ -46,15 +46,15 @@ class TextBox: virtual public DisplayPiece
   TextLine* getLine(int e)
   {
     return mLines[e];
-  }  
+  }
   std::vector<TextLine*> getLines()
   {
     return mLines;
-  }  
+  }
   int getMaxLines()
   {
     return mMaxLines;
-  }  
+  }
   int getScroll()
   {
     return mScroll;
@@ -67,6 +67,10 @@ class TextBox: virtual public DisplayPiece
   {
     return mScrollButtonUp;
   }
+  int getSizeWords()
+  {
+    return mWords.size();
+  }
   TextMaker * getTextMaker()
   {
     return mTextMaker;
@@ -74,7 +78,7 @@ class TextBox: virtual public DisplayPiece
   std::string getWord(int e)
   {
     return mWords[e];
-  }  
+  }
   void setScroll(int s)
   {
     mScroll = s;
@@ -87,15 +91,15 @@ class TextBox: virtual public DisplayPiece
  protected:
   std::vector<std::string> mWords;
   std::vector<TextLine*> mLines;
-  
+
  private:
-  
+
   TextMaker * mTextMaker;
 
   //for scrolling
   Button* mScrollButtonUp = nullptr;
   Button* mScrollButtonDown = nullptr;
-  int mMaxLines;
+  int mMaxLines = 0.;
   int mScroll = 0;
 
 };

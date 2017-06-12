@@ -1,0 +1,929 @@
+# depslib dependency file v1.0
+1496521842 source:d:\programs\github\rts_3\main.cpp
+	<iostream>
+	<string>
+	<sstream>
+	<random>
+	<ctime>
+	<SDL.h>
+	"global.h"
+	"logging.h"
+	"Timer.h"
+	"Sprite.h"
+	"SpriteGroup.h"
+	"Region.h"
+	"Town.h"
+	"EntityGroup.h"
+	"EntityAction.h"
+	"Unit.h"
+	"Movement.h"
+	"Attack.h"
+	"InfoMenu.h"
+	"ExchangeMenu.h"
+	"Menu.h"
+	"PopMenu.h"
+	"SubMenu.h"
+	"SelectionMenu.h"
+	"MenuGroup.h"
+	"Map.h"
+	"Action.h"
+	"TextMaker.h"
+	"TextLine.h"
+	"Resource.h"
+	"Building.h"
+	"Exchange.h"
+	"Construction.h"
+	"Construct.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_assert.h"
+	"SDL_atomic.h"
+	"SDL_audio.h"
+	"SDL_clipboard.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_filesystem.h"
+	"SDL_joystick.h"
+	"SDL_gamecontroller.h"
+	"SDL_haptic.h"
+	"SDL_hints.h"
+	"SDL_loadso.h"
+	"SDL_log.h"
+	"SDL_messagebox.h"
+	"SDL_mutex.h"
+	"SDL_power.h"
+	"SDL_render.h"
+	"SDL_rwops.h"
+	"SDL_system.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_version.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<math.h>
+	<float.h>
+	<sal.h>
+	"begin_code.h"
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_config.h
+	"SDL_platform.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_platform.h
+	"AvailabilityMacros.h"
+	"TargetConditionals.h"
+	<winapifamily.h>
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\begin_code.h
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\close_code.h
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_assert.h
+	"SDL_config.h"
+	"begin_code.h"
+	<signal.h>
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_atomic.h
+	"SDL_stdinc.h"
+	"SDL_platform.h"
+	"begin_code.h"
+	<mbarrier.h>
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_endian.h
+	"SDL_stdinc.h"
+	<endian.h>
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_atomic.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_clipboard.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_cpuinfo.h
+	"SDL_stdinc.h"
+	<intrin.h>
+	<intrin.h>
+	<altivec.h>
+	<mmintrin.h>
+	<mm3dnow.h>
+	<xmmintrin.h>
+	<emmintrin.h>
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_gamecontroller.h"
+	"SDL_quit.h"
+	"SDL_gesture.h"
+	"SDL_touch.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_video.h
+	"SDL_stdinc.h"
+	"SDL_pixels.h"
+	"SDL_rect.h"
+	"SDL_surface.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_pixels.h
+	"SDL_stdinc.h"
+	"SDL_endian.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_rect.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_pixels.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_surface.h
+	"SDL_stdinc.h"
+	"SDL_pixels.h"
+	"SDL_rect.h"
+	"SDL_blendmode.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_blendmode.h
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keycode.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_keycode.h
+	"SDL_stdinc.h"
+	"SDL_scancode.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_scancode.h
+	"SDL_stdinc.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_gamecontroller.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"SDL_joystick.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_gesture.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"SDL_touch.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_touch.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_filesystem.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_haptic.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_joystick.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_hints.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_log.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_messagebox.h
+	"SDL_stdinc.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_power.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_render.h
+	"SDL_stdinc.h"
+	"SDL_rect.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_system.h
+	"SDL_stdinc.h"
+	"SDL_keyboard.h"
+	"SDL_render.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476939494 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1492395123 d:\programs\github\rts_3\include\global.h
+	<vector>
+	<map>
+	<SDL.h>
+
+1485619249 d:\programs\github\rts_3\include\logging.h
+	<iostream>
+	"SDL.h"
+
+1485619256 d:\programs\github\rts_3\include\timer.h
+	"SDL.h"
+
+1485705389 d:\programs\github\rts_3\include\sprite.h
+	<string>
+	<iostream>
+	"SDL.h"
+	"global.h"
+	"texture.h"
+
+1485619272 d:\programs\github\rts_3\include\texture.h
+	<iostream>
+	<string>
+	"SDL.h"
+	"logging.h"
+
+1485619282 d:\programs\github\rts_3\include\spritegroup.h
+	<iostream>
+	<vector>
+	<algorithm>
+	"SDL.h"
+	"global.h"
+	"Sprite.h"
+
+1492185395 d:\programs\github\rts_3\include\entitygroup.h
+	<iostream>
+	<vector>
+	<algorithm>
+	"SDL.h"
+	"Entity.h"
+	"SpriteGroup.h"
+
+1491672828 d:\programs\github\rts_3\include\entity.h
+	<string>
+	<iostream>
+	<vector>
+	<cstdarg>
+	"Sprite.h"
+	"Action.h"
+	"Selectable.h"
+
+1490553017 d:\programs\github\rts_3\include\action.h
+	<string>
+	<iostream>
+	"FunctionCaller.h"
+
+1485618344 d:\programs\github\rts_3\include\functioncaller.h
+	<string>
+	<iostream>
+	"ArgContainer.h"
+
+1492394072 d:\programs\github\rts_3\include\argcontainer.h
+	<string>
+	<iostream>
+
+1491661375 d:\programs\github\rts_3\include\selectable.h
+	<string>
+
+1492390374 d:\programs\github\rts_3\include\entityaction.h
+	<string>
+	<iostream>
+	<vector>
+	"EntityHP.h"
+	"Action.h"
+	"ActionGroup.h"
+	"ItemGroup.h"
+	"Item.h"
+	"global.h"
+	"FunctionCaller.h"
+
+1492360256 d:\programs\github\rts_3\include\entityhp.h
+	<string>
+	<iostream>
+	"Entity.h"
+	"global.h"
+
+1485618344 d:\programs\github\rts_3\include\actiongroup.h
+	<iostream>
+	<vector>
+	"Action.h"
+
+1492388707 d:\programs\github\rts_3\include\itemgroup.h
+	<iostream>
+	<vector>
+	"Item.h"
+
+1490226152 d:\programs\github\rts_3\include\item.h
+	<string>
+	<iostream>
+	"Sprite.h"
+	"Selectable.h"
+
+1492391880 d:\programs\github\rts_3\include\unit.h
+	<string>
+	<iostream>
+	"EntityAction.h"
+	"global.h"
+	"FunctionCaller.h"
+	"Eat.h"
+
+1490211830 d:\programs\github\rts_3\include\movement.h
+	<string>
+	<iostream>
+	"Action.h"
+	"Entity.h"
+	"EntityAction.h"
+	"Unit.h"
+	"FunctionCaller.h"
+
+1490211794 d:\programs\github\rts_3\include\attack.h
+	<string>
+	<iostream>
+	"Action.h"
+	"FunctionCaller.h"
+
+1490310960 d:\programs\github\rts_3\include\infomenu.h
+	"EntityAction.h"
+	"Menu.h"
+	"Resource.h"
+	"TextMaker.h"
+
+1491068603 d:\programs\github\rts_3\include\menu.h
+	<string>
+	<iostream>
+	"SDL.h"
+	"DisplayPiece.h"
+	"TextBox.h"
+
+1489937623 d:\programs\github\rts_3\include\displaypiece.h
+	"TextMaker.h"
+
+1485620946 d:\programs\github\rts_3\include\textmaker.h
+	<string>
+	<iostream>
+	"SDL.h"
+	"SDL_ttf.h"
+	"SDL_image.h"
+	"global.h"
+
+1454366533 d:\programs\windowsprograming\sdl_setup\sdl2_ttf-2.0.14\i686-w64-mingw32\include\sdl2\sdl_ttf.h
+	"SDL.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325796034 d:\programs\windowsprograming\sdl_setup\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1490535849 d:\programs\github\rts_3\include\textbox.h
+	<string>
+	<iostream>
+	"TextBox.h"
+	"TextLine.h"
+	"TextMaker.h"
+	"Button.h"
+
+1485618344 d:\programs\github\rts_3\include\textline.h
+	<string>
+	<iostream>
+	"TextLine.h"
+	"TextMaker.h"
+
+1485619331 d:\programs\github\rts_3\include\button.h
+	<string>
+	<iostream>
+	<vector>
+	"SDL.h"
+	"TextLine.h"
+	"DisplayPiece.h"
+	"FunctionCaller.h"
+	"Menu.h"
+
+1492364803 d:\programs\github\rts_3\include\resource.h
+	<string>
+	<iostream>
+	"Entity.h"
+	"EntityGroup.h"
+
+1485618344 d:\programs\github\rts_3\include\popmenu.h
+	<string>
+	<iostream>
+	"Button.h"
+	"Map.h"
+	"EntityAction.h"
+	"Menu.h"
+	"TextMaker.h"
+
+1491673301 d:\programs\github\rts_3\include\map.h
+	<string>
+	<cmath>
+	<vector>
+	"SDL.h"
+	"Sprite.h"
+	"global.h"
+
+1490546825 d:\programs\github\rts_3\include\submenu.h
+	<string>
+	<iostream>
+	"Menu.h"
+
+1489945351 d:\programs\github\rts_3\include\selectionmenu.h
+	<string>
+	<iostream>
+	"Selectable.h"
+	"SubMenu.h"
+	"ItemGroup.h"
+	"EntityGroup.h"
+
+1485618344 d:\programs\github\rts_3\include\menugroup.h
+	<iostream>
+	<vector>
+	"Menu.h"
+	"PopMenu.h"
+
+1492359907 d:\programs\github\rts_3\include\building.h
+	<string>
+	<iostream>
+	"FunctionCaller.h"
+	"EntityAction.h"
+
+1492394109 source:d:\programs\github\rts_3\src\action\action.cpp
+	"Action.h"
+	"EntityAction.h"
+	"PopMenu.h"
+	"FunctionCaller.h"
+	"Resource.h"
+	"Construction.h"
+
+1485621341 source:d:\programs\github\rts_3\src\action\actiongroup.cpp
+	"ActionGroup.h"
+	"Action.h"
+	<vector>
+	<algorithm>
+
+1490213913 source:d:\programs\github\rts_3\src\action\attack.cpp
+	"Action.h"
+	"Movement.h"
+	"Attack.h"
+	"Unit.h"
+	"Map.h"
+	<cmath>
+	"FunctionCaller.H"
+
+1490827771 source:d:\programs\github\rts_3\src\action\infoaction.cpp
+	"Action.h"
+	"InfoAction.h"
+	"InfoMenu.h"
+	"SubMenu.h"
+
+1490824554 d:\programs\github\rts_3\include\infoaction.h
+	<string>
+	<iostream>
+	"FunctionCaller.h"
+	"Resource.h"
+
+1492188721 source:d:\programs\github\rts_3\src\action\movement.cpp
+	"Action.h"
+	"Movement.h"
+	"Unit.h"
+	<cmath>
+	"FunctionCaller.h"
+	"Map.h"
+
+1492192894 source:d:\programs\github\rts_3\src\entity\building.cpp
+	"Building.h"
+	"FunctionCaller.h"
+	"global.h"
+
+1492183938 source:d:\programs\github\rts_3\src\entity\entity.cpp
+	"Sprite.h"
+	"Entity.h"
+	"global.h"
+
+1492390777 source:d:\programs\github\rts_3\src\entity\entityaction.cpp
+	"EntityAction.h"
+	"EntityHP.h"
+	"ActionGroup.h"
+	"Action.h"
+	"Attack.h"
+	"InfoAction.h"
+	"ItemGroup.h"
+	"TextLine.h"
+	"Exchange.h"
+	<vector>
+
+1492392712 source:d:\programs\github\rts_3\src\entity\entitygroup.cpp
+	"EntityGroup.h"
+	"SpriteGroup.h"
+	"Map.h"
+
+1485618344 source:d:\programs\github\rts_3\src\entity\entityhp.cpp
+	"EntityHP.h"
+	"global.h"
+	"Attack.h"
+
+1492364803 source:d:\programs\github\rts_3\src\entity\resource.cpp
+	<random>
+	<ctime>
+	"Resource.h"
+	"InfoAction.h"
+	"Collect.h"
+	"global.h"
+	"TextLine.h"
+
+1492393443 source:d:\programs\github\rts_3\src\entity\unit.cpp
+	"Unit.h"
+	"global.h"
+	"EntityAction.h"
+	"Movement.h"
+	"FunctionCaller.h"
+	"TextLine.h"
+	"Exchange.h"
+	"Collect.h"
+	<vector>
+	"Town.h"
+	"Construct.h"
+
+1491068295 source:d:\programs\github\rts_3\src\graphics\button.cpp
+	"Action.h"
+	"texture.h"
+	"SDL.h"
+	"SDL_image.h"
+	"Map.h"
+	"TextLine.h"
+	"Menu.h"
+	"DisplayPiece.h"
+	"Button.h"
+
+1491068295 source:d:\programs\github\rts_3\src\graphics\displaypiece.cpp
+	"texture.h"
+	"SDL.h"
+	"SDL_image.h"
+	"Map.h"
+	"Menu.h"
+	"SubMenu.h"
+
+1489938728 source:d:\programs\github\rts_3\src\graphics\infomenu.cpp
+	"InfoMenu.h"
+	"SubMenu.h"
+
+1492391377 source:d:\programs\github\rts_3\src\graphics\menu.cpp
+	"texture.h"
+	"SDL.h"
+	"SDL_image.h"
+	"Map.h"
+	"Menu.h"
+	"SubMenu.h"
+	"SelectionMenu.h"
+
+1489939260 source:d:\programs\github\rts_3\src\graphics\menugroup.cpp
+	<algorithm>
+	"MenuGroup.h"
+	"EntityAction.h"
+	"PopMenu.h"
+
+1490824458 source:d:\programs\github\rts_3\src\graphics\popmenu.cpp
+	"PopMenu.h"
+	"Map.h"
+	"Button.h"
+	"TextMaker.h"
+	"InfoAction.h"
+
+1490462285 source:d:\programs\github\rts_3\src\graphics\selectionmenu.cpp
+	"SelectionMenu.h"
+	"Selectable.h"
+	<sstream>
+
+1485621531 source:d:\programs\github\rts_3\src\graphics\sprite.cpp
+	"Sprite.h"
+	"texture.h"
+	"Map.h"
+	"SDL.h"
+	"SDL_image.h"
+
+1485621540 source:d:\programs\github\rts_3\src\graphics\spritegroup.cpp
+	"SpriteGroup.h"
+	"Sprite.h"
+	"SDL.h"
+	"SDL_image.h"
+
+1490546713 source:d:\programs\github\rts_3\src\graphics\submenu.cpp
+	"SubMenu.h"
+	"texture.h"
+
+1491068347 source:d:\programs\github\rts_3\src\graphics\textbox.cpp
+	<string>
+	<sstream>
+	<vector>
+	<regex>
+	"TextBox.h"
+	"Menu.h"
+	"texture.h"
+	"global.h"
+
+1490225789 source:d:\programs\github\rts_3\src\graphics\textline.cpp
+	<sstream>
+	"texture.h"
+	"SDL.h"
+	"SDL_image.h"
+	"SDL_ttf.h"
+	"TextMaker.h"
+	"logging.h"
+	"TextLine.h"
+	"Map.h"
+
+1485623033 source:d:\programs\github\rts_3\src\graphics\textmaker.cpp
+	"SDL.h"
+	"SDL_image.h"
+	"SDL_ttf.h"
+	"TextMaker.h"
+	"logging.h"
+
+1485623043 source:d:\programs\github\rts_3\src\graphics\texture.cpp
+	"texture.h"
+	"logging.h"
+	"SDL.h"
+	"SDL_image.h"
+
+1491147264 source:d:\programs\github\rts_3\src\item.cpp
+	"Item.h"
+	"TextLine.h"
+
+1492388773 source:d:\programs\github\rts_3\src\itemgroup.cpp
+	<algorithm>
+	"ItemGroup.h"
+	"TextLine.h"
+
+1485623071 source:d:\programs\github\rts_3\src\logging.cpp
+	"logging.h"
+	"SDL.h"
+	"SDL_image.h"
+
+1492363060 source:d:\programs\github\rts_3\src\map.cpp
+	"Map.h"
+	"global.h"
+	"SDL.h"
+	"SDL_image.h"
+	<random>
+	<ctime>
+
+1491141026 source:d:\programs\github\rts_3\src\selectable.cpp
+	<iostream>
+	"Selectable.h"
+
+1485623238 source:d:\programs\github\rts_3\src\timer.cpp
+	"Timer.h"
+	"SDL.h"
+	"SDL_image.h"
+
+1491153625 source:d:\programs\github\rts_3\src\action\exchange.cpp
+	"Action.h"
+	"Movement.h"
+	"Exchange.h"
+	"Map.h"
+	"ExchangeMenu.h"
+	<cmath>
+
+1491072959 d:\programs\github\rts_3\include\exchange.h
+	<vector>
+	"Action.h"
+	"Unit.h"
+
+1491069576 source:d:\programs\github\rts_3\src\graphics\exchangemenu .cpp
+	"ExchangeMenu.h"
+	"SelectionMenu.h"
+	"NumberBox.h"
+
+1491068603 d:\programs\github\rts_3\include\exchangemenu.h
+	"Menu.h"
+	"Unit.h"
+
+1490539782 source:d:\programs\github\rts_3\src\graphics\numberbox.cpp
+	"NumberBox.h"
+
+1490539782 d:\programs\github\rts_3\include\numberbox.h
+	"SubMenu.h"
+
+1492360763 source:d:\programs\github\rts_3\src\town.cpp
+	<iostream>
+	"Town.h"
+	"Unit.h"
+	"Building.h"
+	"Construction.h"
+	"TextLine.h"
+
+1492360232 d:\programs\github\rts_3\include\town.h
+	"EntityContainer.h"
+	"EntityGroup.h"
+	"Building.h"
+
+1492387829 source:d:\programs\github\rts_3\src\action\collect.cpp
+	"Map.h"
+	"Collect.h"
+	"Resource.h"
+	"Building.h"
+	"Town.h"
+	"Exchange.h"
+	"TextLine.h"
+	"Region.h"
+
+1492387828 d:\programs\github\rts_3\include\collect.h
+	"Action.h"
+	"Unit.h"
+
+1492366596 source:d:\programs\github\rts_3\src\region.cpp
+	"Region.h"
+	"TextLine.h"
+	"Resource.h"
+
+1492366596 d:\programs\github\rts_3\include\region.h
+	"EntityContainer.h"
+	"Map.h"
+	"Town.h"
+
+1492366576 d:\programs\github\rts_3\include\entitycontainer.h
+	<map>
+	"SDL.h"
+	"Selectable.h"
+	"EntityGroup.h"
+
+1492366576 source:d:\programs\github\rts_3\src\entitycontainer.cpp
+	"EntityContainer.h"
+	"TextLine.h"
+
+1491675924 d:\programs\github\rts_3\include\eat.h
+	"Action.h"
+
+1492388925 source:d:\programs\github\rts_3\src\action\eat.cpp
+	"Eat.h"
+	"Unit.h"
+	"Building.h"
+	"Town.h"
+	"Exchange.h"
+	"Region.h"
+	"TextLine.h"
+	"Resource.h"
+	"Collect.h"
+
+1492393320 source:d:\programs\github\rts_3\src\entity\construction.cpp
+	"Construction.h"
+	"TextLine.h"
+	"Building.h"
+	"Town.h"
+	"Construct.h"
+
+1492393269 d:\programs\github\rts_3\include\construction.h
+	<map>
+	"EntityAction.h"
+
+1492371523 d:\programs\github\rts_3\include\construct.h
+	"Action.h"
+	"Unit.h"
+	"Construction.h"
+
+1492394137 source:d:\programs\github\rts_3\src\action\construct.cpp
+	"Construct.h"
+	"Exchange.h"
+	"Building.h"
+	"Town.h"
+	"Collect.h"
+	"TextLine.h"
+

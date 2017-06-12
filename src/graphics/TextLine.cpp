@@ -1,9 +1,9 @@
 #include <sstream>
 
 #include "texture.h"
-#include "SDL2/SDL.h"
-#include "SDL2_image/SDL_image.h"
-#include "SDL2_ttf/SDL_ttf.h"
+#include "SDL.h"
+#include "SDL_image.h"
+#include "SDL_ttf.h"
 #include "TextMaker.h"
 #include "logging.h"
 #include "TextLine.h"
@@ -28,7 +28,7 @@ TextLine::TextLine(float x, float y, float w, float h, std::string message, Text
   setActive(false);
 }
 
-TextLine::TextLine(std::string message, TextMaker * maker) 
+TextLine::TextLine(std::string message, TextMaker * maker)
   : TextLine(0., 0., 0., 0., message, maker)
 {}
 
@@ -47,8 +47,8 @@ void TextLine::loadText(std::string message)
 {
   //We need to first render to a surface as that's what TTF_RenderText
   //returns, then load that surface into a texture
-  TTF_Font * font = mTextMaker->getFont(); 
-  SDL_Renderer * renderer = mTextMaker->mRenderer; 
+  TTF_Font * font = mTextMaker->getFont();
+  SDL_Renderer * renderer = mTextMaker->mRenderer;
   SDL_Surface * surf = TTF_RenderText_Blended(font, mText.c_str(), mColour);
   if (surf == nullptr){
     logSDLError(std::cout, "TTF_LoadTextLine");
@@ -85,6 +85,7 @@ void TextLine::render()
 std::string makeString(float val)
 {
   std::stringstream sstrval;
+  sstrval.precision(2);
   sstrval << val;
   std::string strval = sstrval.str();
   return strval;

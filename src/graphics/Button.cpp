@@ -1,7 +1,7 @@
 #include "Action.h"
 #include "texture.h"
-#include "SDL2/SDL.h"
-#include "SDL2_image/SDL_image.h"
+#include "SDL.h"
+#include "SDL_image.h"
 #include "Map.h"
 #include "TextLine.h"
 
@@ -28,10 +28,10 @@
   setArgContainer(args);
 
   mTexture = loadTexture("res/images/menu/button_0_0.png", renderer, true);
-  
+
   mRenderer = renderer;
   mWindow = window;
-  
+
   mRect = new SDL_Rect();
 
   setRelPosX(rel_x);
@@ -52,7 +52,6 @@
 Button::Button(float rel_x, float rel_y, float rel_width, float rel_height, std::string title, int outcome, DisplayPiece * parent)
   : DisplayPiece(rel_x, rel_y, rel_width, rel_height, parent)
 {
-  std::cout << "INFO: Button::Button:1 In first Constructor" << std::endl;
   /*mTexture = parent->mTexture;
   mRenderer = nullptr;
   mWindow = nullptr;
@@ -63,14 +62,14 @@ Button::Button(float rel_x, float rel_y, float rel_width, float rel_height, std:
   ArgContainer args = ArgContainer();
   //setFunctionCaller(funcCaller);
   setArgContainer(args);
-  
+
   setParent(parent);
 
   mTexture = loadTexture("res/images/menu/button_0_0.png", mRenderer, true);
-  
+
   //mRenderer = renderer;
   //mWindow = window;
-  
+
   //mRect = new SDL_Rect();
 
   /*  setRelPosX(rel_x);
@@ -86,7 +85,8 @@ Button::Button(float rel_x, float rel_y, float rel_width, float rel_height, std:
 
   setOutcome(outcome);
 
-  std::cout << "INFO: Button::Button:1 End of first constructor" << std::endl;
+  setPressed(false);
+
 
 }
 
@@ -108,11 +108,9 @@ Button::Button(float rel_x, float rel_y, float rel_width, float rel_height, std:
 	       Menu * menu)
   : Button( rel_x, rel_y, rel_width, rel_height, title, 0, dynamic_cast<DisplayPiece*>(menu) )
 {
-  std::cout << "INFO: Button::Button:4 In the 4th Button constructor" << std::endl;
   setArgContainer(args);
   setFunctionCaller(caller);
   //  menu->addButton(this);
-  std::cout << "INFO: Button::Button:4 End of Button 4th constructor" << std::endl;
 }
 
 
@@ -127,14 +125,14 @@ Button::Button(float rel_x, float rel_y, float rel_width, float rel_height, std:
 
 Button::~Button()
 {
-  std::cout << "Deleting Button" << std::endl;
+  std::cout << "INFO: Button::~Button: Deleting Button." << std::endl;
 }
 
 bool Button::collide(float x_screen, float y_screen)
 {
   //need to figure out the screen pos of the button corner and its width and heigh in pixels
   /*  float posx = parent->getPosX();
-  float posy = parent->getPosY(); 
+  float posy = parent->getPosY();
   float width = parent->getWidth() * this->getRelWidth();
   float height = parent->getHeight() * this->getRelHeight();
   float rposx = posx + getRelX();
@@ -144,8 +142,8 @@ bool Button::collide(float x_screen, float y_screen)
   float rposy = getPosY();
   float width = getWidth();
   float height = getHeight();
-  if ( 
-      (x_screen < rposx + width) && (rposx <= x_screen ) && 
+  if (
+      (x_screen < rposx + width) && (rposx <= x_screen ) &&
       (y_screen < rposy + height) && (rposy <= y_screen )
        )
     {
@@ -172,17 +170,17 @@ ReturnContainer Button::outcome()
     {
       //Possible problem here as if mOutcome is 0 then ptr mOuntcome == nullptr?
       if (mFunctionCaller == nullptr)
-	{
-	  funcReturn.setOutcome(mOutcome);
-	}
+        {
+          funcReturn.setOutcome(mOutcome);
+        }
       else if (mOutcome == 0 && mFunctionCaller != nullptr)
-	{
-	  funcReturn = mFunctionCaller(mArgContainer);
-	}
+        {
+          funcReturn = mFunctionCaller(mArgContainer);
+        }
       else if (mOutcome == 0 && mFunctionCaller == nullptr)
-	{
-	  std::cout << "Button::outcome: WARN: This button has no outcome" << std::endl; 
-	}
+        {
+          std::cout << "Button::outcome: WARN: This button has no outcome" << std::endl;
+        }
     }
   setPressed(false);
   return funcReturn;
@@ -197,7 +195,7 @@ ReturnContainer Button::outcome()
  /*void Button::render(TextBox * tb)
 {
   float posx = tb->getPosX();
-  float posy = tb->getPosY(); 
+  float posy = tb->getPosY();
   float width = tb->getWidth() * mRelWidth;
   float height = tb->getHeight() * mRelHeight;
   this->render(posx, posy, width, height);

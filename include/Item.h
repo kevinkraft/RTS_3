@@ -10,15 +10,15 @@
 class Item: public Selectable
 {
  public:
-  Item(int type, int amount, float pos_x=0., float pos_y=0.);
+  Item(int type, float amount, float pos_x=0., float pos_y=0.);
   virtual ~Item();
 
   float getSize();
   std::vector<std::string> print();
   void printTerminal();
   void setType(int type);
-  
-    
+
+
   float getAmount()
   {
     return mAmount;
@@ -71,11 +71,11 @@ class Item: public Selectable
   {
     mUnitSize = usize;
   }
-  
+
  private:
   float mPos_x;
   float mPos_y;
-  
+
   Sprite * mSprite;
   bool mHeld;
   int mType;
@@ -83,7 +83,7 @@ class Item: public Selectable
 
   float mUnitSize; //
   //std::string mName;
-  
+
 };
 
 #endif

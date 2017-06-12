@@ -7,20 +7,20 @@
 #include "Action.h"
 #include "FunctionCaller.h"
 
-class EntityHP;
-class EntityAction;
+//class EntityHP;
+//class EntityAction;
 
 class Attack: public Action
 {
  public:
-  
+
   Attack(EntityHP * target);
   virtual ~Attack();
-  
+
   bool doAction();
   //void setActer(EntityAction * acter);
   // dont need to overwrite because all EntityActions should be able to attack
-  // so can just override virtual setActer in Action with setActer here 
+  // so can just override virtual setActer in Action with setActer here
   //void setActer(EntityAction * acter) override { return setActer(dynamic_cast<Unit*>(acter)); }
 
   EntityAction * getActer()
@@ -43,7 +43,7 @@ class Attack: public Action
  private:
   EntityAction * mActer;
   EntityHP * mTarget;
-  
+
 };
 
 ReturnContainer makeAttack(ArgContainer args);
