@@ -3,7 +3,7 @@
 //Kevin Maguire
 //18/08/15
 //
-//Version 0.7
+//Version 1.0
 //
 
 //Add:
@@ -381,8 +381,8 @@ int main(int argc, char **argv)
     }
 
   //TEMP make constructions
-  Construction * stockpile_constr = new Construction(1., 5., 1);
-  town00->addEntity(stockpile_constr);
+  //Construction * stockpile_constr = new Construction(1., 5., 1);
+  //town00->addEntity(stockpile_constr);
   Construction * hut_constr = new Construction(1., 7., 0);
   town00->addEntity(hut_constr);
 
