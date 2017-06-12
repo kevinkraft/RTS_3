@@ -5,7 +5,7 @@ Windows compatible Isometric RTS game.
 To Play:
 ----------
 
-1) Download from 
+1) Download from https://www.dropbox.com/s/5eza87sctpemlgw/RTS3_1.0.rar?dl=0
 2) Extract
 3) Double click .exe
 
