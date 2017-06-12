@@ -17,7 +17,7 @@
 
 class Map{
  public:
-  Map(SDL_Renderer *renderer, SDL_Window *window);
+  Map(int xpos, int ypos, int width, int height, int seed, SDL_Renderer *renderer, SDL_Window *window);
   virtual ~Map();
 
   void render(int cameraoffset_x, int cameraoffset_y, float zoom=1);
@@ -31,6 +31,9 @@ class Map{
   int mWidth;
   int mHeight;
 
+  int mPosX;
+  int mPosY;
+
   std::vector<std::vector<int>> mGameMap;
   std::vector<std::vector<int>> makeMap(int size);
 
@@ -39,6 +42,7 @@ class Map{
 
  private:
   bool bDrawGrid;
+  int mSeed;
 
 };
 

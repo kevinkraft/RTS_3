@@ -14,6 +14,8 @@ class EntityHP;
 class TextBox;
 class SelectionMenu;
 class ExchangeMenu;
+class Resource;
+class Construction;
 
 class ArgContainer
 {
@@ -29,10 +31,16 @@ class ArgContainer
       mInfoMenu = nullptr;
       mExchangeMenu = nullptr;
       mInt = 0;
+      mResource = nullptr;
+      mConstruction = nullptr;
     }
   virtual ~ArgContainer()
     {}
 
+  void setConstruction(Construction * c)
+  {
+    mConstruction = c;
+  }
   void setInfoMenu(InfoMenu * im)
   {
     mInfoMenu = im;
@@ -57,6 +65,10 @@ class ArgContainer
   {
     mPosY = y;
   }
+  void setResource(Resource * res)
+  {
+    mResource = res;
+  }
   void setSelectedEntity(Entity * entity)
   {
     mSelectedEntity = entity;
@@ -79,12 +91,14 @@ class ArgContainer
   Entity * mSelectedEntity;
   Entity * mTargetEntity;
   EntityHP * mTargetEntityHP;
+  Resource * mResource;
   Menu * mMenu;
   TextBox * mTextBox;
   InfoMenu * mInfoMenu;
   ExchangeMenu * mExchangeMenu;
   int mInt;
   SelectionMenu * mSelectionMenu;
+  Construction * mConstruction;
 };
 
 class ReturnContainer

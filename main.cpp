@@ -7,16 +7,127 @@
 //
 
 //Add:
-// * stockpile
-//   * so beginnings of building class
-//     * add a unit inventory to building
-//     * be careful, the default range and att damage of an EntityAction is set to the unit values, need to fix
-// * collect resource action
+// * Add Nation class for holding the Nations, and updating/rendering Contained Entities etc.
+// * Add Organisations, which allow you to make a group of Units and give them all commands
+//   * Giving the Organisation leader a command will make that Unit give the same command to all Units
+//     it it's Organisation
+// * Add Order, the way in which the player, unit_you, can tell the other Units what to do.
+// * Add functions which add a new region if a Unit walks off the edge of the map
+// * Add Procreate action
+// * Add Construct action, for building new Buildings
+//   * If I'm going to do this, I need some buildings that are worth building(done)
+//     * Make the hut inventory really small and make it necessary to construct a Stockpile(done)
+//       * In Town::update, add some code which sets the stockpile to the Building with the(done)
+//         largest inventory, or make it look for a Building of type==stockpile.(done, looks for type==1)
+//   * Make a Stockpile building type(done)
+//   * Make a child Class of EntityAction called Construction
+//     * This class should not inherit from the Building class, that will probably cause problems(ok)
+//     * Construction has some container telling you how much of certain types of items it needs(done)
+//     * Will have to add this info to the Construction InfoMenu(done)
+//     * It also has an amount of work that has to be done for it to be finished
+//       * Units will need an atribute saying how much work they can do in each cycle
+//     * When it's finished it is removed and a Building is put in its place.
+//       * Might be difficult to add this to the Town building list
+//     * Will need a Construt action to go with this
+//       * This action will need some sort of menu for selection which building to build
+//         * Use a selection menu, try to do it without making a dedicated menu
+//       * Two ways to make this action
+//         * This action can be made with a int Construction type, so that the construction can be first made
+//         * Or this action can  be made with a preexisting target construction for the Unit to work on
+//         * So you can make this action by clicking on a random patch of ground, or by clicking on a prexisting
+//             Construction
+//       * The Units will put items into the Constructions inventory
+//       * When the construction is updated it will remove the items in its inventory from the materials map
+//         and delete the items in its inventory
+//       * So first step for the Units is to bring the necessary resource, so just setup an Exchange
+//       * Then the Units decrase the Construction Work by some amount
+//       * The trasnformation of the Construction into a Building will be handled by the Constructions update function
+//         * will need to make a building, add it to the Town building list, then remove the construction from the town
+//           construction list, then delete itself.
+//   * First make a Wood Resource type that can be collected.(done)
+//     * Need to move the code in Map that places the trees to somewhere else(done)
+//     * Need to change the wood Resource sprite to be smaller(done)
+// * Add a base entity container class(done)
+//   * make a base class which runs update, render, doActions and collide on a set of contained entities(done)
+//     * All Containers would inherit from this class, including Nation, when it exists and Region, Town.(done)
+//     * It could contain a map of string and Entity Group, where the string is the identifier for a certain EntityGroup(done)
+// * Eat action(done)
+//   * Need to give the Units a Hunger attribute(done)
+//     * when their hungry gets to some max they start to take damage(done)
+//     * Maybe I should implement the UnitStatus class, which will hold Hunger, Loyalty, Happiness etc. (no)
+//     * What should it be called? UnitStatus, Emotions? Why is it a separate class from Unit? (it doesnt need to be at this time)
+//   * Action should not appear in the PopMenu, it is an automatic action(ok)
+//   * write the action code(done)
+//     * they eat food until their hunger is full(done)
+//       * need an eat speed (no, make it instant)
+//       * the food comes out of their inventories
+//       * need a global for how much some amount of food decreases the hunger(done)
+//     * If they have no food in their inventory they go to the stockpile(done)
+//     * If there is no food in the stockpile they go and collect food from the nearest resource(done)
+//       * Will need to have the list of Resources, this will be tricky(done)
+//         * The list of Resources is now obtained from unit->town->region->mContainerList["resources"] (ok)
+//         * Make a Region class which contains a list of Towns and a list of Resources(done)
+//           * Setup the part in Region that populates the list of Resources(done)
+//           * Setup the part which renders the map segments(done)
+//           * The Town will need to know which region it is in(done)
+//           * The region will also contain a Map segment(done)
+//             * To test this I will need to make at least two regions, each with one town and a map(done)
+//             * The Map class will need to know the top croner x and y positions of the region to know where it should be put on the screen(done)
+//               * this is decided in the map constructor, we can either change it in the constructor or change it at render(in constructor)
+//                 * change it in the constructor(done)
+// * Collect action(done)
+//   * Make unit find the next Resource if this one is empty(done)
+//     * set the Target to nullptr if its amount is empty(done, but not this way)
+//     * write code to search for another of the same type if the Target pointer is empty(done)
+// * collect resource action(done)
+//   * make the action itself(done)
+//      * add it to the entity available action(done)
+//      * write the doAction code(done)
+//        * will need to move to the resource.(done)
+//        * then collect the resource item, which is different from exchange(done)
+//        * then move to the stockpile(not necessary)
+//        * then do an exchange with the stockpile(done)
+//        * then repeat.(done)
+//   * instead of a stockpile just use the hut.(ok)
+//   * Make a Town class, which is a container for the buildings and units, allows for functions to be run on all these(done)
+//     entites in a loop, and can be used for more complicated relations later.(done)
+//     * What are Towns atributes?(done)
+//       * BuildingList, EntityList, Stockpile(done)
+//       * Need to duplicate the Update, Render and doAction functions for Town(done)
+//     * The EntityGroups for buildings and units belong to the town(done)
+//     * The EntityActions in the Building and Units EntityGroups know which Town they are in(done)
+//       * In this way, the Units know which building is the towns stockpile and know where to bring their collected items.(ok)
 // * Low Priority:
 //   * InfoMenu
 //     * it would be nice if the InfoMenu updated in real time
+//   * Exchange
+//     * Fix the "once" options so that the Unit actually gives its items to the stockpile
 
 //Problem:
+// * There was a seg fault shortly after the Stockpile construction was finished
+//   * can it be replicated?
+// * The Construct action got into an infinite loop
+//   * happened when Constructing the Stockpile, when many Units were working, possibly to do with the Eat action
+//   * Can it be replicated?
+// * If you open an InfoMenu, press a down scroll, close it and open another, the game seg faults(fixed)
+//   * So the scroll state of the info menu needs to be reset when you close it / clear it. (yes)
+//   * fixed by resetting mScroll of the TextBox to zero when calling Menu::wipe() (ok)
+// * If a Unit from one region goes into another region the other Region map is rendered on top of him(fixed)
+//   * need to setup the Region container thing to render all the maps first(done)
+// * Adding food to the hut00 inventory when making the objects doesn't actually add food to the inventory(fixed)
+//   * It works after the setstockpile Town function, so the problem must be there.(fixed)
+//   * The problem is that setupType for Resource and Building are not called in their constructors but are called when you(ok)
+//     add them to an entity group. So the hut has zero inv cap the first time you try to add the item (ok)
+//   * I fixed this by calling setupType in the Building constructor, and also did it for the Resource(ok)
+//   * I remove the setupType call in the EntityGroup::addEntity function and the entities no longer appear on the map(fixed)
+//     * why is this? they should already be setup after they are constructed, so why is it necessary to do it again?(fixed)
+//     * the buildings and Resources are not rendered, but they are clickable. Units are rendered correctly(ok)
+//       * So the sprite is not being set in the entity group, or the sprite is blank(yes)
+//       * It might be because a new blank sprite is made by the Entity constructor, so the sprite setup by the Building(yes)
+//         setupType function is overwritten.(yes)
+//         * The bes way to fix this is to have setupType called twice, once in the Building constructor and once by the (ok)
+//           EntityGroup(ok)
+// * Fix the Sprite click boxes after adding new sprites
 // * Exchange Menu
 //   * when you open a second menu you cant immediately select the item that was previously clicked when the menu was
 //     previously opened. I implemented something to stop you clicking twice on a button, this must not be cancelled
@@ -33,6 +144,7 @@
 //     * I opened and closed lots of exchange menus before the problem appeared. I also did it with the pop menu but not sure it
 //       filled up as much memory as the exchange menu does.
 //     * The PopMenu alone is enough to cause this problem after about 3 minutes of constant opening and closing
+//   * Can also replicate this straight away by setting the map size to be really big, 100 for example
 // * If you right click, the pop menu comes up, if you then left click off the menu and right click again the buttons are duplicated
 //   * It essentially allows you to have commands related to two different coords/entities in the same pop menu
 // * The setPositions function of the DisplayPiece class doesnt work?
@@ -54,6 +166,8 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <random>
+#include <ctime>
 
 #include <SDL.h>
 
@@ -62,6 +176,8 @@
 #include "Timer.h"
 #include "Sprite.h"
 #include "SpriteGroup.h"
+#include "Region.h"
+#include "Town.h"
 #include "EntityGroup.h"
 #include "EntityAction.h"
 #include "Unit.h"
@@ -81,6 +197,8 @@
 #include "Resource.h"
 #include "Building.h"
 #include "Exchange.h"
+#include "Construction.h"
+#include "Construct.h"
 
 //-------------------------------------------------------------------------------------
 
@@ -170,113 +288,154 @@ int main(int argc, char **argv)
   //-------------------------------------------------------------------------------------
   // Create objects:
   //-------------------------------------------------------------------------------------
-  SDL_Texture *texture_cursor  = loadTexture("res/images/cursor.png", renderer, false);
-
-  Map map(renderer, window);
-
-  Sprite *sprite_selection = new Sprite("res/images/iso/selection.png", 2, 2, renderer, window, TILE_SIZE);
-
-  //make an entity and move it
   std::cout << "Main: INFO: Starting To Make Objects" << std::endl;
+
+  //misc objects
+  SDL_Texture *texture_cursor  = loadTexture("res/images/cursor.png", renderer, false);
+  Sprite *tile_hover = new Sprite("res/images/iso/selection.png", 2, 2, renderer, window, TILE_SIZE);
+
+  //Make the Towns, 00 = region 0, town 0
+  Town * town00 = new Town("Town00", renderer, window);
+  Town * town01 = new Town("Town01", renderer, window);
+  Town * town10 = new Town("Town10", renderer, window);
+
+  //make buildings and add to the Towns as the stockpile
+  Building * hut00 = new Building(1., 1., 0);
+  Item * hut00_food = new Item(1,50.);
+  hut00->addItem(hut00_food);
+  Building * hut01 = new Building(floor(1.+MAP_SIZE/2.), floor(1.+MAP_SIZE/2.), 0);
+  Building * hut10 = new Building(1.+MAP_SIZE, 1., 0);
+  town00->setStockpile(hut00);
+  town01->setStockpile(hut01);
+  town10->setStockpile(hut10);
+
+  //make a dedicated stockpile Building
+  Building * stockpile00 = new Building(1., 3., 1);
+  town00->addEntity(stockpile00);
+
+  //Make the Units, give Items to some, give Moovement to one, and add to the Towns
+  //also set one of the other units to attack "you"
   Unit * unit_you = new Unit(2., 2., "You");
-  Unit * unit1 = new Unit(2, 3, "Unit1");
+  Item * unit_you_food = new Item(1,1.);
+  unit_you->addItem(unit_you_food);
+  //Item * unit_you_wood = new Item(2,1.);
+  //unit_you->addItem(unit_you_wood);
   EntityAction * selected_entity = unit_you;
-  //Movement * move1 = new Movement(10., 8.);
-  //unit_you->appendAction(move1);
-  Movement * move2 = new Movement(0., 0.);
-  //unit1->appendAction(move2);
-  //Attack * attack = new Attack(unit1);
-  //unit_you->appendAction(attack);
-
-  //make a group to hold units
-  EntityGroup * Units = new EntityGroup(renderer, window);
-  Units->addEntity(unit_you);
-  Units->addEntity(unit1);
-
-  //make loads of units
+  town00->addEntity(unit_you);
   Unit * unit_loop;
   std::string uloop_name = "";
   for (int i = 0; i<5; i++)
-  {
-    std::stringstream ul_ss;
-    ul_ss << "Unit" << i+2;
-    uloop_name = ul_ss.str();
-    unit_loop = new Unit(0.+i*0.5, 0., uloop_name);
-    Units->addEntity(unit_loop);
-  }
+    {
+      std::stringstream n_ss;
+      n_ss << "Unit00" << i;
+      uloop_name = n_ss.str();
+      unit_loop = new Unit(hut00->getPosX()+2, hut00->getPosY()+i*0.5+2, uloop_name);
+      if (i == 0)
+        {
+          Item* food = new Item(1., 1.);
+          Item* wood = new Item(2., 1.);
+          unit_loop->addItem(food);
+          unit_loop->addItem(wood);
+        }
+      if (i == 1)
+        {
+          Movement * move = new Movement(3., 3.);
+          unit_loop->clearAddAction(move);
+        }
+      town00->addEntity(unit_loop);
+    }
+  for (int i = 0; i<5; i++)
+    {
+      std::stringstream n_ss;
+      n_ss << "Unit01" << i;
+      uloop_name = n_ss.str();
+      unit_loop = new Unit(hut01->getPosX()+2, hut01->getPosY()+i*0.5+2, uloop_name);
+      if (i == 0)
+        {
+          Item* food = new Item(1., 1.);
+          Item* wood = new Item(2., 1.);
+          unit_loop->addItem(food);
+          unit_loop->addItem(wood);
+        }
+      town01->addEntity(unit_loop);
+    }
+  for (int i = 0; i<5; i++)
+    {
+      std::stringstream n_ss;
+      n_ss << "Unit10" << i;
+      uloop_name = n_ss.str();
+      unit_loop = new Unit(hut10->getPosX()+2, hut10->getPosY()+i*0.5+2, uloop_name);
+      if (i == 0)
+        {
+          Item* food = new Item(1., 1.);
+          Item* wood = new Item(2., 1.);
+          unit_loop->addItem(food);
+          unit_loop->addItem(wood);
+        }
+      /*if ( i == 1 )
+        {
+          Attack * attack = new Attack(unit_you);;
+          unit_loop->appendAction(attack);
+        }*/
+      town10->addEntity(unit_loop);
+    }
 
-  //set the image filename of the group
-  std::cout << "Main: INFO: Setting the Units image file" << std::endl;
-  Units->setImage("res/images/units/villager.png");
+  //TEMP make constructions
+  Construction * stockpile_constr = new Construction(1., 5., 1);
+  town00->addEntity(stockpile_constr);
+  Construction * hut_constr = new Construction(1., 7., 0);
+  town00->addEntity(hut_constr);
 
-  //make a text maker
+  /*//TEMP set unit_you to work on the construction
+  Construct * construct = new Construct(hut_constr);
+  unit_you->clearAddAction(construct);*/
+
+  //Make random number generators for the Region seeds
+  std::default_random_engine RGen(time(NULL));
+  std::uniform_int_distribution<int> RandGen(0, 1000000);
+
+  //Make the Regions which also make the map segments and food Resources, add the towns
+  Region * region0 = new Region("Region0",0, 0, MAP_SIZE, MAP_SIZE, RandGen(RGen), renderer, window);
+  Region * region1 = new Region("Region1",MAP_SIZE, 0, MAP_SIZE, MAP_SIZE, RandGen(RGen), renderer, window);
+  region0->addTown(town00);
+  region0->addTown(town01);
+  region1->addTown(town10);
+
+  //Make a container for the Region classes and add the Regions
+  EntityContainer * Regions = new EntityContainer("Regions", renderer, window );
+  Regions->addContainer("regions", region0);
+  Regions->addContainer("regions", region1);
+
+  //Set the image filename of the Unit group
+  town00->setUnitImage("res/images/units/villager.png");
+  town01->setUnitImage("res/images/units/villager.png");
+  town10->setUnitImage("res/images/units/villager.png");
+
+  //Make a TextMaker
   TextMaker * TextHandler = new TextMaker("res/fonts/KaushanScript-Regular.otf", renderer, window);
   //TextMaker * TextHandler = new TextMaker("res/fonts/Pacifico.ttf", renderer, window);
   //TextMaker * TextHandler = new TextMaker("res/fonts/FFF_Tusj.ttf", renderer, window);
   //TextMaker * TextHandler = new TextMaker("res/fonts/sample.ttf", renderer, window);
 
-  //make a temp message
-  //TextLine * message = new TextLine(30. + 122., 125., 500., 50., "HELLO WORLD RTS 3", TextHandler);
-  //message->setActive(true);
-
-  //make a pop_menu
-  PopMenu * pop_menu = new PopMenu(renderer, window, TextHandler);
-  //pop_menu->loadImage("res/images/menu/menu.png");
-
-  //make a menu group
+  //Make a menu group
   MenuGroup * Menus = new MenuGroup();
+
+  //Make the pop_menu
+  PopMenu * pop_menu = new PopMenu(renderer, window, TextHandler);
   Menus->addMenu(pop_menu);
 
-  //make a group to hold resources
-  EntityGroup * Resources = new EntityGroup(renderer, window);
-  placeResources(Resources, 1, MAP_SIZE/2);
-
-  //make a resource
-  //Resource * res_food = new Resource(0., 0., 1, 100.);
-  //Resources->addEntity(res_food);
-  //res_food->setImage();
-
-  //make items and give it to the unit
-  Item* food1 = new Item(1., 5.);
-  Item* wood1 = new Item(2., 1.);
-  unit_you->addItem(food1);
-  unit_you->addItem(wood1);
-  unit_you->printInventory();
-  Item* food2 = new Item(1., 1.);
-  unit1->addItem(food2);
-
-  //make exchange action
-  Unit * unit3 = (Unit*) Units->getEntity("Unit3");
-  Item* food3 = new Item(1., 1.);
-  unit3->addItem(food3);
-  //if ( unit3 == nullptr )
-  //  std::cout << "ERRO: main: Creating Objects: unit3 is a nullptr." << std::endl;
-  //Exchange * ex = new Exchange( dynamic_cast<EntityAction*>(unit3), 1, 5.1);
-  //Exchange * ex = new Exchange( dynamic_cast<EntityAction*>(unit3), 1, 8);
-  //unit1->clearAddAction(ex);
-  Unit * unit4 = (Unit*) Units->getEntity("Unit4");
-  Item* wood2 = new Item(2., 1.);
-  unit4->addItem(wood2);
-
-  //make buildings
-  //make a group to hold buildings
-  EntityGroup * Buildings = new EntityGroup(renderer, window);
-  Building * hut = new Building(3., 3., 0);
-  Buildings->addEntity(hut);
-
-  //make menus
+  //Make other menus
   InfoMenu * info_menu = new InfoMenu(renderer, window, TextHandler);
   info_menu->setActive(false);
   Menus->addMenu(info_menu);
-  //ExchangeMenu * exchange_menu = new ExchangeMenu(renderer, window, TextHandler);
   ExchangeMenu * exchange_menu = new ExchangeMenu(renderer, window, TextHandler);
   exchange_menu->setActive(false);
   Menus->addMenu(exchange_menu);
 
-  //make the unit selection menu
+  //Make the unit selection menu, which is a developer tool
   Menu * unit_sel_menu = new Menu(0, 0, 500, 600, renderer, window, TextHandler);
   unit_sel_menu->makeCloseButton();
-  SelectionMenu * sl = new SelectionMenu(0, 0.05*unit_sel_menu->getHeight(), 1, 0.95, unit_sel_menu, Units );
+  SelectionMenu * sl = new SelectionMenu(0, 0.05*unit_sel_menu->getHeight(), 1, 0.95, unit_sel_menu, town00->getUnits() );
   unit_sel_menu->addSelectionMenu( sl );
   Menus->addMenu( unit_sel_menu );
 
@@ -294,22 +453,20 @@ int main(int argc, char **argv)
         }
 
       //-------------------------------------------------------------------------------------
-      // Update Entity states
-      //-------------------------------------------------------------------------------------
-      //TerminalText::printTerminal("INFO: main: Updates Section: About to update the entities.");
-      Units->update();
-      Resources->update();
-      Buildings->update();
-      if ( unit_sel_menu->isActive() == true && unit_sel_menu->getSelectionMenu(0)->hasSelection() == true)
-        selected_entity = dynamic_cast<EntityAction*>(unit_sel_menu->getSelectionMenu(0)->getSelection());
-
-      //-------------------------------------------------------------------------------------
       // Entity operations
       //-------------------------------------------------------------------------------------
       //TerminalText::printTerminal("INFO: main: Actions Section: About to do the Unit actions.");
-      Units->doActions();
-      Buildings->doActions();
+      Regions->doActions();
       //TerminalText::printTerminal("INFO: main: Actions Section: Finished the Entities actions.");
+
+      //-------------------------------------------------------------------------------------
+      // Update Entity states
+      //-------------------------------------------------------------------------------------
+      //TerminalText::printTerminal("INFO: main: Updates Section: About to update the entities.");
+      Regions->update();
+      //Resources->update();
+      if ( unit_sel_menu->isActive() == true && unit_sel_menu->getSelectionMenu(0)->hasSelection() == true)
+        selected_entity = dynamic_cast<EntityAction*>(unit_sel_menu->getSelectionMenu(0)->getSelection());
 
       //-------------------------------------------------------------------------------------
       // Screen
@@ -386,7 +543,8 @@ int main(int argc, char **argv)
             }
             else if (event.key.keysym.sym == SDLK_g)
               {
-                map.setDrawGrid(not(map.getDrawGrid()));
+                region0->getMap()->setDrawGrid( not(region0->getMap()->getDrawGrid()) );
+                region1->getMap()->setDrawGrid( not(region1->getMap()->getDrawGrid()) );
               }
             else if (event.key.keysym.sym == SDLK_c)
               {
@@ -410,22 +568,7 @@ int main(int argc, char **argv)
               }
             else if (event.key.keysym.sym == SDLK_t)
               {
-                for ( int i=0; i < unit_you->getActions()->getSize(); i++ )
-                  {
-                    if ( dynamic_cast<Exchange*>(unit_you->getActions()->getAction(i)) )
-                      {
-                        Exchange * ex = dynamic_cast<Exchange*>(unit_you->getActions()->getAction(i));
-                        for ( auto &itex: ex->getExchangeList() )
-                          {
-                            std::cout << "ITEM from list: " << std::endl;
-                            std::cout << itex.first << std::endl;
-                            std::cout << itex.second << std::endl;
-                          }
-
-                      }
-
-
-                  }
+                TerminalText::printTerminal("INFO: main:temp button: Stockpile of town00 is "+(town00->getStockpile()->getName())+" ");
                 std::cout << "Main: Temporary button: There is nothing here" << std::endl;
               }
             }
@@ -462,14 +605,14 @@ int main(int argc, char **argv)
 
                   if ((pos_x >= 0) and
                     (pos_y >= 0) and
-                    (pos_x < map.mWidth) and
-                    (pos_y < map.mHeight))
+                    (pos_x < region0->getMap()->mWidth) and
+                    (pos_y < region0->getMap()->mHeight))
                     {
                       std::cout << "Click at: X=" << pos_x << " Y=" << pos_y << std::endl;
                       std::cout << "Click at: X=" << event.button.x << " Y=" << event.button.y << std::endl;
                     }
-                }
 
+                }
               else if (event.button.button == SDL_BUTTON_RIGHT)
                 {
                   //pop_menu = Menus->getPopMenu();
@@ -478,25 +621,19 @@ int main(int argc, char **argv)
                       float pos_x = event.button.x;
                       float pos_y = event.button.y;
                       Entity * target_entity;
-                      //check for click on unit
-                      target_entity = Units->collide(pos_x, pos_y, cameraoffset_x, cameraoffset_y, zoom);
-                      if (target_entity == nullptr)
+                      //check for click on Town Units or Buildings
+                      target_entity = Regions->collide(pos_x, pos_y, cameraoffset_x, cameraoffset_y, zoom);
+                      /*if (target_entity == nullptr)
                         {
-                          //check for click on building
-                          target_entity = Buildings->collide(pos_x, pos_y, cameraoffset_x, cameraoffset_y, zoom);
-                          if (target_entity == nullptr)
-                            {
-                              //check for click on Resource
-                              target_entity = Resources->collide(pos_x, pos_y, cameraoffset_x, cameraoffset_y, zoom);
-                            }
-                        }
+                          target_entity = Resources->collide(pos_x, pos_y, cameraoffset_x, cameraoffset_y, zoom);
+                        }*/
                       if (target_entity != nullptr )
                         {
-                          std::cout << "You clicked in the region" << std::endl;
+                          std::cout << "INFO: main: Right Click section: You clicked in the region." << std::endl;
                         }
                       else
                         {
-                          std::cout << "Clicked Nothing" << std::endl;
+                          std::cout << "INFO: main: Right Click section: Clicked Nothing." << std::endl;
                         }
 
                       //make the pop menu for the available actions
@@ -526,8 +663,8 @@ int main(int argc, char **argv)
               int pos_x = getIsoCoordinateX(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
               int pos_y = getIsoCoordinateY(event.button.x, event.button.y, cameraoffset_x, cameraoffset_y, zoom, TILE_SIZE);
 
-              sprite_selection->setPosX(pos_x);
-              sprite_selection->setPosY(pos_y);
+              tile_hover->setPosX(pos_x);
+              tile_hover->setPosY(pos_y);
             }
           else if (event.type == SDL_MOUSEWHEEL)
             {
@@ -572,7 +709,7 @@ int main(int argc, char **argv)
                     cameraoffset_x = (pixel_x + (TILE_SIZE*zoom)*0.5) - screen_width*0.5;
                     cameraoffset_y = (pixel_y + (TILE_SIZE*zoom)*0.75) - screen_height*0.5;
                   }
-            }
+              }
             }
         }
 
@@ -584,27 +721,23 @@ int main(int argc, char **argv)
 
       SDL_RenderClear(renderer);
 
-      map.render(cameraoffset_x, cameraoffset_y, zoom);
+      //Render everything contained in the Regions, map segments, buildings, entities
+      //need a special render function for te Regions so that the Maps are rendered before any
+      //of the Entities, this bit of code can be added to the Nation container class when I eventually make it
+      for ( int i=0; i < Regions->getContainerGroup("regions")->size(); i++)
+        {
+          dynamic_cast<Region*>(Regions->getContainerGroup("regions")->at(i))->getMap()->render(cameraoffset_x, cameraoffset_y, zoom);
+        }
+      Regions->render(cameraoffset_x, cameraoffset_y, zoom);
 
-      sprite_selection->render(cameraoffset_x, cameraoffset_y, zoom);
+      //Render the transparent hovering square
+      tile_hover->render(cameraoffset_x, cameraoffset_y, zoom);
 
-      //vill->render(cameraoffset_x, cameraoffset_y, zoom);
+      ////Render resources
+      //Resources->render(cameraoffset_x, cameraoffset_y, zoom);
 
-      //std::cout << "INFO: Before rendering EntityGroup" << std::endl;
-      Units->render(cameraoffset_x, cameraoffset_y, zoom);
-      //std::cout << "INFO: After rendering EntityGroup" << std::endl;
-
-      //render resources
-      Resources->render(cameraoffset_x, cameraoffset_y, zoom);
-
-      //render resources
-      Buildings->render(cameraoffset_x, cameraoffset_y, zoom);
-
-      //render menu
+      //render menus
       Menus->render(cameraoffset_x, cameraoffset_y, zoom);
-
-      //render Temp text
-      //message->render();
 
       if (use_custom_cursor)
         {
@@ -625,7 +758,6 @@ int main(int argc, char **argv)
               SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
             }
         }
-
 
       //Window title:
       if (debug_mode)
@@ -657,11 +789,10 @@ int main(int argc, char **argv)
   //-------------------------------------------------------------------------------------
   //Cleanup:
   //-------------------------------------------------------------------------------------
-  delete sprite_selection;
+  delete tile_hover;
   delete TextHandler;
-  delete Units;
-  delete Resources;
-  delete Buildings;
+  delete Regions;
+  //delete Resources;
   delete Menus;
 
   SDL_DestroyRenderer(renderer);

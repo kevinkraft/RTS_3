@@ -14,6 +14,8 @@ class ItemGroup
 
   bool addItem(Item * item);
   //void consolidate();
+  std::vector< std::pair<int,float> > makeExhangeList();
+  float getFreeSpace();
   float getSize();
   Item * getItemOfType(int itype);
   std::vector<std::string> print();

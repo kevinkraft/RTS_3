@@ -13,6 +13,8 @@
 #include "EntityAction.h"
 #include "PopMenu.h"
 #include "FunctionCaller.h"
+#include "Resource.h"
+#include "Construction.h"
 
 //-------------------------------------------------------------------------------------
 
@@ -67,7 +69,8 @@ void makeActionMenu(PopMenu * pop_menu, EntityAction * selected)
 void makeActionMenu(PopMenu * pop_menu, EntityAction * selected, Entity * target, InfoMenu * info_menu, ExchangeMenu * exchange_menu)
 {
   //make the buttons for actions that selected can do on target
-  std::vector<FunctionCallerID> callerIDs = selected->actionsByMyself();
+  //std::vector<FunctionCallerID> callerIDs = selected->actionsByMyself();
+  std::vector<FunctionCallerID> callerIDs;
   std::vector<FunctionCallerID> sel_callerIDs = selected->actionsByMe();
   std::vector<FunctionCallerID> tar_callerIDs = target->actionsOnMe();
   //only keep what is in both lists
@@ -84,8 +87,10 @@ void makeActionMenu(PopMenu * pop_menu, EntityAction * selected, Entity * target
   ArgContainer args = ArgContainer();
   args.setTargetEntity(target);
   args.setTargetEntityHP(dynamic_cast<EntityHP*>(target));
+  args.setResource(dynamic_cast<Resource*>(target));
   args.setInfoMenu(info_menu);
   args.setExchangeMenu(exchange_menu);
+  args.setConstruction(dynamic_cast<Construction*>(target));
   pop_menu->setSelectedEntity(selected);
   makeActionMenu(pop_menu, callerIDs, args);
 }

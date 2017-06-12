@@ -2,6 +2,7 @@
 #include "SpriteGroup.h"
 //#include "SDL2/SDL.h"
 //#include "SDL2_image/SDL_image.h"
+#include "Map.h"
 
 EntityGroup::EntityGroup(SDL_Renderer *renderer, SDL_Window *window)
 {
@@ -36,9 +37,9 @@ Entity * EntityGroup::collide(float x, float y, int cameraoffset_x, int cameraof
   for(std::vector<Entity*>::iterator it = mEntities.begin(); it != mEntities.end(); ++it)
     {
       if ( (*it)->collide(x, y, cameraoffset_x, cameraoffset_y, zoom) == true)
-	{
-	  return (*it);
-	}
+        {
+          return (*it);
+        }
     }
   return nullptr;
 }
@@ -49,6 +50,24 @@ void EntityGroup::doActions()
     {
       (*it)->doAction();
     }
+}
+
+Entity * EntityGroup::getClosest(float x, float y)
+{
+  //return the entity in the list closest to x,y
+  Entity * ret_ent;
+  float dist = 0.;
+  float smallest_dist = -1.;
+  for (auto &ent: mEntities)
+    {
+      dist = fabs( getDistBetween(ent->getPosX(), ent->getPosY(), x, y) );
+      if ( dist < smallest_dist || smallest_dist == -1.)
+        {
+          smallest_dist = dist;
+          ret_ent = ent;
+        }
+    }
+  return ret_ent;
 }
 
 Entity * EntityGroup::getEntity(std::string ename)
@@ -75,6 +94,7 @@ void EntityGroup::removeEntity(Entity* entity)
 {
   mEntities.erase(std::remove(mEntities.begin(), mEntities.end(), entity), mEntities.end());
   mSpriteGroup->removeSprite(entity->getSprite());
+  delete entity;
 }
 
 void EntityGroup::render(int cameraoffset_x, int cameraoffset_y, float zoom)
@@ -129,9 +149,9 @@ void EntityGroup::update()
     {
       //remove the entity if it returns false
       if ( (*it)->update() == false)
-	{
-	  removeEntity((*it));
-	  break;
-	}
+        {
+          removeEntity((*it));
+          break;
+        }
     }
 }

@@ -8,6 +8,7 @@
 #include "EntityAction.h"
 #include "global.h"
 #include "FunctionCaller.h"
+#include "Eat.h"
 
 class Unit: public EntityAction
 {
@@ -20,29 +21,45 @@ class Unit: public EntityAction
   virtual std::vector<FunctionCallerID> actionsByMyself();
   virtual std::vector<FunctionCallerID> actionsOnMe();
   std::string blurb();
+  void dumpInventoryToStockpile();
+  Eat * findActionEat();
+  void moveTo(Entity * ent);
   virtual std::vector<std::string> printStats();
+  void setHunger(float h);
+  bool update();
 
   double getExchangeSpeed()
     {
       return mExchangeSpeed;
     }
+  float getHunger()
+  {
+    return mHunger;
+  }
   double getSpeed()
   {
     return mSpeed;
   }
+  double getWorkSpeed()
+  {
+    return mWorkSpeed;
+  }
   void setExchangeSpeed(double exspeed)
-    {
-      mExchangeSpeed = exspeed;
-    }
+  {
+    mExchangeSpeed = exspeed;
+  }
   void setSpeed(double speed)
   {
     mSpeed = speed;
   }
 
  private:
-  //std::string mName;
+
   double mSpeed = UNIT_SPEED;
   double mExchangeSpeed = UNIT_EXCHANGE_SPEED;
+  //EntityAction * mStockpile;
+  float mHunger;
+  float mWorkSpeed = UNIT_WORK_SPEED;
 
 };
 

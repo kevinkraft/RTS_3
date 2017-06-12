@@ -15,6 +15,7 @@ Building::Building(float pos_x, float pos_y, int type) :
   setType(type);
 
   setDead(false);
+  setupType();
 }
 
 Building::~Building()
@@ -52,6 +53,12 @@ void Building::setupType()
     case 0: //main hut
       setName("Hut");
       filename = "res/images/buildings/0.png";
+      this->getInventory()->setCapacity(50.);
+      break;
+    case 1: //stockpile
+      setName("Stockpile");
+      filename = "res/images/buildings/1.png";
+      this->getInventory()->setCapacity(1000.);
       break;
     default:
       std::cout << "Building::setType: ERROR: Building Type Not Recognised" << std::endl;

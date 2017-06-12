@@ -32,6 +32,7 @@ class EntityAction;
 Exchange::Exchange(EntityAction * target, std::vector< std::pair<int,float> > exlist)
   : Action()
 {
+  mExchangeMenu = nullptr;
   setTarget(target);
   setExchangeList(exlist);
 }
@@ -39,6 +40,7 @@ Exchange::Exchange(EntityAction * target, std::vector< std::pair<int,float> > ex
 Exchange::Exchange(EntityAction * target, int item_code, float item_amount)
   : Action()
 {
+  mExchangeMenu = nullptr;
   setTarget(target);
   std::vector<std::pair <int, float> > el{{item_code, item_amount}};
   setExchangeList(el);

@@ -294,6 +294,7 @@ void Menu::wipe()
   for(std::vector<TextBox*>::iterator it = mTextBoxes.begin(); it != mTextBoxes.end(); ++it)
     {
       (*it)->setWords(" ");
+      (*it)->setScroll(0.);
     }
 }
 

@@ -13,12 +13,14 @@
 #include "global.h"
 #include "FunctionCaller.h"
 
+//class Town;
+
 class EntityAction: public EntityHP
 {
  public:
 
   //EntityAction(ActionGroup actionList, ItemGroup inventory);
-  EntityAction(float pos_x, float pos_y, float inv_cap);
+  EntityAction(float pos_x, float pos_y, float inv_cap, float hp=UNIT_HP);
   virtual ~EntityAction();
 
   bool addItem(Item* item);
@@ -33,7 +35,7 @@ class EntityAction: public EntityHP
   std::vector<std::string> printInventory();
   void printInventoryTerminal();
   virtual std::vector<std::string> printStats();
-  bool update();
+  virtual bool update();
 
   //are there issues with this function?
   ActionGroup * getActions()
@@ -53,6 +55,7 @@ class EntityAction: public EntityHP
   {
     return mIntrRange;
   }
+
   void setAttackDamage(double attdmg)
   {
     mAttackDamage = attdmg;
@@ -62,6 +65,7 @@ class EntityAction: public EntityHP
     mIntrRange = intrRange;
   }
 
+
  private:
   ActionGroup * mActions;
   ItemGroup * mInventory;
@@ -69,6 +73,8 @@ class EntityAction: public EntityHP
   //are there issues with these variables?
   double mIntrRange = UNIT_INTERACTION_RANGE;
   double mAttackDamage = UNIT_ATTACK_DAMAGE;
+
+
 
 };
 

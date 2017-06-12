@@ -20,8 +20,8 @@
   std::cout << "EntityAction: INFO: leaving second constructor" << std::endl;
   }*/
 
-EntityAction::EntityAction(float pos_x, float pos_y, float inv_cap) :
-  EntityHP(pos_x, pos_y)
+EntityAction::EntityAction(float pos_x, float pos_y, float inv_cap, float hp) :
+  EntityHP(pos_x, pos_y, hp)
 {
   std::cout << "EntityAction: INFO: Infirst constructor" << std::endl;
   //ActionGroup actionList = ActionGroup();
@@ -36,7 +36,7 @@ EntityAction::~EntityAction()
 
 bool EntityAction::addItem(Item* item)
 {
-  std::cout << "EntityAction::addItem: INFO: Adding an Item to the ItemGroup" << std::endl;
+  //std::cout << "EntityAction::addItem: INFO: Adding an Item to the ItemGroup" << std::endl;
   return mInventory->addItem(item);
 }
 
@@ -147,11 +147,8 @@ std::vector<std::string> EntityAction::printStats()
 
 void EntityAction::prependAction(Action * act)
 {
-  TerminalText::printTerminal("INFO: EntityAction::prependAction: HERE4a");
   act->setActer(this);
-  TerminalText::printTerminal("INFO: EntityAction::prependAction: HERE4b");
   mActions->prependAction(act);
-  TerminalText::printTerminal("INFO: EntityAction::prependAction: HERE4c");
 }
 
 bool EntityAction::update()

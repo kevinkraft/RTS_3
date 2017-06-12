@@ -75,23 +75,23 @@ bool Movement::doAction()
     }
   else
     {
-      std::cout << "Movement:doAction: INFO: Final x pos: " << mActer->getPosX() << std::endl;
-      std::cout << "Movement:doAction: INFO: Final y pos: " << mActer->getPosY() << std::endl;
-      std::cout << "INFO: Finished Moving, leaving Movement::doAction" << std::endl;
+      //std::cout << "Movement:doAction: INFO: Final x pos: " << mActer->getPosX() << std::endl;
+      //std::cout << "Movement:doAction: INFO: Final y pos: " << mActer->getPosY() << std::endl;
+      //std::cout << "INFO: Finished Moving, leaving Movement::doAction" << std::endl;
       return true;
     }
 }
 
 void Movement::setActer(Unit * acter)
 {
-  std::cout << "In Movement, setting acter." << std::endl;
+  //std::cout << "In Movement, setting acter." << std::endl;
   mActer = acter;
-  std::cout << "In Movement, after setting acter." << std::endl;
+  //std::cout << "In Movement, after setting acter." << std::endl;
 }
 
 void Movement::setActer(EntityAction * acter)
 {
-  std::cout << "In Movement with EntityAction, setting acter." << std::endl;
+  //std::cout << "In Movement with EntityAction, setting acter." << std::endl;
   Unit * unit_acter = dynamic_cast<Unit*>(acter);
   setActer(unit_acter);
 }
@@ -104,6 +104,7 @@ bool advanceMove(EntityAction * acter, Entity * target)
 {
   //move a quarter of the distance to the target
   //used for attempting to meet a moving target
+  //SHOULD PROBABLY MAKE THIS A Unit MEMBER FUNCTION
   float aposx = acter->getPosX();
   float aposy = acter->getPosY();
   float tposx = target->getPosX();

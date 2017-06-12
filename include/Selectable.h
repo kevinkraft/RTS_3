@@ -14,6 +14,8 @@
 #ifndef SELECTABLE_H_
 #define SELECTABLE_H_
 
+#include <string>
+
 //-------------------------------------------------------------------------------------
 
 class Selectable

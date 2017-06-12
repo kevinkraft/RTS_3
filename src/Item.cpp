@@ -39,6 +39,7 @@ void Item::printTerminal()
 
 void Item::setType(int type)
 {
+  //NOTE THAT THE EXCHANGE AND COLLECT FUNCTION ARE NOT YET DESIGNED TO DEAL WITH item unit sizes GREATER THAN 1
   mType = type;
   switch (type)
     {
@@ -48,7 +49,8 @@ void Item::setType(int type)
       break;
     case 2:
       setName("Wood");
-      setUnitSize(3.);
+      //setUnitSize(3.);
+      setUnitSize(1.);
       break;
     default:
       std::cout << "Item::setType ERROR: Type Not Recognised" << std::endl;

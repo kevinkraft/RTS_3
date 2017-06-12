@@ -25,27 +25,33 @@ bool ItemGroup::addItem(Item* item)
     }
   else
     {
-      std::cout << "ItemGroup::addItem: INFO: The ItemGroup is full" << std::endl;
+      std::cout << "INFO: ItemGroup::addItem: The ItemGroup is full" << std::endl;
       return false;
     }
 }
 
-/*void ItemGroup::consolidate()
+std::vector< std::pair<int,float> > ItemGroup::makeExhangeList()
 {
-  std::vector<Item*>::iterator item = mItems.begin();
-  for(; item != mItems.end(); item++)
-  {
-    for( std::vector<Item*>::iterator itemin = item; itemin != mItems.end(); itemin++)
+  //makes a list that is compatible with the Exchange action for all items in the group
+  //used for making an exchange for the entire inventory
+  std::vector< std::pair<int,float> > ret_list;
+  for (auto &itm: this->mItems )
     {
-      if (itemin == item) continue;
-      item->setAmount( itemin->getAmount()+item->getAmount() );
+      std::pair<int, float> pr = {itm->getType(),itm->getAmount()};
+      ret_list.push_back(pr);
     }
+  return ret_list;
+}
 
-  }
-
-
-}*/
-
+float ItemGroup::getFreeSpace()
+{
+  //returns the amount of free space
+  float fs = getCapacity() - getSize();
+  if ( fs < 0 )
+    return 0.;
+  else
+    return fs;
+}
 float ItemGroup::getSize()
 {
   float sum = 0.;
