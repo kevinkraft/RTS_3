@@ -36,3 +36,4 @@ Notes:
 * If you leave it running for a long time (hours?) the units will run out of food and they will all starve.
 * The construction action was never completed. You can finish building the unfinished building on the map, but you can't start any new constructions.
 * There are bugs that I didn't get around to fixing. Just restart the game.
+* The NumberBox in the ExchangeMenu isn't working correctly. The selected number in the box isn't passed to the ExchangeMenu. It used to work, so it's probably an easy fix.
