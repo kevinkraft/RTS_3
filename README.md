@@ -9,6 +9,12 @@ To Play:
 2) Extract
 3) Double click .exe
 
+Next Project:
+-----------
+I'm writting this game again with the Unity engine, you can see what I've done so far, here: https://github.com/kevinkraft/RTS_4
+
+I've already gotten further than I had on this version (RTS_3). The UI on this game took lots of time to debug and fix. Now that I'm using Unity it's much easier to make good UIs and development time is much shorter.
+
 Controls:
 -----------
 
